@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +13,7 @@ import TalentSearch from "./pages/TalentSearch";
 import GigMarketplace from "./pages/GigMarketplace";
 import Analytics from "./pages/Analytics";
 import CandidateProfile from "./pages/CandidateProfile";
+import PostGig from "./pages/PostGig";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +49,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <GigMarketplace />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/post-gig"
+              element={
+                <ProtectedRoute roles={['recruiter', 'founder', 'admin']}>
+                  <PostGig />
                 </ProtectedRoute>
               }
             />

@@ -2,16 +2,17 @@
 import gigsData from '@/data/gigs.json';
 
 export interface Gig {
-  id: number;
+  id: number | string;
   title: string;
   company: string;
   location: string;
   duration: string;
-  budget: string;
-  hourlyRate: string;
+  budget?: string;
+  hourlyRate?: string;
+  stipend?: string;
   skills: string[];
   description: string;
-  requirements: string[];
+  requirements?: string[];
   postedTime: string;
   applicants: number;
   rating: number;
@@ -20,38 +21,118 @@ export interface Gig {
   contactEmail: string;
   companySize: string;
   industry: string;
+  roleType?: string;
+  experienceLevel?: string;
+  deadline?: string;
+  positions?: number;
+  perks?: string[];
 }
+
+// In-memory storage for new gigs (in real app, this would be a database)
+let mockGigs: Gig[] = [...gigsData];
 
 export const gigService = {
   // Get all gigs
-  getAllGigs: (): Gig[] => {
-    return gigsData as Gig[];
+  getAllGigs: (): Promise<Gig[]> => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve([...mockGigs]), 100);
+    });
   },
 
   // Get gig by ID
-  getGigById: (id: number): Gig | undefined => {
-    return gigsData.find(gig => gig.id === id) as Gig | undefined;
+  getGigById: (id: string | number): Promise<Gig | null> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const gig = mockGigs.find(g => g.id.toString() === id.toString());
+        resolve(gig || null);
+      }, 100);
+    });
   },
 
-  // Search gigs by query
-  searchGigs: (query: string): Gig[] => {
-    if (!query) return gigsData as Gig[];
-    
-    const lowercaseQuery = query.toLowerCase();
-    return gigsData.filter(gig => 
-      gig.title.toLowerCase().includes(lowercaseQuery) ||
-      gig.skills.some(skill => skill.toLowerCase().includes(lowercaseQuery)) ||
-      gig.company.toLowerCase().includes(lowercaseQuery) ||
-      gig.description.toLowerCase().includes(lowercaseQuery)
-    ) as Gig[];
+  // Add new gig
+  addGig: (gigData: Omit<Gig, 'id'>): Promise<Gig> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const newGig: Gig = {
+          ...gigData,
+          id: Date.now(), // Simple ID generation
+        };
+        mockGigs.unshift(newGig); // Add to beginning
+        resolve(newGig);
+      }, 500); // Simulate API delay
+    });
   },
 
-  // Filter gigs by category
-  filterByCategory: (category: string): Gig[] => {
-    if (!category) return gigsData as Gig[];
-    
-    return gigsData.filter(gig =>
-      gig.category.toLowerCase() === category.toLowerCase()
-    ) as Gig[];
+  // Search gigs
+  searchGigs: (query: string): Promise<Gig[]> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (!query.trim()) {
+          resolve([...mockGigs]);
+          return;
+        }
+
+        const filtered = mockGigs.filter(gig =>
+          gig.title.toLowerCase().includes(query.toLowerCase()) ||
+          gig.company.toLowerCase().includes(query.toLowerCase()) ||
+          gig.skills.some(skill => 
+            skill.toLowerCase().includes(query.toLowerCase())
+          ) ||
+          gig.location.toLowerCase().includes(query.toLowerCase())
+        );
+        resolve(filtered);
+      }, 200);
+    });
+  },
+
+  // Filter gigs
+  filterGigs: (filters: {
+    skills?: string[];
+    location?: string;
+    category?: string;
+    roleType?: string;
+    experienceLevel?: string;
+  }): Promise<Gig[]> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        let filtered = [...mockGigs];
+
+        if (filters.skills && filters.skills.length > 0) {
+          filtered = filtered.filter(gig =>
+            filters.skills!.some(skill =>
+              gig.skills.some(gigSkill =>
+                gigSkill.toLowerCase().includes(skill.toLowerCase())
+              )
+            )
+          );
+        }
+
+        if (filters.location) {
+          filtered = filtered.filter(gig =>
+            gig.location.toLowerCase().includes(filters.location!.toLowerCase())
+          );
+        }
+
+        if (filters.category) {
+          filtered = filtered.filter(gig =>
+            gig.category.toLowerCase() === filters.category!.toLowerCase()
+          );
+        }
+
+        if (filters.roleType) {
+          filtered = filtered.filter(gig =>
+            gig.roleType?.toLowerCase() === filters.roleType!.toLowerCase()
+          );
+        }
+
+        if (filters.experienceLevel) {
+          filtered = filtered.filter(gig =>
+            gig.experienceLevel?.toLowerCase() === filters.experienceLevel!.toLowerCase()
+          );
+        }
+
+        resolve(filtered);
+      }, 200);
+    });
   }
 };
