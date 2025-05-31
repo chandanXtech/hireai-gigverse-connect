@@ -1,0 +1,72 @@
+
+[
+  {
+    "id": 1,
+    "name": "Aarav Sharma",
+    "university": "IIT Delhi",
+    "year": "3rd Year CSE",
+    "skills": ["React", "Node.js", "Python", "AI/ML"],
+    "location": "Delhi, India",
+    "tagline": "Full-Stack + AI Enthusiast",
+    "bio": "Passionate about building AI-powered web applications. Hackathon winner and open-source contributor.",
+    "experience": "2+ years",
+    "availability": "Available for internships",
+    "rating": 4.9,
+    "projects": [
+      {
+        "name": "AI Chat Assistant",
+        "description": "Built using OpenAI API and React",
+        "github": "https://github.com/aarav/ai-chat"
+      }
+    ],
+    "achievements": ["Google Summer of Code 2023", "Winner - TechFest Hackathon"],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=aarav"
+  },
+  {
+    "id": 2,
+    "name": "Priya Patel",
+    "university": "BITS Pilani",
+    "year": "4th Year ECE",
+    "skills": ["Python", "TensorFlow", "Data Science", "React"],
+    "location": "Mumbai, India",
+    "tagline": "ML Engineer + Data Scientist",
+    "bio": "Specializing in computer vision and NLP. Published research in ML conferences.",
+    "experience": "3+ years",
+    "availability": "Open to full-time opportunities",
+    "rating": 4.8,
+    "projects": [
+      {
+        "name": "Smart Traffic System",
+        "description": "Computer vision for traffic optimization",
+        "github": "https://github.com/priya/smart-traffic"
+      }
+    ],
+    "achievements": ["Published in ICML 2023", "Intel AI Scholarship Recipient"],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=priya"
+  },
+  {
+    "id": 3,
+    "name": "Arjun Singh",
+    "university": "NIT Trichy",
+    "year": "2nd Year CSE",
+    "skills": ["Blockchain", "Solidity", "Web3", "JavaScript"],
+    "location": "Bangalore, India",
+    "tagline": "Web3 Developer + Blockchain Expert",
+    "bio": "Building the future of decentralized applications. Smart contract security researcher.",
+    "experience": "1+ years",
+    "availability": "Available for projects",
+    "rating": 4.7,
+    "projects": [
+      {
+        "name": "DeFi Lending Protocol",
+        "description": "Smart contracts for decentralized lending",
+        "github": "https://github.com/arjun/defi-lending"
+      }
+    ],
+    "achievements": ["Ethereum Foundation Grant", "Top 10 - ETHIndia Hackathon"],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=arjun"
+  }
+]

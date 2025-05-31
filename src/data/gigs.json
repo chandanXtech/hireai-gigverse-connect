@@ -1,0 +1,43 @@
+
+[
+  {
+    "id": 1,
+    "title": "AI Chatbot Development",
+    "company": "TechStartup Inc.",
+    "location": "Remote",
+    "duration": "2-3 weeks",
+    "budget": "$2,500 - $4,000",
+    "hourlyRate": "$50-80/hr",
+    "skills": ["Python", "NLP", "OpenAI API", "Flask"],
+    "description": "Build an intelligent chatbot for customer service using GPT-4 API. You will work with our product team to integrate advanced conversational AI.",
+    "requirements": ["3+ years Python experience", "Experience with OpenAI API", "Strong communication skills"],
+    "postedTime": "2 hours ago",
+    "applicants": 8,
+    "rating": 4.8,
+    "isUrgent": true,
+    "category": "AI/ML",
+    "contactEmail": "hiring@techstartup.com",
+    "companySize": "50-100",
+    "industry": "Technology"
+  },
+  {
+    "id": 2,
+    "title": "React Dashboard Development",
+    "company": "Analytics Pro",
+    "location": "San Francisco, CA",
+    "duration": "1 month",
+    "budget": "$3,000 - $5,500",
+    "hourlyRate": "$40-70/hr",
+    "skills": ["React", "TypeScript", "D3.js", "Tailwind CSS"],
+    "description": "Create interactive data visualization dashboard for business metrics. Modern React app with real-time data updates.",
+    "requirements": ["4+ years React experience", "TypeScript proficiency", "UI/UX design skills"],
+    "postedTime": "1 day ago",
+    "applicants": 15,
+    "rating": 4.9,
+    "isUrgent": false,
+    "category": "Frontend",
+    "contactEmail": "jobs@analyticspro.com",
+    "companySize": "100-500",
+    "industry": "Analytics"
+  }
+]

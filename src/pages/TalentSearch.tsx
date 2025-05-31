@@ -4,48 +4,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Search, Filter, Star, MapPin, Calendar } from 'lucide-react';
-import { useState } from 'react';
+import { Search, Filter, Star, MapPin, Calendar, Mail, Github, Award } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { candidateService, type Candidate } from '@/lib/services/candidateService';
+import { useSearchParams } from 'react-router-dom';
 
 const TalentSearch = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
 
-  // Mock candidate data for Phase 1
-  const mockCandidates = [
-    {
-      id: 1,
-      name: 'Sarah Chen',
-      title: 'Senior AI Engineer',
-      location: 'San Francisco, CA',
-      rating: 4.9,
-      skills: ['Python', 'TensorFlow', 'PyTorch', 'ML Ops'],
-      experience: '5+ years',
-      availability: 'Available',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=sarah'
-    },
-    {
-      id: 2,
-      name: 'Marcus Johnson',
-      title: 'Machine Learning Researcher',
-      location: 'New York, NY',
-      rating: 4.8,
-      skills: ['NLP', 'Computer Vision', 'Research', 'PhD'],
-      experience: '7+ years',
-      availability: '2 weeks notice',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=marcus'
-    },
-    {
-      id: 3,
-      name: 'Emily Rodriguez',
-      title: 'Data Scientist',
-      location: 'Austin, TX',
-      rating: 4.7,
-      skills: ['R', 'Python', 'Statistics', 'Deep Learning'],
-      experience: '4+ years',
-      availability: 'Available',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=emily'
+  useEffect(() => {
+    if (searchQuery) {
+      const results = candidateService.searchCandidates(searchQuery);
+      setCandidates(results);
+    } else {
+      setCandidates(candidateService.getAllCandidates());
     }
-  ];
+  }, [searchQuery]);
+
+  const handleSearch = () => {
+    const results = candidateService.searchCandidates(searchQuery);
+    setCandidates(results);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -59,7 +40,7 @@ const TalentSearch = () => {
         </div>
 
         {/* Search Bar */}
-        <Card className="mb-8">
+        <Card className="mb-8 shadow-lg border-0">
           <CardContent className="p-6">
             <div className="flex gap-4">
               <div className="flex-1 relative">
@@ -68,10 +49,11 @@ const TalentSearch = () => {
                   placeholder="Search for 'Senior ML Engineer with NLP experience in SF' or 'Python developer with 5+ years'"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   className="pl-10 text-lg py-6"
                 />
               </div>
-              <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+              <Button size="lg" onClick={handleSearch} className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
                 <Search className="w-5 h-5 mr-2" />
                 Search
               </Button>
@@ -87,7 +69,7 @@ const TalentSearch = () => {
         <div className="grid gap-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-900">
-              {mockCandidates.length} AI Professionals Found
+              {candidates.length} AI Professionals Found
             </h2>
             <div className="flex gap-2">
               <Badge variant="secondary">Relevance</Badge>
@@ -96,12 +78,12 @@ const TalentSearch = () => {
             </div>
           </div>
 
-          {mockCandidates.map((candidate) => (
-            <Card key={candidate.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+          {candidates.map((candidate) => (
+            <Card key={candidate.id} className="hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] cursor-pointer border-0 shadow-lg">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   <img
-                    src={candidate.avatar}
+                    src={candidate.profileImage}
                     alt={candidate.name}
                     className="w-16 h-16 rounded-full bg-gray-200"
                   />
@@ -109,8 +91,14 @@ const TalentSearch = () => {
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h3 className="text-xl font-semibold text-gray-900">{candidate.name}</h3>
-                        <p className="text-gray-600">{candidate.title}</p>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-xl font-semibold text-gray-900">{candidate.name}</h3>
+                          {candidate.isVerified && (
+                            <Badge variant="default" className="bg-green-500 text-xs">Verified</Badge>
+                          )}
+                        </div>
+                        <p className="text-gray-600">{candidate.tagline}</p>
+                        <p className="text-sm text-gray-500">{candidate.university} • {candidate.year}</p>
                       </div>
                       <div className="flex items-center gap-1 text-yellow-500">
                         <Star className="w-4 h-4 fill-current" />
@@ -118,7 +106,9 @@ const TalentSearch = () => {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                    <p className="text-gray-600 mb-3 text-sm">{candidate.bio}</p>
+                    
+                    <div className="flex items-center gap-6 text-sm text-gray-500 mb-3">
                       <div className="flex items-center gap-1">
                         <MapPin className="w-4 h-4" />
                         {candidate.location}
@@ -127,27 +117,51 @@ const TalentSearch = () => {
                         <Calendar className="w-4 h-4" />
                         {candidate.experience}
                       </div>
-                      <Badge variant={candidate.availability === 'Available' ? 'default' : 'secondary'}>
+                      <Badge variant={candidate.availability.includes('Available') ? 'default' : 'secondary'} className="text-xs">
                         {candidate.availability}
                       </Badge>
                     </div>
                     
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 mb-3">
                       {candidate.skills.map((skill) => (
-                        <Badge key={skill} variant="outline" className="text-xs">
+                        <Badge key={skill} variant="outline" className="text-xs hover:bg-blue-50 transition-colors">
                           {skill}
                         </Badge>
                       ))}
                     </div>
+
+                    {/* Achievements */}
+                    {candidate.achievements.length > 0 && (
+                      <div className="mb-3">
+                        <div className="flex items-center gap-1 mb-1">
+                          <Award className="w-4 h-4 text-yellow-500" />
+                          <span className="text-xs font-medium text-gray-700">Achievements</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {candidate.achievements.slice(0, 2).map((achievement, index) => (
+                            <Badge key={index} variant="secondary" className="text-xs">
+                              {achievement}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   
                   <div className="flex flex-col gap-2">
-                    <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-600">
+                    <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-600 transform hover:scale-105 transition-all">
                       View Profile
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="transform hover:scale-105 transition-all">
+                      <Mail className="w-4 h-4 mr-1" />
                       Message
                     </Button>
+                    {candidate.projects.length > 0 && (
+                      <Button variant="ghost" size="sm" className="text-xs">
+                        <Github className="w-4 h-4 mr-1" />
+                        Projects
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardContent>
