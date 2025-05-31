@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -66,6 +65,10 @@ const App = () => (
                   <CandidateProfile />
                 </ProtectedRoute>
               }
+            />
+            <Route
+              path="/profile/:id"
+              element={<CandidateProfile />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

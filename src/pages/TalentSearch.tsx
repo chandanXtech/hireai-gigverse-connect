@@ -149,8 +149,10 @@ const TalentSearch = () => {
                   </div>
                   
                   <div className="flex flex-col gap-2">
-                    <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-600 transform hover:scale-105 transition-all">
-                      View Profile
+                    <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-600 transform hover:scale-105 transition-all" asChild>
+                      <a href={`/profile/${candidate.profileSlug}`}>
+                        View Profile
+                      </a>
                     </Button>
                     <Button variant="outline" size="sm" className="transform hover:scale-105 transition-all">
                       <Mail className="w-4 h-4 mr-1" />

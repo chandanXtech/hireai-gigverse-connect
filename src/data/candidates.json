@@ -2,71 +2,184 @@
 [
   {
     "id": 1,
+    "username": "aarav-sharma",
+    "profileSlug": "aarav-sharma",
     "name": "Aarav Sharma",
     "university": "IIT Delhi",
     "year": "3rd Year CSE",
-    "skills": ["React", "Node.js", "Python", "AI/ML"],
+    "skills": ["React", "Node.js", "Python", "AI/ML", "TensorFlow", "Docker"],
     "location": "Delhi, India",
-    "tagline": "Full-Stack + AI Enthusiast",
-    "bio": "Passionate about building AI-powered web applications. Hackathon winner and open-source contributor.",
+    "tagline": "Full-Stack + AI Enthusiast | Building the Future",
+    "bio": "Passionate about building AI-powered web applications. Hackathon winner and open-source contributor with experience in full-stack development and machine learning. Always eager to solve complex problems with innovative solutions.",
     "experience": "2+ years",
     "availability": "Available for internships",
     "rating": 4.9,
     "projects": [
       {
         "name": "AI Chat Assistant",
-        "description": "Built using OpenAI API and React",
-        "github": "https://github.com/aarav/ai-chat"
+        "description": "Built an intelligent chatbot using OpenAI API and React with real-time conversation capabilities and context awareness",
+        "github": "https://github.com/aarav/ai-chat",
+        "technologies": ["React", "Node.js", "OpenAI API", "Socket.io"],
+        "tags": ["AI", "Hackathon Winner", "Featured"]
+      },
+      {
+        "name": "Smart Traffic Optimization",
+        "description": "Computer vision system for traffic flow analysis and optimization using TensorFlow and Python",
+        "github": "https://github.com/aarav/traffic-ai",
+        "technologies": ["Python", "TensorFlow", "OpenCV", "Flask"],
+        "tags": ["AI/ML", "Research", "Open Source"]
+      },
+      {
+        "name": "DeFi Analytics Dashboard",
+        "description": "Real-time cryptocurrency and DeFi protocol analytics with interactive charts and portfolio tracking",
+        "github": "https://github.com/aarav/defi-dashboard",
+        "technologies": ["React", "TypeScript", "Web3.js", "Chart.js"],
+        "tags": ["Blockchain", "DeFi", "Analytics"]
       }
     ],
-    "achievements": ["Google Summer of Code 2023", "Winner - TechFest Hackathon"],
+    "achievements": ["Google Summer of Code 2023", "Winner - TechFest Hackathon", "Dean's List 2022-23"],
+    "certifications": [
+      {
+        "title": "Google AI/ML Certification",
+        "issuer": "Google",
+        "year": 2023,
+        "verified": true
+      },
+      {
+        "title": "AWS Cloud Practitioner",
+        "issuer": "Amazon",
+        "year": 2023,
+        "verified": true
+      },
+      {
+        "title": "Advanced React Development",
+        "issuer": "Meta",
+        "year": 2022,
+        "verified": false
+      }
+    ],
     "isVerified": true,
-    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=aarav"
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=aarav",
+    "resumeLink": "/resumes/aarav-sharma.pdf",
+    "socialLinks": {
+      "github": "https://github.com/aaravsharma",
+      "linkedin": "https://linkedin.com/in/aaravsharma",
+      "portfolio": "https://aaravsharma.dev"
+    },
+    "tokensEarned": 240,
+    "badges": ["Verified", "Top 10%", "Open Source Contributor", "AI Specialist"],
+    "profileViews": 1247
   },
   {
     "id": 2,
+    "username": "priya-patel",
+    "profileSlug": "priya-patel",
     "name": "Priya Patel",
     "university": "BITS Pilani",
     "year": "4th Year ECE",
-    "skills": ["Python", "TensorFlow", "Data Science", "React"],
+    "skills": ["Python", "TensorFlow", "Data Science", "React", "PyTorch", "Computer Vision"],
     "location": "Mumbai, India",
-    "tagline": "ML Engineer + Data Scientist",
-    "bio": "Specializing in computer vision and NLP. Published research in ML conferences.",
+    "tagline": "ML Engineer + Data Scientist | Research Enthusiast",
+    "bio": "Specializing in computer vision and NLP with published research in top ML conferences. Passionate about applying machine learning to solve real-world problems in healthcare and finance.",
     "experience": "3+ years",
     "availability": "Open to full-time opportunities",
     "rating": 4.8,
     "projects": [
       {
         "name": "Smart Traffic System",
-        "description": "Computer vision for traffic optimization",
-        "github": "https://github.com/priya/smart-traffic"
+        "description": "Computer vision system for traffic optimization using real-time vehicle detection and flow analysis",
+        "github": "https://github.com/priya/smart-traffic",
+        "technologies": ["Python", "TensorFlow", "OpenCV", "FastAPI"],
+        "tags": ["Computer Vision", "Smart City", "Research"]
+      },
+      {
+        "name": "Medical Image Analysis",
+        "description": "Deep learning model for early detection of diabetic retinopathy from retinal images",
+        "github": "https://github.com/priya/medical-ai",
+        "technologies": ["PyTorch", "Python", "DICOM", "Streamlit"],
+        "tags": ["Healthcare", "Deep Learning", "Published"]
       }
     ],
-    "achievements": ["Published in ICML 2023", "Intel AI Scholarship Recipient"],
+    "achievements": ["Published in ICML 2023", "Intel AI Scholarship Recipient", "Best Paper Award - CVPR 2023"],
+    "certifications": [
+      {
+        "title": "TensorFlow Developer Certificate",
+        "issuer": "TensorFlow",
+        "year": 2023,
+        "verified": true
+      },
+      {
+        "title": "Deep Learning Specialization",
+        "issuer": "Stanford/Coursera",
+        "year": 2022,
+        "verified": true
+      }
+    ],
     "isVerified": true,
-    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=priya"
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=priya",
+    "resumeLink": "/resumes/priya-patel.pdf",
+    "socialLinks": {
+      "github": "https://github.com/priyapatel",
+      "linkedin": "https://linkedin.com/in/priyapatel"
+    },
+    "tokensEarned": 340,
+    "badges": ["Verified", "Research Star", "ML Expert", "Top Contributor"],
+    "profileViews": 892
   },
   {
     "id": 3,
+    "username": "arjun-singh",
+    "profileSlug": "arjun-singh",
     "name": "Arjun Singh",
     "university": "NIT Trichy",
     "year": "2nd Year CSE",
-    "skills": ["Blockchain", "Solidity", "Web3", "JavaScript"],
+    "skills": ["Blockchain", "Solidity", "Web3", "JavaScript", "React", "Rust"],
     "location": "Bangalore, India",
-    "tagline": "Web3 Developer + Blockchain Expert",
-    "bio": "Building the future of decentralized applications. Smart contract security researcher.",
+    "tagline": "Web3 Developer + Blockchain Expert | DeFi Builder",
+    "bio": "Building the future of decentralized applications with expertise in smart contract development and DeFi protocols. Security-focused developer with multiple audited contracts.",
     "experience": "1+ years",
     "availability": "Available for projects",
     "rating": 4.7,
     "projects": [
       {
         "name": "DeFi Lending Protocol",
-        "description": "Smart contracts for decentralized lending",
-        "github": "https://github.com/arjun/defi-lending"
+        "description": "Decentralized lending platform with automated liquidation and yield farming capabilities",
+        "github": "https://github.com/arjun/defi-lending",
+        "technologies": ["Solidity", "React", "Web3.js", "Hardhat"],
+        "tags": ["DeFi", "Smart Contracts", "Audited"]
+      },
+      {
+        "name": "NFT Marketplace",
+        "description": "Full-featured NFT marketplace with bidding, royalties, and cross-chain compatibility",
+        "github": "https://github.com/arjun/nft-marketplace",
+        "technologies": ["Solidity", "IPFS", "Next.js", "Ethers.js"],
+        "tags": ["NFT", "Marketplace", "Web3"]
       }
     ],
-    "achievements": ["Ethereum Foundation Grant", "Top 10 - ETHIndia Hackathon"],
+    "achievements": ["Ethereum Foundation Grant", "Top 10 - ETHIndia Hackathon", "Polygon BUIDL IT Winner"],
+    "certifications": [
+      {
+        "title": "Certified Blockchain Developer",
+        "issuer": "Blockchain Council",
+        "year": 2023,
+        "verified": true
+      },
+      {
+        "title": "Solidity Security Audit",
+        "issuer": "ConsenSys",
+        "year": 2023,
+        "verified": false
+      }
+    ],
     "isVerified": true,
-    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=arjun"
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=arjun",
+    "resumeLink": "/resumes/arjun-singh.pdf",
+    "socialLinks": {
+      "github": "https://github.com/arjunsingh",
+      "linkedin": "https://linkedin.com/in/arjunsingh"
+    },
+    "tokensEarned": 180,
+    "badges": ["Verified", "Web3 Pioneer", "Smart Contract Expert"],
+    "profileViews": 634
   }
 ]

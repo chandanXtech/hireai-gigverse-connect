@@ -3,6 +3,7 @@ import candidatesData from '@/data/candidates.json';
 
 export interface Candidate {
   id: number;
+  username: string;
   name: string;
   university: string;
   year: string;
@@ -17,10 +18,28 @@ export interface Candidate {
     name: string;
     description: string;
     github: string;
+    technologies: string[];
+    tags: string[];
   }>;
   achievements: string[];
+  certifications: Array<{
+    title: string;
+    issuer: string;
+    year: number;
+    verified: boolean;
+  }>;
   isVerified: boolean;
   profileImage: string;
+  resumeLink: string;
+  socialLinks: {
+    github: string;
+    linkedin: string;
+    portfolio?: string;
+  };
+  tokensEarned: number;
+  badges: string[];
+  profileViews: number;
+  profileSlug: string;
 }
 
 export const candidateService = {
@@ -32,6 +51,14 @@ export const candidateService = {
   // Get candidate by ID
   getCandidateById: (id: number): Candidate | undefined => {
     return candidatesData.find(candidate => candidate.id === id) as Candidate | undefined;
+  },
+
+  // Get candidate by username/slug
+  getCandidateByUsername: (username: string): Candidate | undefined => {
+    return candidatesData.find(candidate => 
+      candidate.profileSlug === username || 
+      candidate.username === username
+    ) as Candidate | undefined;
   },
 
   // Search candidates by query
