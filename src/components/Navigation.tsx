@@ -1,119 +1,145 @@
-
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { 
-  Sparkles, 
-  Search, 
-  Briefcase, 
-  BarChart3, 
-  User, 
-  Settings, 
-  LogOut,
-  Home,
-  FileText,
-  TrendingUp
-} from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { Menu } from "lucide-react";
+import { Brain } from 'lucide-react';
 
 export const Navigation = () => {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const navigationItems = [
-    { label: 'Dashboard', path: '/dashboard', icon: Home, roles: ['recruiter', 'founder', 'student', 'admin'] },
-    { label: 'Search Talent', path: '/search', icon: Search, roles: ['recruiter', 'founder', 'admin'] },
-    { label: 'Gig Marketplace', path: '/gigs', icon: Briefcase, roles: ['recruiter', 'founder', 'student', 'admin'] },
-    { label: 'My Applications', path: '/my-applications', icon: FileText, roles: ['student'] },
-    { label: 'Recruiter Analytics', path: '/recruiter-analytics', icon: TrendingUp, roles: ['recruiter', 'founder', 'admin'] },
-    { label: 'Analytics', path: '/analytics', icon: BarChart3, roles: ['recruiter', 'founder', 'admin'] },
-  ];
-
-  const visibleItems = navigationItems.filter(item => 
-    user && item.roles.includes(user.role)
-  );
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">HireAI+GigHub</span>
-          </div>
+    <nav className="bg-white border-b border-gray-200 py-2.5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <Link to="/" className="flex items-center">
+          <span className="self-center text-xl font-semibold whitespace-nowrap text-blue-600">
+            HireAI+GigHub
+          </span>
+        </Link>
 
-          {/* Navigation Items */}
-          <div className="hidden md:flex items-center space-x-1">
-            {visibleItems.map((item) => (
-              <Button
-                key={item.path}
-                variant={location.pathname === item.path ? "default" : "ghost"}
-                className={`flex items-center space-x-2 ${
-                  location.pathname === item.path 
-                    ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white" 
-                    : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-                }`}
-                onClick={() => navigate(item.path)}
-              >
-                <item.icon className="w-4 h-4" />
-                <span>{item.label}</span>
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <Menu className="w-5 h-5" />
               </Button>
-            ))}
-          </div>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64">
+              <SheetHeader>
+                <SheetTitle>Menu</SheetTitle>
+                <SheetDescription>
+                  Navigate through the app
+                </SheetDescription>
+              </SheetHeader>
+              <div className="flex flex-col space-y-2 mt-4">
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/dashboard" className="text-gray-700 hover:text-blue-600">
+                    Dashboard
+                  </Link>
+                </Button>
 
-          {/* User Menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={user?.avatar} alt={user?.name} />
-                  <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-                    {user?.name?.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-white/95 backdrop-blur-sm" align="end">
-              <div className="flex items-center justify-start gap-2 p-2">
-                <div className="flex flex-col space-y-1 leading-none">
-                  <p className="font-medium text-sm">{user?.name}</p>
-                  <p className="text-xs text-gray-600 capitalize">{user?.role}</p>
-                  <p className="text-xs text-gray-500">{user?.email}</p>
-                </div>
+                {(user?.role === 'recruiter' || user?.role === 'founder' || user?.role === 'admin') && (
+                  <>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/ai-search" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <Brain className="w-4 h-4" />
+                        AI Search
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/talent-search" className="text-gray-700 hover:text-blue-600">
+                        Browse Talent
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/post-gig" className="text-gray-700 hover:text-blue-600">
+                        Post Gig
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/recruiter-analytics" className="text-gray-700 hover:text-blue-600">
+                        Analytics
+                      </Link>
+                    </Button>
+                  </>
+                )}
+
+                {user ? (
+                  <Button variant="ghost" size="sm" onClick={logout} className="text-red-600 hover:text-red-800">
+                    Logout
+                  </Button>
+                ) : (
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/login" className="text-gray-700 hover:text-blue-600">
+                      Login
+                    </Link>
+                  </Button>
+                )}
               </div>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer text-red-600" onClick={handleLogout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </SheetContent>
+          </Sheet>
         </div>
+
+        {/* Desktop Menu */}
+        {user && (
+          <div className="hidden md:flex items-center space-x-1">
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/dashboard" className="text-gray-700 hover:text-blue-600">
+                Dashboard
+              </Link>
+            </Button>
+            
+            {(user.role === 'recruiter' || user.role === 'founder' || user.role === 'admin') && (
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/ai-search" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <Brain className="w-4 h-4" />
+                    AI Search
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/talent-search" className="text-gray-700 hover:text-blue-600">
+                    Browse Talent
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/post-gig" className="text-gray-700 hover:text-blue-600">
+                    Post Gig
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/recruiter-analytics" className="text-gray-700 hover:text-blue-600">
+                    Analytics
+                  </Link>
+                </Button>
+              </>
+            )}
+
+            <Button variant="ghost" size="sm" onClick={logout} className="text-red-600 hover:text-red-800">
+              Logout
+            </Button>
+          </div>
+        )}
+
+        {!user && (
+          <div className="hidden md:flex items-center space-x-1">
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/login" className="text-gray-700 hover:text-blue-600">
+                Login
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
     </nav>
   );
