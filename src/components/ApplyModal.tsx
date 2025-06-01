@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { applicationService } from '@/lib/services/applicationService';
+import { emailService } from '@/lib/services/emailService';
 import type { Gig } from '@/lib/services/gigService';
 
 interface ApplyModalProps {
@@ -28,6 +28,7 @@ export const ApplyModal = ({ isOpen, onClose, gig }: ApplyModalProps) => {
 
     setIsSubmitting(true);
     try {
+      // Submit application
       await applicationService.submitApplication({
         gigId: gig.id,
         studentId: user.id,
@@ -36,9 +37,17 @@ export const ApplyModal = ({ isOpen, onClose, gig }: ApplyModalProps) => {
         status: 'applied'
       });
 
+      // Send confirmation email
+      await emailService.sendApplicationConfirmation(
+        user.email || `${user.id}@example.com`,
+        user.name || 'Student',
+        gig.title,
+        gig.company
+      );
+
       toast({
-        title: "Application Submitted!",
-        description: `Your application for ${gig.title} has been sent successfully.`,
+        title: "Application Submitted Successfully! 🎉",
+        description: `Your application for ${gig.title} has been sent. Check your email for confirmation.`,
       });
 
       onClose();
@@ -46,7 +55,7 @@ export const ApplyModal = ({ isOpen, onClose, gig }: ApplyModalProps) => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to submit application. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to submit application. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -56,7 +65,7 @@ export const ApplyModal = ({ isOpen, onClose, gig }: ApplyModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Apply for {gig.title}</DialogTitle>
           <DialogDescription>
@@ -66,15 +75,20 @@ export const ApplyModal = ({ isOpen, onClose, gig }: ApplyModalProps) => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Gig Summary */}
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h4 className="font-medium mb-2">{gig.title}</h4>
-            <p className="text-sm text-gray-600 mb-2">{gig.company}</p>
+          <div className="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg border">
+            <h4 className="font-medium mb-2 text-gray-900">{gig.title}</h4>
+            <p className="text-sm text-gray-600 mb-3">{gig.company} • {gig.location}</p>
             <div className="flex flex-wrap gap-2">
-              {gig.skills.slice(0, 5).map((skill) => (
+              {gig.skills.slice(0, 6).map((skill) => (
                 <Badge key={skill} variant="outline" className="text-xs">
                   {skill}
                 </Badge>
               ))}
+              {gig.skills.length > 6 && (
+                <Badge variant="outline" className="text-xs">
+                  +{gig.skills.length - 6} more
+                </Badge>
+              )}
             </div>
           </div>
 
@@ -87,19 +101,42 @@ export const ApplyModal = ({ isOpen, onClose, gig }: ApplyModalProps) => {
               <Textarea
                 value={coverLetter}
                 onChange={(e) => setCoverLetter(e.target.value)}
-                placeholder="Tell them why you're perfect for this gig..."
-                rows={5}
-                maxLength={500}
+                placeholder={`Hi ${gig.company} team,
+
+I am excited to apply for the ${gig.title} position. With my experience in ${gig.skills.slice(0, 3).join(', ')}, I believe I would be a great fit for this role.
+
+[Share specific examples of your relevant experience and why you're interested in this opportunity]
+
+I'm available for ${gig.duration} and excited about the chance to contribute to your team.
+
+Thank you for your consideration!
+
+Best regards,
+${user?.name || 'Your Name'}`}
+                rows={8}
+                maxLength={1000}
+                className="resize-none"
               />
               <p className="text-xs text-gray-500 mt-1">
-                {coverLetter.length}/500 characters
+                {coverLetter.length}/1000 characters
               </p>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <p className="text-sm text-blue-800">
-                <strong>Note:</strong> Your profile information and skills will be automatically 
-                included with this application. Make sure your profile is up to date!
+            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+              <h4 className="font-medium text-blue-900 mb-2">📝 Application Tips:</h4>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Highlight relevant skills: {gig.skills.slice(0, 3).join(', ')}</li>
+                <li>• Mention your availability for {gig.duration}</li>
+                <li>• Show enthusiasm for {gig.company}</li>
+                <li>• Keep it concise but personal</li>
+              </ul>
+            </div>
+
+            <div className="bg-green-50 p-4 rounded-lg">
+              <p className="text-sm text-green-800">
+                <strong>📧 What happens next:</strong> You'll receive an email confirmation 
+                and notifications when your application status changes. Your profile and 
+                skills will be automatically included with this application.
               </p>
             </div>
           </div>
@@ -108,9 +145,9 @@ export const ApplyModal = ({ isOpen, onClose, gig }: ApplyModalProps) => {
             <Button 
               type="submit" 
               disabled={isSubmitting}
-              className="flex-1 bg-gradient-to-r from-green-500 to-blue-600"
+              className="flex-1 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
             >
-              {isSubmitting ? 'Submitting...' : 'Submit Application'}
+              {isSubmitting ? 'Submitting Application...' : 'Submit Application'}
             </Button>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel

@@ -1,4 +1,6 @@
 
+import { emailService } from './emailService';
+
 export interface Application {
   id: string;
   gigId: string | number;
@@ -59,14 +61,18 @@ export const applicationService = {
     });
   },
 
-  // Update application status
+  // Update application status with email notification
   updateApplicationStatus: async (
     applicationId: string, 
     status: Application['status'], 
-    recruiterNotes?: string
+    recruiterNotes?: string,
+    gigTitle?: string,
+    company?: string,
+    studentEmail?: string,
+    studentName?: string
   ): Promise<Application> => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
+    return new Promise(async (resolve, reject) => {
+      setTimeout(async () => {
         const appIndex = mockApplications.findIndex(app => app.id === applicationId);
         
         if (appIndex === -1) {
@@ -74,11 +80,28 @@ export const applicationService = {
           return;
         }
 
+        const previousStatus = mockApplications[appIndex].status;
         mockApplications[appIndex] = {
           ...mockApplications[appIndex],
           status,
           recruiterNotes: recruiterNotes || mockApplications[appIndex].recruiterNotes,
         };
+
+        // Send email notification if status changed
+        if (previousStatus !== status && studentEmail && studentName && gigTitle && company) {
+          try {
+            await emailService.sendStatusUpdateEmail(
+              studentEmail,
+              studentName,
+              gigTitle,
+              company,
+              status,
+              recruiterNotes
+            );
+          } catch (error) {
+            console.error('Failed to send status update email:', error);
+          }
+        }
 
         resolve(mockApplications[appIndex]);
       }, 300);
@@ -93,4 +116,30 @@ export const applicationService = {
       }, 200);
     });
   },
+
+  // Get application statistics
+  getApplicationStats: async (): Promise<{
+    total: number;
+    applied: number;
+    shortlisted: number;
+    hired: number;
+    rejected: number;
+  }> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const stats = mockApplications.reduce((acc, app) => {
+          acc.total++;
+          acc[app.status]++;
+          return acc;
+        }, {
+          total: 0,
+          applied: 0,
+          shortlisted: 0,
+          hired: 0,
+          rejected: 0
+        });
+        resolve(stats);
+      }, 100);
+    });
+  }
 };
