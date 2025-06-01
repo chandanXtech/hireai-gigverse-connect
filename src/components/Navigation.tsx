@@ -18,7 +18,9 @@ import {
   User, 
   Settings, 
   LogOut,
-  Home
+  Home,
+  FileText,
+  TrendingUp
 } from 'lucide-react';
 
 export const Navigation = () => {
@@ -30,6 +32,8 @@ export const Navigation = () => {
     { label: 'Dashboard', path: '/dashboard', icon: Home, roles: ['recruiter', 'founder', 'student', 'admin'] },
     { label: 'Search Talent', path: '/search', icon: Search, roles: ['recruiter', 'founder', 'admin'] },
     { label: 'Gig Marketplace', path: '/gigs', icon: Briefcase, roles: ['recruiter', 'founder', 'student', 'admin'] },
+    { label: 'My Applications', path: '/my-applications', icon: FileText, roles: ['student'] },
+    { label: 'Recruiter Analytics', path: '/recruiter-analytics', icon: TrendingUp, roles: ['recruiter', 'founder', 'admin'] },
     { label: 'Analytics', path: '/analytics', icon: BarChart3, roles: ['recruiter', 'founder', 'admin'] },
   ];
 

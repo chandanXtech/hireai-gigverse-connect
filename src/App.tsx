@@ -11,6 +11,9 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import TalentSearch from "./pages/TalentSearch";
 import GigMarketplace from "./pages/GigMarketplace";
+import GigDetail from "./pages/GigDetail";
+import MyApplications from "./pages/MyApplications";
+import RecruiterAnalytics from "./pages/RecruiterAnalytics";
 import Analytics from "./pages/Analytics";
 import CandidateProfile from "./pages/CandidateProfile";
 import PostGig from "./pages/PostGig";
@@ -53,10 +56,34 @@ const App = () => (
               }
             />
             <Route
+              path="/gigs/:id"
+              element={
+                <ProtectedRoute>
+                  <GigDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/my-applications"
+              element={
+                <ProtectedRoute roles={['student']}>
+                  <MyApplications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/post-gig"
               element={
                 <ProtectedRoute roles={['recruiter', 'founder', 'admin']}>
                   <PostGig />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/recruiter-analytics"
+              element={
+                <ProtectedRoute roles={['recruiter', 'founder', 'admin']}>
+                  <RecruiterAnalytics />
                 </ProtectedRoute>
               }
             />
