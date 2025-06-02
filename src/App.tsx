@@ -16,6 +16,8 @@ import TalentSearch from '@/pages/TalentSearch';
 import AITalentSearch from '@/pages/AITalentSearch';
 import CandidateProfile from '@/pages/CandidateProfile';
 import Analytics from '@/pages/Analytics';
+import LearningDashboard from '@/pages/LearningDashboard';
+import ModuleDetail from '@/pages/ModuleDetail';
 import NotFound from '@/pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -44,6 +46,16 @@ function App() {
               <Route path="/my-applications" element={
                 <ProtectedRoute allowedRoles={['student']}>
                   <MyApplications />
+                </ProtectedRoute>
+              } />
+              <Route path="/learning" element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <LearningDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/modules/:moduleId" element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <ModuleDetail />
                 </ProtectedRoute>
               } />
               <Route path="/recruiter-analytics" element={

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -10,8 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Menu } from "lucide-react";
-import { Brain } from 'lucide-react';
+import { Menu, Brain, BookOpen } from "lucide-react";
 
 export const Navigation = () => {
   const { user, logout } = useAuth();
@@ -47,6 +47,15 @@ export const Navigation = () => {
                     Dashboard
                   </Link>
                 </Button>
+
+                {user?.role === 'student' && (
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/learning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                      <BookOpen className="w-4 h-4" />
+                      Learning
+                    </Link>
+                  </Button>
+                )}
 
                 {(user?.role === 'recruiter' || user?.role === 'founder' || user?.role === 'admin') && (
                   <>
@@ -98,6 +107,15 @@ export const Navigation = () => {
                 Dashboard
               </Link>
             </Button>
+
+            {user.role === 'student' && (
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/learning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                  <BookOpen className="w-4 h-4" />
+                  Learning
+                </Link>
+              </Button>
+            )}
             
             {(user.role === 'recruiter' || user.role === 'founder' || user.role === 'admin') && (
               <>

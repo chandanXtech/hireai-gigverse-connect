@@ -2,7 +2,7 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Search, Users, TrendingUp, Briefcase, Star, ArrowRight, Brain, Mail, Target } from 'lucide-react';
+import { Search, Users, TrendingUp, Briefcase, Star, ArrowRight, Brain, Mail, Target, BookOpen, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 
@@ -17,7 +17,7 @@ const Dashboard = () => {
       case 'founder':
         return 'Build your AI dream team in minutes, not months!';
       case 'student':
-        return 'Discover amazing AI & tech opportunities!';
+        return 'Accelerate your career with personalized learning paths!';
       case 'admin':
         return 'Monitor platform performance & insights';
       default:
@@ -73,6 +73,14 @@ const Dashboard = () => {
 
     if (user?.role === 'student') {
       return [
+        {
+          title: 'Learning Dashboard',
+          description: 'Access your personalized learning roadmap',
+          icon: BookOpen,
+          action: () => navigate('/learning'),
+          color: 'from-purple-500 to-pink-600',
+          featured: true
+        },
         ...baseActions,
         {
           title: 'My Applications',
@@ -147,6 +155,31 @@ const Dashboard = () => {
           </Card>
         )}
 
+        {/* Learning Banner for Students */}
+        {user?.role === 'student' && (
+          <Card className="mb-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0">
+            <CardContent className="p-6">
+              <div className="flex flex-col sm:flex-row items-center justify-between">
+                <div className="mb-4 sm:mb-0">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">📚 Personalized Learning Journey</h2>
+                  <p className="text-blue-100 text-sm sm:text-base">
+                    Set your career goals and follow curated learning paths 
+                    <br className="hidden sm:block" />
+                    Unlock gigs as you build skills and complete modules!
+                  </p>
+                </div>
+                <Button 
+                  onClick={() => navigate('/learning')} 
+                  variant="secondary" 
+                  className="bg-white text-blue-600 hover:bg-gray-100 font-semibold"
+                >
+                  Start Learning <BookOpen className="ml-2 w-4 h-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
           {stats.map((stat, index) => (
@@ -183,7 +216,7 @@ const Dashboard = () => {
                 </div>
                 <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center">
                   {action.title}
-                  {action.featured && <span className="ml-2 text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">AI</span>}
+                  {action.featured && <span className="ml-2 text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">NEW</span>}
                 </CardTitle>
                 <CardDescription className="text-gray-600 text-sm">{action.description}</CardDescription>
               </CardHeader>
@@ -206,9 +239,13 @@ const Dashboard = () => {
           <CardContent>
             <div className="space-y-4">
               {[
-                { action: 'AI Search Match Found', detail: 'Sarah Chen - Senior ML Engineer with LangChain expertise', time: '2 hours ago', type: 'ai-match' },
+                user?.role === 'student' ? 
+                  { action: 'Learning Module Completed', detail: 'Python Fundamentals - Earned 3 new skills', time: '2 hours ago', type: 'learning' } :
+                  { action: 'AI Search Match Found', detail: 'Sarah Chen - Senior ML Engineer with LangChain expertise', time: '2 hours ago', type: 'ai-match' },
                 { action: 'New Application Received', detail: 'Frontend Developer - TechCorp Gig', time: '4 hours ago', type: 'application' },
-                { action: 'Candidate Auto-Screened', detail: 'John Doe - Data Scientist passed AI screening', time: '1 day ago', type: 'screening' },
+                user?.role === 'student' ?
+                  { action: 'Badge Unlocked', detail: 'First Steps - Completed your first learning module', time: '1 day ago', type: 'achievement' } :
+                  { action: 'Candidate Auto-Screened', detail: 'John Doe - Data Scientist passed AI screening', time: '1 day ago', type: 'screening' },
                 { action: 'Outreach Email Sent', detail: 'Personalized email to 5 candidates', time: '2 days ago', type: 'outreach' }
               ].map((activity, index) => (
                 <div key={index} className="flex items-center space-x-4 p-3 sm:p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -217,12 +254,16 @@ const Dashboard = () => {
                     activity.type === 'application' ? 'bg-green-100 text-green-600' :
                     activity.type === 'screening' ? 'bg-blue-100 text-blue-600' :
                     activity.type === 'outreach' ? 'bg-orange-100 text-orange-600' :
+                    activity.type === 'learning' ? 'bg-indigo-100 text-indigo-600' :
+                    activity.type === 'achievement' ? 'bg-yellow-100 text-yellow-600' :
                     'bg-gray-100 text-gray-600'
                   }`}>
                     {activity.type === 'ai-match' && <Brain className="w-4 h-4 sm:w-5 sm:h-5" />}
                     {activity.type === 'application' && <Briefcase className="w-4 h-4 sm:w-5 sm:h-5" />}
                     {activity.type === 'screening' && <Users className="w-4 h-4 sm:w-5 sm:h-5" />}
                     {activity.type === 'outreach' && <Mail className="w-4 h-4 sm:w-5 sm:h-5" />}
+                    {activity.type === 'learning' && <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />}
+                    {activity.type === 'achievement' && <Trophy className="w-4 h-4 sm:w-5 sm:h-5" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-gray-900 text-sm sm:text-base truncate">{activity.action}</p>
