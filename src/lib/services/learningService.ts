@@ -1,4 +1,3 @@
-
 export interface CareerGoal {
   id: string;
   title: string;
@@ -17,6 +16,7 @@ export interface Module {
   estimatedTime: string;
   prerequisites?: string[];
   skills: string[];
+  quiz?: QuizQuestion[];
 }
 
 export interface ModuleContent {
@@ -26,6 +26,24 @@ export interface ModuleContent {
   url?: string;
   description: string;
   duration?: string;
+  videoProgress?: number;
+  isBookmarked?: boolean;
+  rating?: number;
+  timestamps?: VideoTimestamp[];
+}
+
+export interface VideoTimestamp {
+  time: string;
+  label: string;
+  description: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation?: string;
 }
 
 export interface StudentProgress {
@@ -37,6 +55,12 @@ export interface StudentProgress {
   totalProgress: number;
   lastActivity: string;
   badges: Badge[];
+  videoProgress: Record<string, number>;
+  bookmarkedVideos: string[];
+  quizScores: Record<string, number>;
+  watchTime: number;
+  streak: number;
+  lastStreakDate?: string;
 }
 
 export interface Badge {
@@ -47,7 +71,7 @@ export interface Badge {
   unlockedAt: string;
 }
 
-// Mock data for career goals and learning paths
+// Enhanced mock data with video content and quizzes
 const mockCareerGoals: CareerGoal[] = [
   {
     id: 'ai-engineer',
@@ -70,7 +94,13 @@ const mockCareerGoals: CareerGoal[] = [
             type: 'youtube',
             url: 'https://www.youtube.com/watch?v=kqtD5dpn9C8',
             description: 'Complete Python tutorial for beginners',
-            duration: '4 hours'
+            duration: '4 hours',
+            timestamps: [
+              { time: '0:00', label: 'Introduction', description: 'What is Python and why learn it?' },
+              { time: '15:30', label: 'Variables', description: 'Working with variables and data types' },
+              { time: '45:20', label: 'Control Flow', description: 'If statements and loops' },
+              { time: '1:20:15', label: 'Functions', description: 'Creating and using functions' }
+            ]
           },
           {
             id: 'data-structures',
@@ -79,6 +109,22 @@ const mockCareerGoals: CareerGoal[] = [
             url: 'https://realpython.com/python-data-structures/',
             description: 'Comprehensive guide to Python data structures',
             duration: '2 hours'
+          }
+        ],
+        quiz: [
+          {
+            id: 'q1',
+            question: 'Which of the following is a mutable data type in Python?',
+            options: ['tuple', 'string', 'list', 'integer'],
+            correctAnswer: 2,
+            explanation: 'Lists are mutable, meaning you can change their contents after creation.'
+          },
+          {
+            id: 'q2',
+            question: 'What does the len() function return?',
+            options: ['The last element', 'The first element', 'The number of elements', 'The sum of elements'],
+            correctAnswer: 2,
+            explanation: 'The len() function returns the number of items in an object.'
           }
         ]
       },
@@ -97,26 +143,36 @@ const mockCareerGoals: CareerGoal[] = [
             type: 'youtube',
             url: 'https://www.youtube.com/watch?v=aircAruvnKk',
             description: 'Neural networks explained visually',
-            duration: '3 hours'
-          }
-        ]
-      },
-      {
-        id: 'deep-learning',
-        title: 'Deep Learning with TensorFlow',
-        description: 'Build neural networks and deep learning models',
-        type: 'video',
-        estimatedTime: '8 weeks',
-        prerequisites: ['machine-learning'],
-        skills: ['TensorFlow', 'Deep Learning', 'Neural Networks'],
-        content: [
+            duration: '19 minutes',
+            timestamps: [
+              { time: '0:00', label: 'What is ML?', description: 'Basic concepts and definitions' },
+              { time: '4:30', label: 'Types of Learning', description: 'Supervised vs Unsupervised learning' },
+              { time: '9:15', label: 'Neural Networks', description: 'How neural networks work' },
+              { time: '15:20', label: 'Applications', description: 'Real-world ML applications' }
+            ]
+          },
           {
-            id: 'tensorflow-intro',
-            title: 'TensorFlow Fundamentals',
+            id: 'sklearn-tutorial',
+            title: 'Scikit-learn Tutorial',
             type: 'youtube',
-            url: 'https://www.youtube.com/watch?v=tPYj3fFJGjk',
-            description: 'Complete TensorFlow tutorial',
-            duration: '6 hours'
+            url: 'https://www.youtube.com/watch?v=pqNCD_5r0IU',
+            description: 'Hands-on machine learning with scikit-learn',
+            duration: '45 minutes'
+          }
+        ],
+        quiz: [
+          {
+            id: 'ml-q1',
+            question: 'What is the main difference between supervised and unsupervised learning?',
+            options: [
+              'Supervised learning uses labeled data',
+              'Unsupervised learning uses labeled data',
+              'Unsupervised learning is faster',
+              'Supervised learning is more accurate',
+              'There is no difference'
+            ],
+            correctAnswer: 0,
+            explanation: 'Supervised learning uses labeled training data to learn patterns, while unsupervised learning finds patterns in unlabeled data.'
           }
         ]
       }
@@ -143,91 +199,21 @@ const mockCareerGoals: CareerGoal[] = [
             type: 'youtube',
             url: 'https://www.youtube.com/watch?v=UB1O30fR-EE',
             description: 'Complete HTML course for beginners',
-            duration: '3 hours'
+            duration: '3 hours',
+            timestamps: [
+              { time: '0:00', label: 'HTML Basics', description: 'Structure and syntax' },
+              { time: '30:00', label: 'Forms', description: 'Creating interactive forms' },
+              { time: '1:30:00', label: 'Semantic HTML', description: 'Modern HTML5 elements' }
+            ]
           }
-        ]
-      },
-      {
-        id: 'javascript',
-        title: 'JavaScript ES6+',
-        description: 'Master modern JavaScript and ES6+ features',
-        type: 'interactive',
-        estimatedTime: '5 weeks',
-        prerequisites: ['html-css'],
-        skills: ['JavaScript', 'ES6', 'DOM Manipulation'],
-        content: [
+        ],
+        quiz: [
           {
-            id: 'js-basics',
-            title: 'JavaScript Fundamentals',
-            type: 'youtube',
-            url: 'https://www.youtube.com/watch?v=PkZNo7MFNFg',
-            description: 'Complete JavaScript course',
-            duration: '8 hours'
-          }
-        ]
-      },
-      {
-        id: 'react-development',
-        title: 'React Development',
-        description: 'Build modern web applications with React',
-        type: 'interactive',
-        estimatedTime: '6 weeks',
-        prerequisites: ['javascript'],
-        skills: ['React', 'TypeScript', 'Component Architecture'],
-        content: [
-          {
-            id: 'react-intro',
-            title: 'React Complete Course',
-            type: 'youtube',
-            url: 'https://www.youtube.com/watch?v=bMknfKXIFA8',
-            description: 'Complete React tutorial for beginners',
-            duration: '12 hours'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'data-scientist',
-    title: 'Data Scientist',
-    description: 'Analyze data, build models, and derive insights',
-    category: 'Data Science',
-    estimatedDuration: '8-10 months',
-    modules: [
-      {
-        id: 'statistics',
-        title: 'Statistics & Probability',
-        description: 'Master statistical concepts and probability theory',
-        type: 'text',
-        estimatedTime: '4 weeks',
-        skills: ['Statistics', 'Probability', 'Data Analysis'],
-        content: [
-          {
-            id: 'stats-basics',
-            title: 'Statistics Fundamentals',
-            type: 'article',
-            url: 'https://www.khanacademy.org/math/statistics-probability',
-            description: 'Complete statistics course',
-            duration: '20 hours'
-          }
-        ]
-      },
-      {
-        id: 'pandas-numpy',
-        title: 'Data Manipulation with Pandas',
-        description: 'Learn data cleaning, transformation, and analysis',
-        type: 'interactive',
-        estimatedTime: '5 weeks',
-        prerequisites: ['statistics'],
-        skills: ['Pandas', 'NumPy', 'Data Cleaning'],
-        content: [
-          {
-            id: 'pandas-intro',
-            title: 'Pandas Complete Tutorial',
-            type: 'youtube',
-            url: 'https://www.youtube.com/watch?v=vmEHCJofslg',
-            description: 'Complete Pandas course',
-            duration: '6 hours'
+            id: 'html-q1',
+            question: 'Which HTML element is used for the largest heading?',
+            options: ['<h6>', '<h1>', '<header>', '<big>'],
+            correctAnswer: 1,
+            explanation: '<h1> represents the largest heading, with <h6> being the smallest.'
           }
         ]
       }
@@ -235,7 +221,7 @@ const mockCareerGoals: CareerGoal[] = [
   }
 ];
 
-// Mock progress data
+// Mock progress data with enhanced video tracking
 let mockProgress: StudentProgress[] = [];
 
 export const learningService = {
@@ -294,7 +280,7 @@ export const learningService = {
     });
   },
 
-  // Update module progress
+  // Enhanced module progress with video tracking
   updateModuleProgress: (studentId: string, moduleId: string, status: 'completed' | 'in-progress'): Promise<void> => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -313,7 +299,22 @@ export const learningService = {
               progress.skillsAcquired = [...new Set([...progress.skillsAcquired, ...module.skills])];
             }
             
-            // Check for new badges
+            // Update streak
+            const today = new Date().toDateString();
+            const lastDate = progress.lastStreakDate;
+            if (lastDate !== today) {
+              const yesterday = new Date();
+              yesterday.setDate(yesterday.getDate() - 1);
+              
+              if (lastDate === yesterday.toDateString()) {
+                progress.streak += 1;
+              } else {
+                progress.streak = 1;
+              }
+              progress.lastStreakDate = today;
+            }
+            
+            // Award new badges
             if (progress.completedModules.length === 1) {
               progress.badges.push({
                 id: 'first-module',
@@ -324,14 +325,30 @@ export const learningService = {
               });
             }
             
-            if (progress.completedModules.length >= 3) {
-              progress.badges.push({
-                id: 'dedicated-learner',
-                title: 'Dedicated Learner',
-                description: 'Completed 3 or more modules',
-                icon: '📚',
-                unlockedAt: new Date().toISOString()
-              });
+            if (progress.streak >= 7) {
+              const hasStreakBadge = progress.badges.find(b => b.id === 'week-streak');
+              if (!hasStreakBadge) {
+                progress.badges.push({
+                  id: 'week-streak',
+                  title: 'Week Warrior',
+                  description: 'Maintained a 7-day learning streak',
+                  icon: '🔥',
+                  unlockedAt: new Date().toISOString()
+                });
+              }
+            }
+            
+            if (progress.watchTime >= 3600) { // 1 hour
+              const hasWatchBadge = progress.badges.find(b => b.id === 'video-enthusiast');
+              if (!hasWatchBadge) {
+                progress.badges.push({
+                  id: 'video-enthusiast',
+                  title: 'Video Enthusiast',
+                  description: 'Watched over 1 hour of learning videos',
+                  icon: '🎬',
+                  unlockedAt: new Date().toISOString()
+                });
+              }
             }
           } else {
             progress.inProgressModules = [...new Set([...progress.inProgressModules, moduleId])];
@@ -344,6 +361,77 @@ export const learningService = {
         }
         resolve();
       }, 300);
+    });
+  },
+
+  // Update video progress
+  updateVideoProgress: (studentId: string, videoId: string, progress: number): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const progressIndex = mockProgress.findIndex(p => p.studentId === studentId);
+        if (progressIndex >= 0) {
+          const studentProgress = mockProgress[progressIndex];
+          studentProgress.videoProgress = studentProgress.videoProgress || {};
+          studentProgress.videoProgress[videoId] = progress;
+          
+          // Estimate watch time (assuming progress relates to duration)
+          const previousProgress = studentProgress.videoProgress[videoId] || 0;
+          if (progress > previousProgress) {
+            studentProgress.watchTime += (progress - previousProgress) * 10; // rough estimate
+          }
+        }
+        resolve();
+      }, 100);
+    });
+  },
+
+  // Bookmark video
+  toggleVideoBookmark: (studentId: string, videoId: string): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const progressIndex = mockProgress.findIndex(p => p.studentId === studentId);
+        if (progressIndex >= 0) {
+          const progress = mockProgress[progressIndex];
+          progress.bookmarkedVideos = progress.bookmarkedVideos || [];
+          
+          const bookmarkIndex = progress.bookmarkedVideos.indexOf(videoId);
+          if (bookmarkIndex >= 0) {
+            progress.bookmarkedVideos.splice(bookmarkIndex, 1);
+          } else {
+            progress.bookmarkedVideos.push(videoId);
+          }
+        }
+        resolve();
+      }, 100);
+    });
+  },
+
+  // Save quiz score
+  saveQuizScore: (studentId: string, moduleId: string, score: number): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const progressIndex = mockProgress.findIndex(p => p.studentId === studentId);
+        if (progressIndex >= 0) {
+          const progress = mockProgress[progressIndex];
+          progress.quizScores = progress.quizScores || {};
+          progress.quizScores[moduleId] = score;
+          
+          // Award quiz badges
+          if (score >= 90) {
+            const hasPerfectBadge = progress.badges.find(b => b.id === 'quiz-master');
+            if (!hasPerfectBadge) {
+              progress.badges.push({
+                id: 'quiz-master',
+                title: 'Quiz Master',
+                description: 'Scored 90% or higher on a quiz',
+                icon: '🧠',
+                unlockedAt: new Date().toISOString()
+              });
+            }
+          }
+        }
+        resolve();
+      }, 100);
     });
   },
 
