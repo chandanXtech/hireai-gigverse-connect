@@ -2,184 +2,217 @@
 [
   {
     "id": 1,
-    "username": "aarav-sharma",
-    "profileSlug": "aarav-sharma",
-    "name": "Aarav Sharma",
-    "university": "IIT Delhi",
-    "year": "3rd Year CSE",
-    "skills": ["React", "Node.js", "Python", "AI/ML", "TensorFlow", "Docker"],
-    "location": "Delhi, India",
-    "tagline": "Full-Stack + AI Enthusiast | Building the Future",
-    "bio": "Passionate about building AI-powered web applications. Hackathon winner and open-source contributor with experience in full-stack development and machine learning. Always eager to solve complex problems with innovative solutions.",
-    "experience": "2+ years",
-    "availability": "Available for internships",
+    "username": "elena-rodriguez",
+    "profileSlug": "elena-rodriguez",
+    "name": "Elena Rodriguez",
+    "university": "Technical University of Madrid",
+    "year": "Senior AI Engineer",
+    "skills": ["LangChain", "RAG", "Python", "PyTorch", "Transformers", "Vector Databases", "OpenAI", "Hugging Face"],
+    "location": "Madrid, Spain",
+    "tagline": "Senior Gen-AI Engineer | LangChain & RAG Expert",
+    "bio": "Specialized in building production-ready RAG systems and LLM applications. 6+ years experience in NLP and generative AI with expertise in LangChain, vector databases, and prompt engineering.",
+    "experience": "6+ years",
+    "availability": "Available for contract",
     "rating": 4.9,
     "projects": [
       {
-        "name": "AI Chat Assistant",
-        "description": "Built an intelligent chatbot using OpenAI API and React with real-time conversation capabilities and context awareness",
-        "github": "https://github.com/aarav/ai-chat",
-        "technologies": ["React", "Node.js", "OpenAI API", "Socket.io"],
-        "tags": ["AI", "Hackathon Winner", "Featured"]
-      },
-      {
-        "name": "Smart Traffic Optimization",
-        "description": "Computer vision system for traffic flow analysis and optimization using TensorFlow and Python",
-        "github": "https://github.com/aarav/traffic-ai",
-        "technologies": ["Python", "TensorFlow", "OpenCV", "Flask"],
-        "tags": ["AI/ML", "Research", "Open Source"]
-      },
-      {
-        "name": "DeFi Analytics Dashboard",
-        "description": "Real-time cryptocurrency and DeFi protocol analytics with interactive charts and portfolio tracking",
-        "github": "https://github.com/aarav/defi-dashboard",
-        "technologies": ["React", "TypeScript", "Web3.js", "Chart.js"],
-        "tags": ["Blockchain", "DeFi", "Analytics"]
+        "name": "Enterprise RAG System",
+        "description": "Built scalable RAG pipeline using LangChain and ChromaDB for Fortune 500 company",
+        "github": "https://github.com/elena/enterprise-rag",
+        "technologies": ["LangChain", "ChromaDB", "FastAPI", "Docker"],
+        "tags": ["RAG", "Enterprise", "Production"]
       }
     ],
-    "achievements": ["Google Summer of Code 2023", "Winner - TechFest Hackathon", "Dean's List 2022-23"],
+    "achievements": ["LangChain Community Contributor", "AI Research Paper Published", "Tech Lead at AI Startup"],
     "certifications": [
       {
-        "title": "Google AI/ML Certification",
-        "issuer": "Google",
+        "title": "LangChain Certified Developer",
+        "issuer": "LangChain",
         "year": 2023,
         "verified": true
-      },
-      {
-        "title": "AWS Cloud Practitioner",
-        "issuer": "Amazon",
-        "year": 2023,
-        "verified": true
-      },
-      {
-        "title": "Advanced React Development",
-        "issuer": "Meta",
-        "year": 2022,
-        "verified": false
       }
     ],
     "isVerified": true,
-    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=aarav",
-    "resumeLink": "/resumes/aarav-sharma.pdf",
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=elena",
+    "resumeLink": "/resumes/elena-rodriguez.pdf",
     "socialLinks": {
-      "github": "https://github.com/aaravsharma",
-      "linkedin": "https://linkedin.com/in/aaravsharma",
-      "portfolio": "https://aaravsharma.dev"
+      "github": "https://github.com/elenarodriguez",
+      "linkedin": "https://linkedin.com/in/elenarodriguez"
     },
-    "tokensEarned": 240,
-    "badges": ["Verified", "Top 10%", "Open Source Contributor", "AI Specialist"],
-    "profileViews": 1247
+    "tokensEarned": 450,
+    "badges": ["Verified", "Senior Expert", "LangChain Specialist", "RAG Expert"],
+    "profileViews": 2156
   },
   {
     "id": 2,
-    "username": "priya-patel",
-    "profileSlug": "priya-patel",
-    "name": "Priya Patel",
-    "university": "BITS Pilani",
-    "year": "4th Year ECE",
-    "skills": ["Python", "TensorFlow", "Data Science", "React", "PyTorch", "Computer Vision"],
-    "location": "Mumbai, India",
-    "tagline": "ML Engineer + Data Scientist | Research Enthusiast",
-    "bio": "Specializing in computer vision and NLP with published research in top ML conferences. Passionate about applying machine learning to solve real-world problems in healthcare and finance.",
-    "experience": "3+ years",
-    "availability": "Open to full-time opportunities",
+    "username": "marcus-johnson",
+    "profileSlug": "marcus-johnson",
+    "name": "Marcus Johnson",
+    "university": "Imperial College London",
+    "year": "Lead AI Engineer",
+    "skills": ["LangChain", "RAG", "LLM", "Python", "Transformers", "FAISS", "Pinecone", "OpenAI"],
+    "location": "London, UK",
+    "tagline": "Lead Gen-AI Engineer | RAG Systems Architect",
+    "bio": "Leading AI engineer specializing in large-scale RAG implementations and LLM fine-tuning. Expert in LangChain ecosystem with 8+ years in AI/ML.",
+    "experience": "8+ years",
+    "availability": "Available for contract",
     "rating": 4.8,
     "projects": [
       {
-        "name": "Smart Traffic System",
-        "description": "Computer vision system for traffic optimization using real-time vehicle detection and flow analysis",
-        "github": "https://github.com/priya/smart-traffic",
-        "technologies": ["Python", "TensorFlow", "OpenCV", "FastAPI"],
-        "tags": ["Computer Vision", "Smart City", "Research"]
-      },
-      {
-        "name": "Medical Image Analysis",
-        "description": "Deep learning model for early detection of diabetic retinopathy from retinal images",
-        "github": "https://github.com/priya/medical-ai",
-        "technologies": ["PyTorch", "Python", "DICOM", "Streamlit"],
-        "tags": ["Healthcare", "Deep Learning", "Published"]
+        "name": "Multi-Modal RAG Platform",
+        "description": "Built advanced RAG system supporting text, images, and code with LangChain",
+        "github": "https://github.com/marcus/multimodal-rag",
+        "technologies": ["LangChain", "FAISS", "GPT-4", "CLIP"],
+        "tags": ["RAG", "Multi-Modal", "Innovation"]
       }
     ],
-    "achievements": ["Published in ICML 2023", "Intel AI Scholarship Recipient", "Best Paper Award - CVPR 2023"],
+    "achievements": ["IEEE AI Conference Speaker", "Open Source RAG Framework Creator", "AI Consulting Expert"],
     "certifications": [
       {
-        "title": "TensorFlow Developer Certificate",
-        "issuer": "TensorFlow",
+        "title": "Advanced LangChain Architecture",
+        "issuer": "LangChain",
         "year": 2023,
-        "verified": true
-      },
-      {
-        "title": "Deep Learning Specialization",
-        "issuer": "Stanford/Coursera",
-        "year": 2022,
         "verified": true
       }
     ],
     "isVerified": true,
-    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=priya",
-    "resumeLink": "/resumes/priya-patel.pdf",
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=marcus",
+    "resumeLink": "/resumes/marcus-johnson.pdf",
     "socialLinks": {
-      "github": "https://github.com/priyapatel",
-      "linkedin": "https://linkedin.com/in/priyapatel"
+      "github": "https://github.com/marcusjohnson",
+      "linkedin": "https://linkedin.com/in/marcusjohnson"
     },
-    "tokensEarned": 340,
-    "badges": ["Verified", "Research Star", "ML Expert", "Top Contributor"],
-    "profileViews": 892
+    "tokensEarned": 680,
+    "badges": ["Verified", "Lead Expert", "Architecture Specialist", "Open Source Maintainer"],
+    "profileViews": 3421
   },
   {
     "id": 3,
-    "username": "arjun-singh",
-    "profileSlug": "arjun-singh",
-    "name": "Arjun Singh",
-    "university": "NIT Trichy",
-    "year": "2nd Year CSE",
-    "skills": ["Blockchain", "Solidity", "Web3", "JavaScript", "React", "Rust"],
-    "location": "Bangalore, India",
-    "tagline": "Web3 Developer + Blockchain Expert | DeFi Builder",
-    "bio": "Building the future of decentralized applications with expertise in smart contract development and DeFi protocols. Security-focused developer with multiple audited contracts.",
-    "experience": "1+ years",
-    "availability": "Available for projects",
-    "rating": 4.7,
+    "username": "sophie-mueller",
+    "profileSlug": "sophie-mueller",
+    "name": "Sophie Mueller",
+    "university": "Technical University of Munich",
+    "year": "Senior AI Researcher",
+    "skills": ["LangChain", "RAG", "Vector Databases", "German NLP", "BERT", "T5", "PyTorch"],
+    "location": "Munich, Germany",
+    "tagline": "Senior Gen-AI Researcher | Multilingual RAG Expert",
+    "bio": "Senior AI researcher with deep expertise in multilingual RAG systems and European language models. Specializes in LangChain for enterprise applications.",
+    "experience": "7+ years",
+    "availability": "Available for contract",
+    "rating": 4.9,
     "projects": [
       {
-        "name": "DeFi Lending Protocol",
-        "description": "Decentralized lending platform with automated liquidation and yield farming capabilities",
-        "github": "https://github.com/arjun/defi-lending",
-        "technologies": ["Solidity", "React", "Web3.js", "Hardhat"],
-        "tags": ["DeFi", "Smart Contracts", "Audited"]
-      },
-      {
-        "name": "NFT Marketplace",
-        "description": "Full-featured NFT marketplace with bidding, royalties, and cross-chain compatibility",
-        "github": "https://github.com/arjun/nft-marketplace",
-        "technologies": ["Solidity", "IPFS", "Next.js", "Ethers.js"],
-        "tags": ["NFT", "Marketplace", "Web3"]
+        "name": "Multilingual RAG Framework",
+        "description": "Developed LangChain-based RAG system supporting 12 European languages",
+        "github": "https://github.com/sophie/multilingual-rag",
+        "technologies": ["LangChain", "mBERT", "Weaviate", "FastAPI"],
+        "tags": ["RAG", "Multilingual", "Research"]
       }
     ],
-    "achievements": ["Ethereum Foundation Grant", "Top 10 - ETHIndia Hackathon", "Polygon BUIDL IT Winner"],
+    "achievements": ["EMNLP Paper Author", "EU AI Grant Recipient", "Polyglot AI Expert"],
     "certifications": [
       {
-        "title": "Certified Blockchain Developer",
-        "issuer": "Blockchain Council",
+        "title": "LangChain Enterprise Specialist",
+        "issuer": "LangChain",
         "year": 2023,
         "verified": true
-      },
-      {
-        "title": "Solidity Security Audit",
-        "issuer": "ConsenSys",
-        "year": 2023,
-        "verified": false
       }
     ],
     "isVerified": true,
-    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=arjun",
-    "resumeLink": "/resumes/arjun-singh.pdf",
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=sophie",
+    "resumeLink": "/resumes/sophie-mueller.pdf",
     "socialLinks": {
-      "github": "https://github.com/arjunsingh",
-      "linkedin": "https://linkedin.com/in/arjunsingh"
+      "github": "https://github.com/sophiemueller",
+      "linkedin": "https://linkedin.com/in/sophiemueller"
     },
-    "tokensEarned": 180,
-    "badges": ["Verified", "Web3 Pioneer", "Smart Contract Expert"],
-    "profileViews": 634
+    "tokensEarned": 520,
+    "badges": ["Verified", "Research Expert", "Multilingual Specialist", "EU AI Leader"],
+    "profileViews": 1987
+  },
+  {
+    "id": 4,
+    "username": "alessandro-rossi",
+    "profileSlug": "alessandro-rossi",
+    "name": "Alessandro Rossi",
+    "university": "Politecnico di Milano",
+    "year": "Senior ML Engineer",
+    "skills": ["LangChain", "RAG", "MLOps", "Docker", "Kubernetes", "Python", "Vector Search"],
+    "location": "Milan, Italy",
+    "tagline": "Senior Gen-AI Engineer | Production RAG Systems",
+    "bio": "Senior ML engineer focusing on production-ready generative AI systems. Expert in scaling LangChain applications and RAG infrastructure for enterprise clients.",
+    "experience": "6+ years",
+    "availability": "Available for contract",
+    "rating": 4.7,
+    "projects": [
+      {
+        "name": "Scalable RAG Infrastructure",
+        "description": "Built enterprise RAG platform serving 1M+ queries/day with LangChain",
+        "github": "https://github.com/alessandro/scalable-rag",
+        "technologies": ["LangChain", "Redis", "PostgreSQL", "Docker"],
+        "tags": ["RAG", "Scale", "Production"]
+      }
+    ],
+    "achievements": ["MLOps Conference Speaker", "Kubernetes AI Operator", "Production AI Expert"],
+    "certifications": [
+      {
+        "title": "LangChain Production Deployment",
+        "issuer": "LangChain",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=alessandro",
+    "resumeLink": "/resumes/alessandro-rossi.pdf",
+    "socialLinks": {
+      "github": "https://github.com/alessandrorossi",
+      "linkedin": "https://linkedin.com/in/alessandrorossi"
+    },
+    "tokensEarned": 390,
+    "badges": ["Verified", "Production Expert", "MLOps Specialist", "Scale Master"],
+    "profileViews": 1543
+  },
+  {
+    "id": 5,
+    "username": "pierre-dubois",
+    "profileSlug": "pierre-dubois",
+    "name": "Pierre Dubois",
+    "university": "École Polytechnique",
+    "year": "Senior AI Engineer",
+    "skills": ["LangChain", "RAG", "French NLP", "Transformers", "Haystack", "Elasticsearch"],
+    "location": "Paris, France",
+    "tagline": "Senior Gen-AI Engineer | French AI Specialist",
+    "bio": "Senior AI engineer with expertise in French language models and RAG systems. 5+ years building production AI applications for European markets.",
+    "experience": "5+ years",
+    "availability": "Available for contract",
+    "rating": 4.8,
+    "projects": [
+      {
+        "name": "French Legal RAG System",
+        "description": "Built specialized RAG system for French legal documents using LangChain",
+        "github": "https://github.com/pierre/french-legal-rag",
+        "technologies": ["LangChain", "CamemBERT", "Elasticsearch", "Django"],
+        "tags": ["RAG", "Legal Tech", "French NLP"]
+      }
+    ],
+    "achievements": ["French AI Conference Organizer", "Legal Tech Innovation Award", "NLP Research Publication"],
+    "certifications": [
+      {
+        "title": "LangChain French Specialist",
+        "issuer": "LangChain",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=pierre",
+    "resumeLink": "/resumes/pierre-dubois.pdf",
+    "socialLinks": {
+      "github": "https://github.com/pierredubois",
+      "linkedin": "https://linkedin.com/in/pierredubois"
+    },
+    "tokensEarned": 420,
+    "badges": ["Verified", "French AI Expert", "Legal Tech Leader", "NLP Specialist"],
+    "profileViews": 1678
   }
 ]

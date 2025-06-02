@@ -1,0 +1,178 @@
+
+[
+  {
+    "id": 6,
+    "username": "anna-kowalski",
+    "profileSlug": "anna-kowalski",
+    "name": "Anna Kowalski",
+    "university": "University of Warsaw",
+    "year": "Senior AI Developer",
+    "skills": ["LangChain", "RAG", "Polish NLP", "Streamlit", "FastAPI", "PostgreSQL"],
+    "location": "Warsaw, Poland",
+    "tagline": "Senior Gen-AI Developer | Eastern European AI Expert",
+    "bio": "Senior AI developer specializing in Central and Eastern European language processing. Expert in building multilingual RAG systems with LangChain.",
+    "experience": "5+ years",
+    "availability": "Available for contract",
+    "rating": 4.7,
+    "projects": [],
+    "achievements": ["Polish AI Society Member", "Multilingual NLP Expert", "Open Source Contributor"],
+    "certifications": [
+      {
+        "title": "LangChain Multilingual Systems",
+        "issuer": "LangChain",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=anna",
+    "resumeLink": "/resumes/anna-kowalski.pdf",
+    "socialLinks": {
+      "github": "https://github.com/annakowalski",
+      "linkedin": "https://linkedin.com/in/annakowalski"
+    },
+    "tokensEarned": 380,
+    "badges": ["Verified", "CEE Expert", "Multilingual Specialist", "Community Leader"],
+    "profileViews": 1234
+  },
+  {
+    "id": 7,
+    "username": "lars-andersen",
+    "profileSlug": "lars-andersen",
+    "name": "Lars Andersen",
+    "university": "Technical University of Denmark",
+    "year": "Senior AI Architect",
+    "skills": ["LangChain", "RAG", "Nordic Languages", "Azure", "Kubernetes", "Python"],
+    "location": "Copenhagen, Denmark",
+    "tagline": "Senior Gen-AI Architect | Nordic AI Solutions",
+    "bio": "Senior AI architect with expertise in Nordic language processing and cloud-scale RAG systems. 7+ years experience in enterprise AI solutions.",
+    "experience": "7+ years",
+    "availability": "Available for contract",
+    "rating": 4.9,
+    "projects": [],
+    "achievements": ["Nordic AI Conference Speaker", "Enterprise AI Consultant", "Cloud Architecture Expert"],
+    "certifications": [
+      {
+        "title": "LangChain Enterprise Architecture",
+        "issuer": "LangChain",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=lars",
+    "resumeLink": "/resumes/lars-andersen.pdf",
+    "socialLinks": {
+      "github": "https://github.com/larsandersen",
+      "linkedin": "https://linkedin.com/in/larsandersen"
+    },
+    "tokensEarned": 580,
+    "badges": ["Verified", "Enterprise Architect", "Nordic Expert", "Cloud Specialist"],
+    "profileViews": 2543
+  },
+  {
+    "id": 8,
+    "username": "maria-garcia",
+    "profileSlug": "maria-garcia",
+    "name": "Maria Garcia",
+    "university": "Universidad Politécnica de Madrid",
+    "year": "Senior AI Research Engineer",
+    "skills": ["LangChain", "RAG", "Spanish NLP", "BERT", "Elasticsearch", "Docker"],
+    "location": "Barcelona, Spain",
+    "tagline": "Senior Gen-AI Research Engineer | Spanish AI Expert",
+    "bio": "Senior research engineer specializing in Spanish language AI and advanced RAG systems. Published researcher with 6+ years in production AI.",
+    "experience": "6+ years",
+    "availability": "Available for contract",
+    "rating": 4.8,
+    "projects": [],
+    "achievements": ["ACL Conference Paper", "Spanish AI Innovation Award", "Medical AI Research Grant"],
+    "certifications": [
+      {
+        "title": "LangChain Medical Applications",
+        "issuer": "LangChain",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=maria",
+    "resumeLink": "/resumes/maria-garcia.pdf",
+    "socialLinks": {
+      "github": "https://github.com/mariagarcia",
+      "linkedin": "https://linkedin.com/in/mariagarcia"
+    },
+    "tokensEarned": 460,
+    "badges": ["Verified", "Medical AI Expert", "Research Leader", "Spanish NLP Specialist"],
+    "profileViews": 1876
+  },
+  {
+    "id": 9,
+    "username": "erik-nielsen",
+    "profileSlug": "erik-nielsen",
+    "name": "Erik Nielsen",
+    "university": "Norwegian University of Science and Technology",
+    "year": "Senior AI Engineer",
+    "skills": ["LangChain", "RAG", "Norwegian NLP", "Streamlit", "PostgreSQL", "Redis"],
+    "location": "Oslo, Norway",
+    "tagline": "Senior Gen-AI Engineer | Norwegian AI Specialist",
+    "bio": "Senior AI engineer with deep expertise in Norwegian language processing and Arctic region AI applications. 5+ years in production RAG systems.",
+    "experience": "5+ years",
+    "availability": "Available for contract",
+    "rating": 4.7,
+    "projects": [],
+    "achievements": ["Norwegian AI Society Leader", "Arctic AI Research Grant", "Sustainable AI Advocate"],
+    "certifications": [
+      {
+        "title": "LangChain Nordic Systems",
+        "issuer": "LangChain",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=erik",
+    "resumeLink": "/resumes/erik-nielsen.pdf",
+    "socialLinks": {
+      "github": "https://github.com/eriknielsen",
+      "linkedin": "https://linkedin.com/in/eriknielsen"
+    },
+    "tokensEarned": 320,
+    "badges": ["Verified", "Nordic Expert", "Sustainability Leader", "Community Builder"],
+    "profileViews": 1123
+  },
+  {
+    "id": 10,
+    "username": "dmitri-volkov",
+    "profileSlug": "dmitri-volkov",
+    "name": "Dmitri Volkov",
+    "university": "Moscow Institute of Physics and Technology",
+    "year": "Lead AI Engineer",
+    "skills": ["LangChain", "RAG", "Russian NLP", "Transformers", "FAISS", "Kubernetes"],
+    "location": "Tallinn, Estonia",
+    "tagline": "Lead Gen-AI Engineer | Eastern European AI Expert",
+    "bio": "Lead AI engineer specializing in Slavic language processing and large-scale RAG deployments. Expert in distributed AI systems and multilingual models.",
+    "experience": "8+ years",
+    "availability": "Available for contract",
+    "rating": 4.9,
+    "projects": [],
+    "achievements": ["ICLR Workshop Organizer", "Multi-lingual AI Expert", "Distributed Systems Architect"],
+    "certifications": [
+      {
+        "title": "LangChain Distributed Systems",
+        "issuer": "LangChain",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=dmitri",
+    "resumeLink": "/resumes/dmitri-volkov.pdf",
+    "socialLinks": {
+      "github": "https://github.com/dmitrivolkov",
+      "linkedin": "https://linkedin.com/in/dmitrivolkov"
+    },
+    "tokensEarned": 720,
+    "badges": ["Verified", "Lead Expert", "Slavic Languages", "Architecture Master"],
+    "profileViews": 3456
+  }
+]

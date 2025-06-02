@@ -1,5 +1,5 @@
-
 import candidatesData from '@/data/candidates.json';
+import moreCandidatesData from '@/data/more-candidates.json';
 
 export interface Candidate {
   id: number;
@@ -42,20 +42,23 @@ export interface Candidate {
   profileSlug: string;
 }
 
+// Merge all candidate data
+const allCandidates = [...candidatesData, ...moreCandidatesData];
+
 export const candidateService = {
   // Get all candidates
   getAllCandidates: (): Candidate[] => {
-    return candidatesData as Candidate[];
+    return allCandidates as Candidate[];
   },
 
   // Get candidate by ID
   getCandidateById: (id: number): Candidate | undefined => {
-    return candidatesData.find(candidate => candidate.id === id) as Candidate | undefined;
+    return allCandidates.find(candidate => candidate.id === id) as Candidate | undefined;
   },
 
   // Get candidate by username/slug
   getCandidateByUsername: (username: string): Candidate | undefined => {
-    return candidatesData.find(candidate => 
+    return allCandidates.find(candidate => 
       candidate.profileSlug === username || 
       candidate.username === username
     ) as Candidate | undefined;
@@ -63,10 +66,10 @@ export const candidateService = {
 
   // Search candidates by query
   searchCandidates: (query: string): Candidate[] => {
-    if (!query) return candidatesData as Candidate[];
+    if (!query) return allCandidates as Candidate[];
     
     const lowercaseQuery = query.toLowerCase();
-    return candidatesData.filter(candidate => 
+    return allCandidates.filter(candidate => 
       candidate.name.toLowerCase().includes(lowercaseQuery) ||
       candidate.skills.some(skill => skill.toLowerCase().includes(lowercaseQuery)) ||
       candidate.university.toLowerCase().includes(lowercaseQuery) ||
@@ -77,9 +80,9 @@ export const candidateService = {
 
   // Filter candidates by skills
   filterBySkills: (skills: string[]): Candidate[] => {
-    if (skills.length === 0) return candidatesData as Candidate[];
+    if (skills.length === 0) return allCandidates as Candidate[];
     
-    return candidatesData.filter(candidate =>
+    return allCandidates.filter(candidate =>
       skills.some(skill => 
         candidate.skills.some(candidateSkill =>
           candidateSkill.toLowerCase().includes(skill.toLowerCase())
@@ -90,9 +93,9 @@ export const candidateService = {
 
   // Filter candidates by location
   filterByLocation: (location: string): Candidate[] => {
-    if (!location) return candidatesData as Candidate[];
+    if (!location) return allCandidates as Candidate[];
     
-    return candidatesData.filter(candidate =>
+    return allCandidates.filter(candidate =>
       candidate.location.toLowerCase().includes(location.toLowerCase())
     ) as Candidate[];
   }
