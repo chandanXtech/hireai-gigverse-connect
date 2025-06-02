@@ -1,3 +1,4 @@
+
 export interface CareerGoal {
   id: string;
   title: string;
@@ -247,7 +248,13 @@ export const learningService = {
           skillsAcquired: [],
           totalProgress: 0,
           lastActivity: new Date().toISOString(),
-          badges: []
+          badges: [],
+          videoProgress: {},
+          bookmarkedVideos: [],
+          quizScores: {},
+          watchTime: 0,
+          streak: 0,
+          lastStreakDate: undefined
         };
 
         if (existingIndex >= 0) {
