@@ -1,0 +1,178 @@
+
+[
+  {
+    "id": 51,
+    "username": "arjun-krishna",
+    "profileSlug": "arjun-krishna",
+    "name": "Arjun Krishna",
+    "university": "Indian Institute of Science",
+    "year": "Senior Software Engineer",
+    "skills": ["Python", "Django", "React", "PostgreSQL", "Docker", "AWS", "Machine Learning"],
+    "location": "Bangalore, India",
+    "tagline": "Senior Software Engineer | Full Stack Developer",
+    "bio": "Experienced software engineer with 6+ years in full-stack development. Expert in Python, React, and cloud technologies.",
+    "experience": "6+ years",
+    "availability": "Available for full-time",
+    "rating": 4.7,
+    "projects": [],
+    "achievements": ["Tech Lead at Startup", "Open Source Contributor", "AWS Certified"],
+    "certifications": [
+      {
+        "title": "AWS Solutions Architect",
+        "issuer": "Amazon",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=arjun",
+    "resumeLink": "/resumes/arjun-krishna.pdf",
+    "socialLinks": {
+      "github": "https://github.com/arjunkrishna",
+      "linkedin": "https://linkedin.com/in/arjunkrishna"
+    },
+    "tokensEarned": 340,
+    "badges": ["Verified", "Full Stack Expert", "Cloud Specialist"],
+    "profileViews": 1456
+  },
+  {
+    "id": 52,
+    "username": "priya-sharma",
+    "profileSlug": "priya-sharma",
+    "name": "Priya Sharma",
+    "university": "Indian Institute of Technology Bangalore",
+    "year": "Software Developer",
+    "skills": ["Java", "Spring Boot", "React", "MongoDB", "Microservices", "Jenkins"],
+    "location": "Bangalore, India",
+    "tagline": "Software Developer | Backend Specialist",
+    "bio": "Software developer specializing in Java backend development and microservices architecture. 4+ years experience in enterprise applications.",
+    "experience": "4+ years",
+    "availability": "Available for contract",
+    "rating": 4.6,
+    "projects": [],
+    "achievements": ["Microservices Expert", "Agile Practitioner", "Team Lead"],
+    "certifications": [
+      {
+        "title": "Oracle Java Certified Professional",
+        "issuer": "Oracle",
+        "year": 2022,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=priya",
+    "resumeLink": "/resumes/priya-sharma.pdf",
+    "socialLinks": {
+      "github": "https://github.com/priyasharma",
+      "linkedin": "https://linkedin.com/in/priyasharma"
+    },
+    "tokensEarned": 280,
+    "badges": ["Verified", "Java Expert", "Backend Specialist"],
+    "profileViews": 1123
+  },
+  {
+    "id": 53,
+    "username": "rajesh-kumar",
+    "profileSlug": "rajesh-kumar",
+    "name": "Rajesh Kumar",
+    "university": "National Institute of Technology Karnataka",
+    "year": "Senior Software Engineer",
+    "skills": ["JavaScript", "Node.js", "React", "Express", "MySQL", "Redis", "Docker"],
+    "location": "Bangalore, India",
+    "tagline": "Senior Software Engineer | JavaScript Specialist",
+    "bio": "Senior software engineer with deep expertise in JavaScript ecosystem. 7+ years building scalable web applications.",
+    "experience": "7+ years",
+    "availability": "Available for contract",
+    "rating": 4.8,
+    "projects": [],
+    "achievements": ["JavaScript Expert", "Performance Optimization Specialist", "Technical Mentor"],
+    "certifications": [
+      {
+        "title": "Node.js Certified Developer",
+        "issuer": "Node.js Foundation",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=rajesh",
+    "resumeLink": "/resumes/rajesh-kumar.pdf",
+    "socialLinks": {
+      "github": "https://github.com/rajeshkumar",
+      "linkedin": "https://linkedin.com/in/rajeshkumar"
+    },
+    "tokensEarned": 410,
+    "badges": ["Verified", "Senior Expert", "JavaScript Master"],
+    "profileViews": 1887
+  },
+  {
+    "id": 54,
+    "username": "sneha-reddy",
+    "profileSlug": "sneha-reddy",
+    "name": "Sneha Reddy",
+    "university": "International Institute of Information Technology",
+    "year": "Software Engineer",
+    "skills": ["Python", "Flask", "React", "PostgreSQL", "Docker", "Kubernetes", "DevOps"],
+    "location": "Bangalore, India",
+    "tagline": "Software Engineer | DevOps Enthusiast",
+    "bio": "Software engineer with expertise in Python development and DevOps practices. 5+ years experience in cloud-native applications.",
+    "experience": "5+ years",
+    "availability": "Available for full-time",
+    "rating": 4.5,
+    "projects": [],
+    "achievements": ["DevOps Specialist", "Cloud Native Expert", "Kubernetes Contributor"],
+    "certifications": [
+      {
+        "title": "Certified Kubernetes Administrator",
+        "issuer": "CNCF",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=sneha",
+    "resumeLink": "/resumes/sneha-reddy.pdf",
+    "socialLinks": {
+      "github": "https://github.com/snehareddy",
+      "linkedin": "https://linkedin.com/in/snehareddy"
+    },
+    "tokensEarned": 320,
+    "badges": ["Verified", "DevOps Expert", "Cloud Specialist"],
+    "profileViews": 1234
+  },
+  {
+    "id": 55,
+    "username": "vikram-singh",
+    "profileSlug": "vikram-singh",
+    "name": "Vikram Singh",
+    "university": "Bangalore Institute of Technology",
+    "year": "Lead Software Engineer",
+    "skills": ["C++", "Python", "React", "MongoDB", "System Design", "Algorithms", "Data Structures"],
+    "location": "Bangalore, India",
+    "tagline": "Lead Software Engineer | System Design Expert",
+    "bio": "Lead software engineer with strong background in system design and algorithms. 8+ years building high-performance applications.",
+    "experience": "8+ years",
+    "availability": "Available for contract",
+    "rating": 4.9,
+    "projects": [],
+    "achievements": ["System Design Expert", "Algorithm Specialist", "Technical Lead"],
+    "certifications": [
+      {
+        "title": "Google Cloud Professional Developer",
+        "issuer": "Google",
+        "year": 2023,
+        "verified": true
+      }
+    ],
+    "isVerified": true,
+    "profileImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=vikram",
+    "resumeLink": "/resumes/vikram-singh.pdf",
+    "socialLinks": {
+      "github": "https://github.com/vikramsingh",
+      "linkedin": "https://linkedin.com/in/vikramsingh"
+    },
+    "tokensEarned": 520,
+    "badges": ["Verified", "Lead Expert", "System Design Master"],
+    "profileViews": 2341
+  }
+]

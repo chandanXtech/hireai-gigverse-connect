@@ -6,6 +6,7 @@ export interface SearchQuery {
   experience?: string;
   skills?: string[];
   availability?: string;
+  role?: string;
 }
 
 export interface ScoredCandidate extends Candidate {
@@ -16,6 +17,7 @@ export interface ScoredCandidate extends Candidate {
     experienceMatch: number;
     locationMatch: number;
     availabilityMatch: number;
+    roleMatch: number;
   };
 }
 
@@ -55,23 +57,50 @@ class AISearchService {
       normalizedQuery.includes(skill.replace(/[.\-\s]/g, ''))
     );
 
-    // Enhanced location extraction for European focus
+    // Enhanced location extraction with better city/country matching
     const locationKeywords = [
-      'europe', 'european', 'eu', 'us', 'usa', 'canada', 'uk', 'united kingdom',
-      'germany', 'france', 'spain', 'italy', 'netherlands', 'poland', 'sweden',
-      'norway', 'denmark', 'finland', 'austria', 'switzerland', 'belgium',
-      'portugal', 'greece', 'czech republic', 'hungary', 'romania', 'bulgaria',
-      'croatia', 'slovenia', 'slovakia', 'estonia', 'latvia', 'lithuania',
-      'remote', 'san francisco', 'new york', 'london', 'berlin', 'paris',
-      'madrid', 'barcelona', 'milan', 'amsterdam', 'stockholm', 'oslo',
-      'copenhagen', 'helsinki', 'vienna', 'zurich', 'brussels', 'lisbon',
-      'prague', 'budapest', 'warsaw', 'dublin'
+      // Indian cities
+      'bangalore', 'mumbai', 'delhi', 'chennai', 'hyderabad', 'pune', 'kolkata', 'ahmedabad',
+      'jaipur', 'indore', 'bhopal', 'gurgaon', 'noida', 'kochi', 'trivandrum', 'coimbatore',
+      'india', 'indian',
+      // European cities and countries
+      'europe', 'european', 'eu', 'uk', 'united kingdom', 'germany', 'france', 'spain', 
+      'italy', 'netherlands', 'poland', 'sweden', 'norway', 'denmark', 'finland', 
+      'austria', 'switzerland', 'belgium', 'portugal', 'greece', 'czech republic', 
+      'hungary', 'romania', 'bulgaria', 'croatia', 'slovenia', 'slovakia', 
+      'estonia', 'latvia', 'lithuania', 'london', 'berlin', 'paris', 'madrid', 
+      'barcelona', 'milan', 'amsterdam', 'stockholm', 'oslo', 'copenhagen', 
+      'helsinki', 'vienna', 'zurich', 'brussels', 'lisbon', 'prague', 'budapest', 
+      'warsaw', 'dublin',
+      // US cities
+      'us', 'usa', 'america', 'american', 'san francisco', 'new york', 'seattle', 
+      'austin', 'boston', 'chicago', 'los angeles', 'silicon valley',
+      // Others
+      'remote', 'canada', 'toronto', 'vancouver', 'australia', 'sydney', 'melbourne'
     ];
     
     let location = '';
     for (const loc of locationKeywords) {
       if (normalizedQuery.includes(loc)) {
         location = loc;
+        break;
+      }
+    }
+
+    // Enhanced role extraction
+    const roleKeywords = [
+      'software engineer', 'software developer', 'full stack developer', 'frontend developer',
+      'backend developer', 'ai engineer', 'machine learning engineer', 'data scientist',
+      'devops engineer', 'mobile developer', 'react developer', 'python developer',
+      'java developer', 'nodejs developer', 'gen-ai engineer', 'ml engineer',
+      'lead engineer', 'senior engineer', 'principal engineer', 'staff engineer',
+      'architect', 'tech lead', 'engineering manager'
+    ];
+
+    let role = '';
+    for (const r of roleKeywords) {
+      if (normalizedQuery.includes(r)) {
+        role = r;
         break;
       }
     }
@@ -103,7 +132,8 @@ class AISearchService {
       location,
       experience,
       skills: extractedSkills,
-      availability
+      availability,
+      role
     };
   }
 
@@ -113,12 +143,13 @@ class AISearchService {
       skillMatch: 0,
       experienceMatch: 0,
       locationMatch: 0,
-      availabilityMatch: 0
+      availabilityMatch: 0,
+      roleMatch: 0
     };
 
     const matchReasons: string[] = [];
 
-    // Enhanced skill matching with exact technology requirements
+    // Enhanced skill matching
     if (searchQuery.skills && searchQuery.skills.length > 0) {
       const candidateSkillsLower = candidate.skills.map(s => s.toLowerCase());
       const matchedSkills = searchQuery.skills.filter(searchSkill => {
@@ -130,24 +161,118 @@ class AISearchService {
       
       analysis.skillMatch = (matchedSkills.length / searchQuery.skills.length) * 100;
       
-      // Bonus for exact LangChain + RAG combination
-      if (searchQuery.query.includes('langchain') && searchQuery.query.includes('rag')) {
-        const hasLangChain = candidateSkillsLower.some(skill => skill.includes('langchain'));
-        const hasRAG = candidateSkillsLower.some(skill => skill.includes('rag'));
-        if (hasLangChain && hasRAG) {
-          analysis.skillMatch = Math.min(100, analysis.skillMatch + 25);
-          matchReasons.push('LangChain + RAG specialist');
-        }
-      }
-      
       if (matchedSkills.length > 0) {
         matchReasons.push(`Expert in ${matchedSkills.slice(0, 3).join(', ')}`);
       }
     } else {
-      analysis.skillMatch = 50;
+      analysis.skillMatch = 70; // Default when no specific skills mentioned
     }
 
-    // Enhanced experience matching with stricter senior requirements
+    // Enhanced role matching
+    if (searchQuery.role) {
+      const candidateTagline = candidate.tagline.toLowerCase();
+      const candidateYear = candidate.year.toLowerCase();
+      const searchRole = searchQuery.role.toLowerCase();
+      
+      if (searchRole.includes('software engineer') || searchRole.includes('software developer')) {
+        if (candidateTagline.includes('engineer') || candidateTagline.includes('developer') || 
+            candidateYear.includes('engineer') || candidateYear.includes('developer')) {
+          analysis.roleMatch = 100;
+          matchReasons.push('Software engineering role match');
+        } else {
+          analysis.roleMatch = 20;
+        }
+      } else if (searchRole.includes('ai engineer') || searchRole.includes('gen-ai')) {
+        if (candidateTagline.includes('ai') || candidateTagline.includes('gen-ai') ||
+            candidateYear.includes('ai')) {
+          analysis.roleMatch = 100;
+          matchReasons.push('AI engineering specialization');
+        } else {
+          analysis.roleMatch = 30;
+        }
+      } else {
+        // General role matching
+        if (candidateTagline.includes(searchRole) || candidateYear.includes(searchRole)) {
+          analysis.roleMatch = 100;
+          matchReasons.push(`${searchQuery.role} role match`);
+        } else {
+          analysis.roleMatch = 40;
+        }
+      }
+    } else {
+      analysis.roleMatch = 70;
+    }
+
+    // Strict location matching
+    if (searchQuery.location) {
+      const candidateLocation = candidate.location.toLowerCase();
+      const searchLocation = searchQuery.location.toLowerCase();
+      
+      console.log(`Checking location: "${searchLocation}" against candidate location: "${candidateLocation}"`);
+      
+      // Exact city match
+      if (candidateLocation.includes(searchLocation)) {
+        analysis.locationMatch = 100;
+        matchReasons.push(`Located in ${searchQuery.location}`);
+      }
+      // Regional matches
+      else if (searchLocation === 'europe' || searchLocation === 'european' || searchLocation === 'eu') {
+        const europeanIndicators = [
+          'spain', 'germany', 'france', 'italy', 'uk', 'united kingdom', 'netherlands',
+          'poland', 'sweden', 'norway', 'denmark', 'finland', 'austria', 'switzerland',
+          'belgium', 'portugal', 'greece', 'czech', 'hungary', 'romania', 'bulgaria',
+          'croatia', 'slovenia', 'slovakia', 'estonia', 'latvia', 'lithuania',
+          'london', 'berlin', 'paris', 'madrid', 'barcelona', 'milan', 'amsterdam',
+          'stockholm', 'oslo', 'copenhagen', 'helsinki', 'vienna', 'zurich',
+          'brussels', 'lisbon', 'prague', 'budapest', 'warsaw', 'dublin'
+        ];
+        
+        const isInEurope = europeanIndicators.some(indicator => candidateLocation.includes(indicator));
+        
+        if (isInEurope) {
+          analysis.locationMatch = 100;
+          matchReasons.push('Located in Europe');
+        } else {
+          analysis.locationMatch = 0; // Strict: not in Europe
+        }
+      }
+      // India specific matching
+      else if (searchLocation === 'india' || searchLocation === 'indian') {
+        const indianCities = [
+          'bangalore', 'mumbai', 'delhi', 'chennai', 'hyderabad', 'pune', 'kolkata',
+          'ahmedabad', 'jaipur', 'indore', 'bhopal', 'gurgaon', 'noida', 'kochi',
+          'trivandrum', 'coimbatore'
+        ];
+        
+        const isInIndia = indianCities.some(city => candidateLocation.includes(city)) ||
+                         candidateLocation.includes('india');
+        
+        if (isInIndia) {
+          analysis.locationMatch = 100;
+          matchReasons.push('Located in India');
+        } else {
+          analysis.locationMatch = 0;
+        }
+      }
+      // Remote work
+      else if (searchLocation === 'remote') {
+        if (candidate.availability.toLowerCase().includes('remote') || 
+            candidateLocation.includes('remote')) {
+          analysis.locationMatch = 90;
+          matchReasons.push('Remote work available');
+        } else {
+          analysis.locationMatch = 20;
+        }
+      }
+      // No match
+      else {
+        analysis.locationMatch = 0; // Strict: no location match
+      }
+    } else {
+      analysis.locationMatch = 70; // Default when no location specified
+    }
+
+    // Enhanced experience matching
     if (searchQuery.experience) {
       const candidateExp = candidate.experience.toLowerCase();
       const candidateTagline = candidate.tagline.toLowerCase();
@@ -160,7 +285,7 @@ class AISearchService {
           analysis.experienceMatch = 100;
           matchReasons.push('Senior-level expertise confirmed');
         } else {
-          analysis.experienceMatch = 20; // Stricter for senior roles
+          analysis.experienceMatch = 20;
         }
       } else if (searchQuery.experience === 'junior') {
         if (candidateExp.includes('junior') || candidateExp.includes('entry') || 
@@ -179,47 +304,7 @@ class AISearchService {
         }
       }
     } else {
-      analysis.experienceMatch = 50;
-    }
-
-    // Enhanced location matching with European focus
-    if (searchQuery.location) {
-      const candidateLocation = candidate.location.toLowerCase();
-      
-      if (searchQuery.location === 'europe' || searchQuery.location === 'european' || searchQuery.location === 'eu') {
-        const europeanCountries = [
-          'spain', 'germany', 'france', 'italy', 'uk', 'united kingdom', 'netherlands',
-          'poland', 'sweden', 'norway', 'denmark', 'finland', 'austria', 'switzerland',
-          'belgium', 'portugal', 'greece', 'czech', 'hungary', 'romania', 'bulgaria',
-          'croatia', 'slovenia', 'slovakia', 'estonia', 'latvia', 'lithuania'
-        ];
-        
-        const europeanCities = [
-          'london', 'berlin', 'paris', 'madrid', 'barcelona', 'milan', 'amsterdam',
-          'stockholm', 'oslo', 'copenhagen', 'helsinki', 'vienna', 'zurich',
-          'brussels', 'lisbon', 'prague', 'budapest', 'warsaw', 'dublin'
-        ];
-        
-        const isInEurope = europeanCountries.some(country => candidateLocation.includes(country)) ||
-                          europeanCities.some(city => candidateLocation.includes(city));
-        
-        if (isInEurope) {
-          analysis.locationMatch = 100;
-          matchReasons.push('Located in Europe');
-        } else {
-          analysis.locationMatch = 10; // Very low score for non-European candidates
-        }
-      } else if (candidateLocation.includes(searchQuery.location.toLowerCase())) {
-        analysis.locationMatch = 100;
-        matchReasons.push(`Located in ${searchQuery.location}`);
-      } else if (searchQuery.location === 'remote' && candidate.availability.toLowerCase().includes('remote')) {
-        analysis.locationMatch = 90;
-        matchReasons.push('Remote work available');
-      } else {
-        analysis.locationMatch = 20;
-      }
-    } else {
-      analysis.locationMatch = 50;
+      analysis.experienceMatch = 70;
     }
 
     // Enhanced availability matching
@@ -232,7 +317,7 @@ class AISearchService {
           analysis.availabilityMatch = 100;
           matchReasons.push('Available for contract work');
         } else if (candidateAvailability.includes('available')) {
-          analysis.availabilityMatch = 70; // Might be open to contract
+          analysis.availabilityMatch = 50;
         } else {
           analysis.availabilityMatch = 20;
         }
@@ -246,29 +331,24 @@ class AISearchService {
         }
       }
     } else {
-      analysis.availabilityMatch = 50;
+      analysis.availabilityMatch = 70;
     }
 
     // Calculate overall relevance score with weighted importance
     const relevanceScore = Math.round(
-      (analysis.skillMatch * 0.45 +      // Increased weight for skills
-       analysis.experienceMatch * 0.25 + // Experience is crucial for senior roles
-       analysis.locationMatch * 0.20 +   // Location matching for Europe requirement
-       analysis.availabilityMatch * 0.10) // Availability for contract work
+      (analysis.skillMatch * 0.25 +
+       analysis.experienceMatch * 0.20 +
+       analysis.locationMatch * 0.30 +  // Higher weight for location matching
+       analysis.availabilityMatch * 0.10 +
+       analysis.roleMatch * 0.15)
     );
 
     // Add quality indicators
     if (candidate.rating >= 4.8) {
       matchReasons.push('Highly rated professional (4.8+ stars)');
     }
-    if (candidate.projects && candidate.projects.length >= 2) {
-      matchReasons.push('Strong project portfolio');
-    }
     if (candidate.isVerified) {
       matchReasons.push('Verified profile');
-    }
-    if (candidate.achievements && candidate.achievements.length >= 2) {
-      matchReasons.push('Notable achievements');
     }
 
     return {
@@ -279,7 +359,7 @@ class AISearchService {
     };
   }
 
-  // Enhanced main AI search function
+  // Enhanced main AI search function with stricter filtering
   async searchTalent(naturalLanguageQuery: string): Promise<AISearchResponse> {
     const startTime = Date.now();
     
@@ -293,31 +373,53 @@ class AISearchService {
     const allCandidates = candidateService.getAllCandidates();
     console.log(`📋 Total candidates in database: ${allCandidates.length}`);
     
-    // Score and rank candidates with minimum threshold
+    // Score and rank candidates with stricter filtering
     const scoredCandidates = allCandidates
       .map(candidate => this.scoreCandidate(candidate, parsedQuery))
       .filter(candidate => {
-        // For specific queries like "senior + LangChain + RAG + Europe + contract", 
-        // apply stricter filtering
-        if (naturalLanguageQuery.toLowerCase().includes('senior') && 
-            naturalLanguageQuery.toLowerCase().includes('langchain') && 
-            naturalLanguageQuery.toLowerCase().includes('rag') && 
-            naturalLanguageQuery.toLowerCase().includes('europe') &&
-            naturalLanguageQuery.toLowerCase().includes('contract')) {
-          return candidate.relevanceScore >= 70; // Higher threshold for specific queries
+        // Apply minimum thresholds based on query specificity
+        let minScore = 50; // Default threshold
+        
+        // If location is specified, require higher location match
+        if (parsedQuery.location) {
+          if (candidate.aiAnalysis.locationMatch < 90) {
+            return false; // Strict location filtering
+          }
+          minScore = 60;
         }
-        return candidate.relevanceScore >= 30; // General threshold
+        
+        // If role is specified, require reasonable role match
+        if (parsedQuery.role) {
+          if (candidate.aiAnalysis.roleMatch < 60) {
+            return false;
+          }
+        }
+        
+        // For very specific queries, require higher overall score
+        if (parsedQuery.location && parsedQuery.role && parsedQuery.skills.length > 0) {
+          minScore = 70;
+        }
+        
+        return candidate.relevanceScore >= minScore;
       })
-      .sort((a, b) => b.relevanceScore - a.relevanceScore);
+      .sort((a, b) => {
+        // Primary sort by relevance score
+        if (b.relevanceScore !== a.relevanceScore) {
+          return b.relevanceScore - a.relevanceScore;
+        }
+        // Secondary sort by rating
+        return b.rating - a.rating;
+      });
 
     const searchTime = Date.now() - startTime;
 
     console.log(`✅ Found ${scoredCandidates.length} matching candidates`);
-    console.log('🏆 Top matches:', scoredCandidates.slice(0, 3).map(c => ({
+    console.log('🏆 Top matches:', scoredCandidates.slice(0, 5).map(c => ({
       name: c.name,
       score: c.relevanceScore,
       location: c.location,
-      skills: c.skills.filter(s => s.toLowerCase().includes('langchain') || s.toLowerCase().includes('rag'))
+      locationMatch: c.aiAnalysis.locationMatch,
+      roleMatch: c.aiAnalysis.roleMatch
     })));
 
     return {
@@ -348,11 +450,14 @@ class AISearchService {
     }
     
     // Check for compound roles
+    if (query.toLowerCase().includes('software engineer')) {
+      return 'Software Engineer';
+    }
     if (query.toLowerCase().includes('gen-ai') || query.toLowerCase().includes('generative ai')) {
       return 'Gen-AI Engineer';
     }
     
-    return 'AI Professional';
+    return 'Professional';
   }
 
   // AI-powered resume parsing simulation

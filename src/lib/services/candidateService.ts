@@ -1,5 +1,7 @@
+
 import candidatesData from '@/data/candidates.json';
 import moreCandidatesData from '@/data/more-candidates.json';
+import bangaloreCandidatesData from '@/data/bangalore-candidates.json';
 
 export interface Candidate {
   id: number;
@@ -43,7 +45,7 @@ export interface Candidate {
 }
 
 // Merge all candidate data
-const allCandidates = [...candidatesData, ...moreCandidatesData];
+const allCandidates = [...candidatesData, ...moreCandidatesData, ...bangaloreCandidatesData];
 
 export const candidateService = {
   // Get all candidates
