@@ -62,6 +62,8 @@ export interface StudentProgress {
   watchTime: number;
   streak: number;
   lastStreakDate?: string;
+  tokensEarned?: number;
+  profileViews?: number;
 }
 
 export interface Badge {
@@ -271,7 +273,17 @@ export const learningService = {
   getStudentProgress: (studentId: string): Promise<StudentProgress | null> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const progress = mockProgress.find(p => p.studentId === studentId);
+        let progress = mockProgress.find(p => p.studentId === studentId);
+        
+        // Initialize default values if progress exists but missing properties
+        if (progress) {
+          progress = {
+            ...progress,
+            tokensEarned: progress.tokensEarned || 150,
+            profileViews: progress.profileViews || 45
+          };
+        }
+        
         resolve(progress || null);
       }, 200);
     });
