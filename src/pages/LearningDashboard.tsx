@@ -250,7 +250,11 @@ const LearningDashboard = () => {
 
                 {/* Sidebar */}
                 <div className="space-y-6">
-                  <GamificationPanel progress={progress} />
+                  <GamificationPanel 
+                    tokensEarned={progress.tokensEarned || 0}
+                    badges={progress.badges?.map(b => b.title) || []}
+                    profileViews={progress.profileViews || 0}
+                  />
                   
                   {/* Skills Acquired */}
                   <Card>
