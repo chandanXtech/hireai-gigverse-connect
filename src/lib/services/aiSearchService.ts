@@ -39,7 +39,7 @@ class AISearchService {
   private parseNaturalLanguageQuery(query: string): SearchQuery {
     const normalizedQuery = query.toLowerCase();
     
-    // Enhanced skill extraction with Gen-AI specific terms
+    // Enhanced skill extraction with better matching
     const skillKeywords = [
       'react', 'vue', 'angular', 'javascript', 'typescript', 'python', 'java',
       'node.js', 'express', 'django', 'flask', 'tensorflow', 'pytorch', 'opencv',
@@ -49,7 +49,8 @@ class AISearchService {
       'gcp', 'azure', 'devops', 'ci/cd', 'microservices', 'blockchain', 'solidity',
       'gen-ai', 'generative ai', 'vector databases', 'faiss', 'pinecone', 'chroma',
       'openai', 'claude', 'prompt engineering', 'fine-tuning', 'embeddings',
-      'retrieval augmented generation', 'semantic search', 'vector search'
+      'retrieval augmented generation', 'semantic search', 'vector search',
+      'fastapi', 'streamlit', 'data science', 'analytics', 'visualization'
     ];
     
     const extractedSkills = skillKeywords.filter(skill => 
@@ -57,7 +58,7 @@ class AISearchService {
       normalizedQuery.includes(skill.replace(/[.\-\s]/g, ''))
     );
 
-    // Enhanced location extraction with better city/country matching
+    // Enhanced location extraction
     const locationKeywords = [
       // Indian cities
       'bangalore', 'mumbai', 'delhi', 'chennai', 'hyderabad', 'pune', 'kolkata', 'ahmedabad',
@@ -71,7 +72,7 @@ class AISearchService {
       'estonia', 'latvia', 'lithuania', 'london', 'berlin', 'paris', 'madrid', 
       'barcelona', 'milan', 'amsterdam', 'stockholm', 'oslo', 'copenhagen', 
       'helsinki', 'vienna', 'zurich', 'brussels', 'lisbon', 'prague', 'budapest', 
-      'warsaw', 'dublin',
+      'warsaw', 'dublin', 'tallinn',
       // US cities
       'us', 'usa', 'america', 'american', 'san francisco', 'new york', 'seattle', 
       'austin', 'boston', 'chicago', 'los angeles', 'silicon valley',
@@ -94,7 +95,7 @@ class AISearchService {
       'devops engineer', 'mobile developer', 'react developer', 'python developer',
       'java developer', 'nodejs developer', 'gen-ai engineer', 'ml engineer',
       'lead engineer', 'senior engineer', 'principal engineer', 'staff engineer',
-      'architect', 'tech lead', 'engineering manager'
+      'architect', 'tech lead', 'engineering manager', 'data analyst'
     ];
 
     let role = '';
@@ -137,7 +138,7 @@ class AISearchService {
     };
   }
 
-  // Enhanced AI-powered candidate scoring with stricter matching
+  // Completely rewritten scoring algorithm for accurate matching
   private scoreCandidate(candidate: Candidate, searchQuery: SearchQuery): ScoredCandidate {
     const analysis = {
       skillMatch: 0,
@@ -149,207 +150,181 @@ class AISearchService {
 
     const matchReasons: string[] = [];
 
-    // Enhanced skill matching
+    // Skill matching with exact requirements
     if (searchQuery.skills && searchQuery.skills.length > 0) {
       const candidateSkillsLower = candidate.skills.map(s => s.toLowerCase());
-      const matchedSkills = searchQuery.skills.filter(searchSkill => {
-        return candidateSkillsLower.some(candidateSkill => 
+      let matchedSkillsCount = 0;
+      const matchedSkills: string[] = [];
+      
+      searchQuery.skills.forEach(searchSkill => {
+        const found = candidateSkillsLower.find(candidateSkill => 
           candidateSkill.includes(searchSkill.toLowerCase()) ||
           searchSkill.toLowerCase().includes(candidateSkill)
         );
+        if (found) {
+          matchedSkillsCount++;
+          matchedSkills.push(searchSkill);
+        }
       });
       
-      analysis.skillMatch = (matchedSkills.length / searchQuery.skills.length) * 100;
+      analysis.skillMatch = (matchedSkillsCount / searchQuery.skills.length) * 100;
       
       if (matchedSkills.length > 0) {
         matchReasons.push(`Expert in ${matchedSkills.slice(0, 3).join(', ')}`);
       }
     } else {
-      analysis.skillMatch = 70; // Default when no specific skills mentioned
+      analysis.skillMatch = 50; // Neutral when no skills specified
     }
 
-    // Enhanced role matching
-    if (searchQuery.role) {
-      const candidateTagline = candidate.tagline.toLowerCase();
-      const candidateYear = candidate.year.toLowerCase();
-      const searchRole = searchQuery.role.toLowerCase();
-      
-      if (searchRole.includes('software engineer') || searchRole.includes('software developer')) {
-        if (candidateTagline.includes('engineer') || candidateTagline.includes('developer') || 
-            candidateYear.includes('engineer') || candidateYear.includes('developer')) {
-          analysis.roleMatch = 100;
-          matchReasons.push('Software engineering role match');
-        } else {
-          analysis.roleMatch = 20;
-        }
-      } else if (searchRole.includes('ai engineer') || searchRole.includes('gen-ai')) {
-        if (candidateTagline.includes('ai') || candidateTagline.includes('gen-ai') ||
-            candidateYear.includes('ai')) {
-          analysis.roleMatch = 100;
-          matchReasons.push('AI engineering specialization');
-        } else {
-          analysis.roleMatch = 30;
-        }
-      } else {
-        // General role matching
-        if (candidateTagline.includes(searchRole) || candidateYear.includes(searchRole)) {
-          analysis.roleMatch = 100;
-          matchReasons.push(`${searchQuery.role} role match`);
-        } else {
-          analysis.roleMatch = 40;
-        }
-      }
-    } else {
-      analysis.roleMatch = 70;
-    }
-
-    // Strict location matching
+    // Exact location matching
     if (searchQuery.location) {
       const candidateLocation = candidate.location.toLowerCase();
       const searchLocation = searchQuery.location.toLowerCase();
       
-      console.log(`Checking location: "${searchLocation}" against candidate location: "${candidateLocation}"`);
-      
-      // Exact city match
-      if (candidateLocation.includes(searchLocation)) {
-        analysis.locationMatch = 100;
-        matchReasons.push(`Located in ${searchQuery.location}`);
-      }
-      // Regional matches
-      else if (searchLocation === 'europe' || searchLocation === 'european' || searchLocation === 'eu') {
-        const europeanIndicators = [
-          'spain', 'germany', 'france', 'italy', 'uk', 'united kingdom', 'netherlands',
-          'poland', 'sweden', 'norway', 'denmark', 'finland', 'austria', 'switzerland',
-          'belgium', 'portugal', 'greece', 'czech', 'hungary', 'romania', 'bulgaria',
-          'croatia', 'slovenia', 'slovakia', 'estonia', 'latvia', 'lithuania',
-          'london', 'berlin', 'paris', 'madrid', 'barcelona', 'milan', 'amsterdam',
-          'stockholm', 'oslo', 'copenhagen', 'helsinki', 'vienna', 'zurich',
-          'brussels', 'lisbon', 'prague', 'budapest', 'warsaw', 'dublin'
-        ];
-        
-        const isInEurope = europeanIndicators.some(indicator => candidateLocation.includes(indicator));
-        
-        if (isInEurope) {
+      if (searchLocation === 'bangalore' || searchLocation === 'bengaluru') {
+        if (candidateLocation.includes('bangalore') || candidateLocation.includes('bengaluru')) {
           analysis.locationMatch = 100;
-          matchReasons.push('Located in Europe');
-        } else {
-          analysis.locationMatch = 0; // Strict: not in Europe
-        }
-      }
-      // India specific matching
-      else if (searchLocation === 'india' || searchLocation === 'indian') {
-        const indianCities = [
-          'bangalore', 'mumbai', 'delhi', 'chennai', 'hyderabad', 'pune', 'kolkata',
-          'ahmedabad', 'jaipur', 'indore', 'bhopal', 'gurgaon', 'noida', 'kochi',
-          'trivandrum', 'coimbatore'
-        ];
-        
-        const isInIndia = indianCities.some(city => candidateLocation.includes(city)) ||
-                         candidateLocation.includes('india');
-        
-        if (isInIndia) {
-          analysis.locationMatch = 100;
-          matchReasons.push('Located in India');
+          matchReasons.push('Located in Bangalore');
         } else {
           analysis.locationMatch = 0;
         }
-      }
-      // Remote work
-      else if (searchLocation === 'remote') {
-        if (candidate.availability.toLowerCase().includes('remote') || 
-            candidateLocation.includes('remote')) {
-          analysis.locationMatch = 90;
-          matchReasons.push('Remote work available');
-        } else {
-          analysis.locationMatch = 20;
+      } else if (searchLocation === 'europe' || searchLocation === 'european') {
+        const europeanCities = [
+          'madrid', 'london', 'berlin', 'paris', 'milan', 'amsterdam', 'stockholm',
+          'oslo', 'copenhagen', 'helsinki', 'vienna', 'zurich', 'brussels',
+          'lisbon', 'prague', 'budapest', 'warsaw', 'dublin', 'tallinn',
+          'spain', 'uk', 'germany', 'france', 'italy', 'netherlands', 'sweden',
+          'norway', 'denmark', 'finland', 'austria', 'switzerland', 'belgium',
+          'portugal', 'czech', 'hungary', 'poland', 'ireland', 'estonia'
+        ];
+        
+        const isInEurope = europeanCities.some(city => candidateLocation.includes(city));
+        analysis.locationMatch = isInEurope ? 100 : 0;
+        
+        if (isInEurope) {
+          matchReasons.push('Located in Europe');
         }
-      }
-      // No match
-      else {
-        analysis.locationMatch = 0; // Strict: no location match
+      } else if (candidateLocation.includes(searchLocation)) {
+        analysis.locationMatch = 100;
+        matchReasons.push(`Located in ${searchQuery.location}`);
+      } else {
+        analysis.locationMatch = 0;
       }
     } else {
-      analysis.locationMatch = 70; // Default when no location specified
+      analysis.locationMatch = 50;
     }
 
-    // Enhanced experience matching
+    // Role matching
+    if (searchQuery.role) {
+      const candidateTitle = `${candidate.tagline} ${candidate.year}`.toLowerCase();
+      const searchRole = searchQuery.role.toLowerCase();
+      
+      if (searchRole.includes('software engineer') || searchRole.includes('software developer')) {
+        if (candidateTitle.includes('software') || candidateTitle.includes('engineer') || 
+            candidateTitle.includes('developer')) {
+          analysis.roleMatch = 100;
+          matchReasons.push('Software engineering role match');
+        } else {
+          analysis.roleMatch = 30;
+        }
+      } else if (searchRole.includes('data scientist')) {
+        if (candidateTitle.includes('data scientist') || candidateTitle.includes('data science')) {
+          analysis.roleMatch = 100;
+          matchReasons.push('Data science role match');
+        } else {
+          analysis.roleMatch = 20;
+        }
+      } else if (searchRole.includes('ai engineer') || searchRole.includes('gen-ai')) {
+        if (candidateTitle.includes('ai') || candidateTitle.includes('gen-ai') ||
+            candidateTitle.includes('artificial intelligence')) {
+          analysis.roleMatch = 100;
+          matchReasons.push('AI engineering specialization');
+        } else {
+          analysis.roleMatch = 25;
+        }
+      } else {
+        const roleMatch = candidateTitle.includes(searchRole);
+        analysis.roleMatch = roleMatch ? 100 : 40;
+        if (roleMatch) {
+          matchReasons.push(`${searchQuery.role} role match`);
+        }
+      }
+    } else {
+      analysis.roleMatch = 50;
+    }
+
+    // Experience level matching
     if (searchQuery.experience) {
-      const candidateExp = candidate.experience.toLowerCase();
-      const candidateTagline = candidate.tagline.toLowerCase();
+      const candidateExp = `${candidate.experience} ${candidate.tagline}`.toLowerCase();
       
       if (searchQuery.experience === 'senior') {
-        if (candidateExp.includes('senior') || candidateExp.includes('lead') || 
-            candidateExp.includes('8+') || candidateExp.includes('7+') || 
-            candidateExp.includes('6+') || candidateExp.includes('5+') ||
-            candidateTagline.includes('senior') || candidateTagline.includes('lead')) {
-          analysis.experienceMatch = 100;
+        const isSenior = candidateExp.includes('senior') || candidateExp.includes('lead') || 
+                        candidateExp.includes('5+') || candidateExp.includes('6+') || 
+                        candidateExp.includes('7+') || candidateExp.includes('8+');
+        analysis.experienceMatch = isSenior ? 100 : 20;
+        if (isSenior) {
           matchReasons.push('Senior-level expertise confirmed');
-        } else {
-          analysis.experienceMatch = 20;
         }
       } else if (searchQuery.experience === 'junior') {
-        if (candidateExp.includes('junior') || candidateExp.includes('entry') || 
-            candidateExp.includes('1-2') || candidateExp.includes('intern')) {
-          analysis.experienceMatch = 100;
+        const isJunior = candidateExp.includes('junior') || candidateExp.includes('entry') || 
+                        candidateExp.includes('1-2') || candidateExp.includes('intern');
+        analysis.experienceMatch = isJunior ? 100 : 30;
+        if (isJunior) {
           matchReasons.push('Junior-level experience match');
-        } else {
-          analysis.experienceMatch = 30;
         }
-      } else if (searchQuery.experience === 'mid') {
-        if (candidateExp.includes('3-4') || candidateExp.includes('3+') || candidateExp.includes('4+')) {
-          analysis.experienceMatch = 100;
-          matchReasons.push('Mid-level experience match');
-        } else {
-          analysis.experienceMatch = 30;
-        }
+      } else {
+        analysis.experienceMatch = 70;
       }
     } else {
-      analysis.experienceMatch = 70;
+      analysis.experienceMatch = 50;
     }
 
-    // Enhanced availability matching
+    // Availability matching
     if (searchQuery.availability) {
       const candidateAvailability = candidate.availability.toLowerCase();
       
       if (searchQuery.availability === 'contract') {
-        if (candidateAvailability.includes('contract') || candidateAvailability.includes('freelance') ||
-            candidateAvailability.includes('available for contract')) {
-          analysis.availabilityMatch = 100;
+        const isContractAvailable = candidateAvailability.includes('contract') || 
+                                   candidateAvailability.includes('freelance');
+        analysis.availabilityMatch = isContractAvailable ? 100 : 20;
+        if (isContractAvailable) {
           matchReasons.push('Available for contract work');
-        } else if (candidateAvailability.includes('available')) {
-          analysis.availabilityMatch = 50;
-        } else {
-          analysis.availabilityMatch = 20;
         }
       } else if (searchQuery.availability === 'full-time') {
-        if (candidateAvailability.includes('full-time') || candidateAvailability.includes('immediately') ||
-            candidateAvailability.includes('permanent')) {
-          analysis.availabilityMatch = 100;
+        const isFullTimeAvailable = candidateAvailability.includes('full-time') || 
+                                   candidateAvailability.includes('permanent');
+        analysis.availabilityMatch = isFullTimeAvailable ? 100 : 30;
+        if (isFullTimeAvailable) {
           matchReasons.push('Available for full-time role');
-        } else {
-          analysis.availabilityMatch = 30;
         }
       }
     } else {
-      analysis.availabilityMatch = 70;
+      analysis.availabilityMatch = 50;
     }
 
-    // Calculate overall relevance score with weighted importance
+    // Calculate weighted relevance score
     const relevanceScore = Math.round(
-      (analysis.skillMatch * 0.25 +
+      (analysis.skillMatch * 0.30 +
        analysis.experienceMatch * 0.20 +
-       analysis.locationMatch * 0.30 +  // Higher weight for location matching
-       analysis.availabilityMatch * 0.10 +
-       analysis.roleMatch * 0.15)
+       analysis.locationMatch * 0.25 +
+       analysis.availabilityMatch * 0.15 +
+       analysis.roleMatch * 0.10)
     );
 
     // Add quality indicators
-    if (candidate.rating >= 4.8) {
-      matchReasons.push('Highly rated professional (4.8+ stars)');
+    if (candidate.rating >= 4.7) {
+      matchReasons.push('Highly rated professional');
     }
     if (candidate.isVerified) {
       matchReasons.push('Verified profile');
     }
+
+    console.log(`Scoring ${candidate.name}:`, {
+      query: searchQuery,
+      scores: analysis,
+      relevanceScore,
+      matchReasons
+    });
 
     return {
       ...candidate,
@@ -359,48 +334,48 @@ class AISearchService {
     };
   }
 
-  // Enhanced main AI search function with stricter filtering
+  // Enhanced main search with stricter filtering
   async searchTalent(naturalLanguageQuery: string): Promise<AISearchResponse> {
     const startTime = Date.now();
     
     console.log('🔍 AI Search Query:', naturalLanguageQuery);
     
-    // Parse natural language query
     const parsedQuery = this.parseNaturalLanguageQuery(naturalLanguageQuery);
     console.log('📊 Parsed Query:', parsedQuery);
 
-    // Get all candidates
     const allCandidates = candidateService.getAllCandidates();
     console.log(`📋 Total candidates in database: ${allCandidates.length}`);
     
-    // Score and rank candidates with stricter filtering
+    // Score all candidates
     const scoredCandidates = allCandidates
       .map(candidate => this.scoreCandidate(candidate, parsedQuery))
       .filter(candidate => {
-        // Apply minimum thresholds based on query specificity
-        let minScore = 50; // Default threshold
+        // Apply strict filtering based on query specificity
+        let shouldInclude = true;
         
-        // If location is specified, require higher location match
+        // Location filter - if location specified, must match closely
         if (parsedQuery.location) {
-          if (candidate.aiAnalysis.locationMatch < 90) {
-            return false; // Strict location filtering
-          }
-          minScore = 60;
-        }
-        
-        // If role is specified, require reasonable role match
-        if (parsedQuery.role) {
-          if (candidate.aiAnalysis.roleMatch < 60) {
-            return false;
+          if (candidate.aiAnalysis.locationMatch < 80) {
+            shouldInclude = false;
           }
         }
         
-        // For very specific queries, require higher overall score
-        if (parsedQuery.location && parsedQuery.role && parsedQuery.skills.length > 0) {
-          minScore = 70;
+        // Role filter - if role specified, must have reasonable match
+        if (parsedQuery.role && candidate.aiAnalysis.roleMatch < 60) {
+          shouldInclude = false;
         }
         
-        return candidate.relevanceScore >= minScore;
+        // Skills filter - if specific skills mentioned, must have some match
+        if (parsedQuery.skills.length > 0 && candidate.aiAnalysis.skillMatch < 30) {
+          shouldInclude = false;
+        }
+        
+        // Overall relevance threshold
+        if (candidate.relevanceScore < 40) {
+          shouldInclude = false;
+        }
+        
+        return shouldInclude;
       })
       .sort((a, b) => {
         // Primary sort by relevance score
@@ -418,8 +393,7 @@ class AISearchService {
       name: c.name,
       score: c.relevanceScore,
       location: c.location,
-      locationMatch: c.aiAnalysis.locationMatch,
-      roleMatch: c.aiAnalysis.roleMatch
+      analysis: c.aiAnalysis
     })));
 
     return {
@@ -437,6 +411,7 @@ class AISearchService {
   }
 
   private extractRole(query: string): string {
+    // ... keep existing code (extractRole method)
     const roleKeywords = [
       'engineer', 'developer', 'scientist', 'analyst', 'manager', 'architect', 
       'researcher', 'consultant', 'specialist', 'expert', 'lead'
@@ -449,15 +424,151 @@ class AISearchService {
       }
     }
     
-    // Check for compound roles
     if (query.toLowerCase().includes('software engineer')) {
       return 'Software Engineer';
+    }
+    if (query.toLowerCase().includes('data scientist')) {
+      return 'Data Scientist';
     }
     if (query.toLowerCase().includes('gen-ai') || query.toLowerCase().includes('generative ai')) {
       return 'Gen-AI Engineer';
     }
     
     return 'Professional';
+  }
+
+  // AI-powered roadmap generation for students
+  async generateLearningRoadmap(goal: string): Promise<{
+    roadmap: Array<{
+      phase: string;
+      duration: string;
+      skills: string[];
+      resources: Array<{
+        title: string;
+        type: 'video' | 'course' | 'book' | 'practice';
+        url: string;
+        description: string;
+      }>;
+    }>;
+    totalDuration: string;
+    description: string;
+  }> {
+    // Simulate AI processing
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    const normalizedGoal = goal.toLowerCase();
+    
+    if (normalizedGoal.includes('data scientist') || normalizedGoal.includes('data science')) {
+      return {
+        roadmap: [
+          {
+            phase: "Foundation (Months 1-2)",
+            duration: "2 months",
+            skills: ["Python", "Statistics", "SQL"],
+            resources: [
+              {
+                title: "Python for Data Science Course",
+                type: "video",
+                url: "https://www.youtube.com/watch?v=LHBE6Q9XlzI",
+                description: "Complete Python course for data science beginners"
+              },
+              {
+                title: "Statistics Fundamentals",
+                type: "video", 
+                url: "https://www.youtube.com/watch?v=xxpc-HPKN28",
+                description: "Essential statistics concepts for data science"
+              },
+              {
+                title: "SQL Tutorial",
+                type: "video",
+                url: "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+                description: "Learn SQL for data analysis"
+              }
+            ]
+          },
+          {
+            phase: "Core Skills (Months 3-4)",
+            duration: "2 months", 
+            skills: ["Pandas", "NumPy", "Matplotlib", "Data Visualization"],
+            resources: [
+              {
+                title: "Pandas Complete Tutorial",
+                type: "video",
+                url: "https://www.youtube.com/watch?v=vmEHCJofslg",
+                description: "Master data manipulation with Pandas"
+              },
+              {
+                title: "Data Visualization with Python",
+                type: "video",
+                url: "https://www.youtube.com/watch?v=UO98lJQ3QGI",
+                description: "Create stunning visualizations"
+              }
+            ]
+          },
+          {
+            phase: "Machine Learning (Months 5-6)",
+            duration: "2 months",
+            skills: ["Scikit-learn", "Machine Learning Algorithms", "Model Evaluation"],
+            resources: [
+              {
+                title: "Machine Learning Course",
+                type: "video",
+                url: "https://www.youtube.com/watch?v=ukzFI9rgwfU",
+                description: "Complete ML course by Andrew Ng"
+              },
+              {
+                title: "Scikit-learn Tutorial",
+                type: "video",
+                url: "https://www.youtube.com/watch?v=pqNCD_5r0IU", 
+                description: "Hands-on ML with scikit-learn"
+              }
+            ]
+          },
+          {
+            phase: "Advanced Topics (Months 7-8)",
+            duration: "2 months",
+            skills: ["Deep Learning", "TensorFlow", "PyTorch", "NLP"],
+            resources: [
+              {
+                title: "Deep Learning Specialization",
+                type: "video",
+                url: "https://www.youtube.com/watch?v=CS4cs9xVecg",
+                description: "Advanced deep learning concepts"
+              },
+              {
+                title: "Natural Language Processing",
+                type: "video",
+                url: "https://www.youtube.com/watch?v=fNxaJsNG3-s",
+                description: "NLP fundamentals and applications"
+              }
+            ]
+          }
+        ],
+        totalDuration: "8 months",
+        description: "Complete roadmap to become a Data Scientist with hands-on projects and real-world applications"
+      };
+    }
+    
+    // Default roadmap for other goals
+    return {
+      roadmap: [
+        {
+          phase: "Getting Started",
+          duration: "1 month",
+          skills: ["Programming Basics", "Problem Solving"],
+          resources: [
+            {
+              title: "Programming Fundamentals",
+              type: "video",
+              url: "https://www.youtube.com/watch?v=zOjov-2OZ0E",
+              description: "Learn programming fundamentals"
+            }
+          ]
+        }
+      ],
+      totalDuration: "Varies based on goal",
+      description: "Customized learning path based on your career goals"
+    };
   }
 
   // AI-powered resume parsing simulation
@@ -512,7 +623,7 @@ class AISearchService {
 
     return {
       questions,
-      estimatedTime: questions.length * 5 // 5 minutes per question
+      estimatedTime: questions.length * 5
     };
   }
 }

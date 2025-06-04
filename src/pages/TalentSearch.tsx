@@ -4,15 +4,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { MessageCandidateModal } from '@/components/MessageCandidateModal';
 import { Search, Filter, Star, MapPin, Calendar, Mail, Github, Award } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { candidateService, type Candidate } from '@/lib/services/candidateService';
 import { useSearchParams } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const TalentSearch = () => {
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
   const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (searchQuery) {
@@ -28,6 +33,11 @@ const TalentSearch = () => {
     setCandidates(results);
   };
 
+  const handleMessageCandidate = (candidate: Candidate) => {
+    setSelectedCandidate(candidate);
+    setIsMessageModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Navigation />
@@ -35,8 +45,8 @@ const TalentSearch = () => {
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">AI Talent Search</h1>
-          <p className="text-gray-600">Find and connect with top AI professionals using natural language queries</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Talent Search</h1>
+          <p className="text-gray-600">Find and connect with top professionals using natural language queries</p>
         </div>
 
         {/* Search Bar */}
@@ -46,7 +56,7 @@ const TalentSearch = () => {
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
-                  placeholder="Search for 'Senior ML Engineer with NLP experience in SF' or 'Python developer with 5+ years'"
+                  placeholder="Search for 'Software Engineer from Bangalore' or 'Senior Python developer'"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -69,7 +79,7 @@ const TalentSearch = () => {
         <div className="grid gap-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-900">
-              {candidates.length} AI Professionals Found
+              {candidates.length} Professionals Found
             </h2>
             <div className="flex gap-2">
               <Badge variant="secondary">Relevance</Badge>
@@ -154,7 +164,12 @@ const TalentSearch = () => {
                         View Profile
                       </a>
                     </Button>
-                    <Button variant="outline" size="sm" className="transform hover:scale-105 transition-all">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleMessageCandidate(candidate)}
+                      className="transform hover:scale-105 transition-all"
+                    >
                       <Mail className="w-4 h-4 mr-1" />
                       Message
                     </Button>
@@ -171,6 +186,19 @@ const TalentSearch = () => {
           ))}
         </div>
       </div>
+
+      {/* Message Modal */}
+      {selectedCandidate && (
+        <MessageCandidateModal
+          isOpen={isMessageModalOpen}
+          onClose={() => {
+            setIsMessageModalOpen(false);
+            setSelectedCandidate(null);
+          }}
+          candidateEmail={`${selectedCandidate.username}@example.com`}
+          candidateName={selectedCandidate.name}
+        />
+      )}
     </div>
   );
 };

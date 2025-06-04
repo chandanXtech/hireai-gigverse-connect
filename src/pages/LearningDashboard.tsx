@@ -1,147 +1,107 @@
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Navigation } from '@/components/Navigation';
-import { 
-  BookOpen, 
-  Target, 
-  Trophy, 
-  Clock, 
-  Play, 
-  CheckCircle, 
-  Lock,
-  TrendingUp,
-  Star,
-  Briefcase
-} from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { GamificationPanel } from '@/components/GamificationPanel';
+import { AIRoadmapGenerator } from '@/components/AIRoadmapGenerator';
+import { BookOpen, Target, TrendingUp, Clock, Award, Brain, Zap, Users, Star, PlayCircle } from 'lucide-react';
 import { learningService, type CareerGoal, type StudentProgress } from '@/lib/services/learningService';
-import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const LearningDashboard = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
   const [careerGoals, setCareerGoals] = useState<CareerGoal[]>([]);
-  const [studentProgress, setStudentProgress] = useState<StudentProgress | null>(null);
-  const [currentRoadmap, setCurrentRoadmap] = useState<CareerGoal | null>(null);
-  const [recommendedGigs, setRecommendedGigs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState<StudentProgress | null>(null);
+  const [selectedGoal, setSelectedGoal] = useState<CareerGoal | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  const studentId = 'student-1'; // Mock student ID
 
   useEffect(() => {
     loadData();
-  }, [user?.id]);
+  }, []);
 
   const loadData = async () => {
-    if (!user?.id) return;
-    
     try {
-      setLoading(true);
-      const [goals, progress] = await Promise.all([
+      const [goals, studentProgress] = await Promise.all([
         learningService.getCareerGoals(),
-        learningService.getStudentProgress(user.id)
+        learningService.getStudentProgress(studentId)
       ]);
-      
+
       setCareerGoals(goals);
-      setStudentProgress(progress);
-      
-      if (progress?.careerGoalId) {
-        const [roadmap, gigs] = await Promise.all([
-          learningService.getRoadmap(progress.careerGoalId),
-          learningService.getRecommendedGigs(user.id)
-        ]);
-        setCurrentRoadmap(roadmap);
-        setRecommendedGigs(gigs);
+      setProgress(studentProgress);
+
+      if (studentProgress?.careerGoalId) {
+        const roadmap = await learningService.getRoadmap(studentProgress.careerGoalId);
+        setSelectedGoal(roadmap);
       }
     } catch (error) {
-      console.error('Error loading learning data:', error);
+      toast({
+        title: "Error loading data",
+        description: "Failed to load learning data. Please try again.",
+        variant: "destructive",
+      });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const handleSetCareerGoal = async (careerGoalId: string) => {
-    if (!user?.id) return;
-    
+  const handleSetGoal = async (goalId: string) => {
     try {
-      await learningService.setCareerGoal(user.id, careerGoalId);
-      await loadData();
+      await learningService.setCareerGoal(studentId, goalId);
+      const roadmap = await learningService.getRoadmap(goalId);
+      setSelectedGoal(roadmap);
+      
+      // Reload progress
+      const updatedProgress = await learningService.getStudentProgress(studentId);
+      setProgress(updatedProgress);
+
+      toast({
+        title: "🎯 Career Goal Set!",
+        description: `You've started your journey to become ${roadmap?.title}`,
+      });
     } catch (error) {
-      console.error('Error setting career goal:', error);
+      toast({
+        title: "Error",
+        description: "Failed to set career goal. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
-  const handleModuleAction = async (moduleId: string, action: 'start' | 'complete') => {
-    if (!user?.id) return;
-    
+  const handleStartModule = async (moduleId: string) => {
     try {
-      const status = action === 'start' ? 'in-progress' : 'completed';
-      await learningService.updateModuleProgress(user.id, moduleId, status);
-      await loadData();
+      await learningService.updateModuleProgress(studentId, moduleId, 'in-progress');
+      
+      // Reload progress
+      const updatedProgress = await learningService.getStudentProgress(studentId);
+      setProgress(updatedProgress);
+
+      toast({
+        title: "📚 Module Started!",
+        description: "Great! You've started a new learning module.",
+      });
     } catch (error) {
-      console.error('Error updating module progress:', error);
+      toast({
+        title: "Error",
+        description: "Failed to start module. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
         <Navigation />
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Career Goal Selection Screen
-  if (!studentProgress) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <Navigation />
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              🎯 What do you want to become?
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Choose your career path and get a personalized learning roadmap to achieve your goals
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {careerGoals.map((goal) => (
-              <Card 
-                key={goal.id} 
-                className="hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => handleSetCareerGoal(goal.id)}
-              >
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="w-5 h-5 text-blue-600" />
-                    {goal.title}
-                  </CardTitle>
-                  <CardDescription>{goal.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Clock className="w-4 h-4" />
-                      {goal.estimatedDuration}
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <BookOpen className="w-4 h-4" />
-                      {goal.modules.length} modules
-                    </div>
-                    <Badge variant="outline">{goal.category}</Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <Clock className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-500" />
+            <p className="text-gray-600">Loading your learning dashboard...</p>
           </div>
         </div>
       </div>
@@ -149,253 +109,271 @@ const LearningDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
       <Navigation />
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Learning Dashboard
-          </h1>
-          <p className="text-gray-600">
-            Your journey to becoming a {currentRoadmap?.title}
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Learning Dashboard</h1>
+          <p className="text-gray-600">Track your progress and continue your AI learning journey</p>
         </div>
 
-        {/* Progress Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Overall Progress</p>
-                  <p className="text-2xl font-bold text-gray-900">{studentProgress.totalProgress}%</p>
-                </div>
-                <TrendingUp className="w-8 h-8 text-blue-600" />
-              </div>
-              <Progress value={studentProgress.totalProgress} className="mt-3" />
-            </CardContent>
-          </Card>
+        <Tabs defaultValue="dashboard" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4 bg-white shadow-sm">
+            <TabsTrigger value="dashboard" className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="roadmap" className="flex items-center gap-2">
+              <Brain className="w-4 h-4" />
+              AI Roadmap
+            </TabsTrigger>
+            <TabsTrigger value="explore" className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4" />
+              Explore
+            </TabsTrigger>
+            <TabsTrigger value="achievements" className="flex items-center gap-2">
+              <Award className="w-4 h-4" />
+              Achievements
+            </TabsTrigger>
+          </TabsList>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Completed Modules</p>
-                  <p className="text-2xl font-bold text-gray-900">{studentProgress.completedModules.length}</p>
-                </div>
-                <CheckCircle className="w-8 h-8 text-green-600" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Skills Acquired</p>
-                  <p className="text-2xl font-bold text-gray-900">{studentProgress.skillsAcquired.length}</p>
-                </div>
-                <Star className="w-8 h-8 text-yellow-600" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Badges Earned</p>
-                  <p className="text-2xl font-bold text-gray-900">{studentProgress.badges.length}</p>
-                </div>
-                <Trophy className="w-8 h-8 text-purple-600" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Learning Modules */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="w-5 h-5" />
-                  Learning Roadmap
-                </CardTitle>
-                <CardDescription>
-                  Complete modules to unlock new skills and opportunities
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {currentRoadmap?.modules.map((module, index) => {
-                    const isCompleted = studentProgress.completedModules.includes(module.id);
-                    const isInProgress = studentProgress.inProgressModules.includes(module.id);
-                    const canStart = !module.prerequisites || 
-                      module.prerequisites.every(prereq => studentProgress.completedModules.includes(prereq));
-                    const isLocked = !canStart && !isCompleted && !isInProgress;
-
-                    return (
-                      <div 
-                        key={module.id} 
-                        className={`border rounded-lg p-4 ${
-                          isCompleted ? 'bg-green-50 border-green-200' :
-                          isInProgress ? 'bg-blue-50 border-blue-200' :
-                          isLocked ? 'bg-gray-50 border-gray-200' :
-                          'bg-white border-gray-200'
-                        }`}
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              {isCompleted && <CheckCircle className="w-5 h-5 text-green-600" />}
-                              {isInProgress && <Play className="w-5 h-5 text-blue-600" />}
-                              {isLocked && <Lock className="w-5 h-5 text-gray-400" />}
-                              <h3 className={`font-semibold ${isLocked ? 'text-gray-400' : 'text-gray-900'}`}>
-                                {module.title}
-                              </h3>
-                            </div>
-                            <p className={`text-sm mb-3 ${isLocked ? 'text-gray-400' : 'text-gray-600'}`}>
-                              {module.description}
-                            </p>
-                            <div className="flex items-center gap-4 text-xs text-gray-500 mb-3">
-                              <span>⏱️ {module.estimatedTime}</span>
-                              <span>📚 {module.content.length} resources</span>
-                            </div>
-                            <div className="flex flex-wrap gap-1">
-                              {module.skills.map((skill) => (
-                                <Badge key={skill} variant="secondary" className="text-xs">
-                                  {skill}
-                                </Badge>
-                              ))}
-                            </div>
+          <TabsContent value="dashboard" className="space-y-6">
+            {/* Progress Overview */}
+            {progress && selectedGoal ? (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Main Progress */}
+                <div className="lg:col-span-2 space-y-6">
+                  <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Target className="w-5 h-5 text-blue-600" />
+                        Your Learning Path: {selectedGoal.title}
+                      </CardTitle>
+                      <CardDescription>{selectedGoal.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Overall Progress</span>
+                            <span>{progress.totalProgress}%</span>
                           </div>
-                          <div className="ml-4">
-                            {isCompleted ? (
-                              <Button variant="outline" size="sm" disabled>
-                                <CheckCircle className="w-4 h-4 mr-2" />
-                                Completed
-                              </Button>
-                            ) : isInProgress ? (
-                              <Button 
-                                onClick={() => handleModuleAction(module.id, 'complete')}
-                                size="sm"
-                              >
-                                Mark Complete
-                              </Button>
-                            ) : canStart ? (
-                              <Button 
-                                onClick={() => handleModuleAction(module.id, 'start')}
-                                size="sm"
-                              >
-                                <Play className="w-4 h-4 mr-2" />
-                                Start
-                              </Button>
-                            ) : (
-                              <Button variant="outline" size="sm" disabled>
-                                <Lock className="w-4 h-4 mr-2" />
-                                Locked
-                              </Button>
-                            )}
+                          <Progress value={progress.totalProgress} className="h-3" />
+                        </div>
+                        
+                        <div className="grid grid-cols-3 gap-4 text-center">
+                          <div className="bg-white/50 p-3 rounded-lg">
+                            <div className="text-2xl font-bold text-green-600">{progress.completedModules.length}</div>
+                            <div className="text-xs text-gray-600">Completed</div>
+                          </div>
+                          <div className="bg-white/50 p-3 rounded-lg">
+                            <div className="text-2xl font-bold text-blue-600">{progress.inProgressModules.length}</div>
+                            <div className="text-xs text-gray-600">In Progress</div>
+                          </div>
+                          <div className="bg-white/50 p-3 rounded-lg">
+                            <div className="text-2xl font-bold text-purple-600">{progress.skillsAcquired.length}</div>
+                            <div className="text-xs text-gray-600">Skills Learned</div>
                           </div>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                    </CardContent>
+                  </Card>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Skills Acquired */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Star className="w-5 h-5" />
-                  Skills Acquired
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {studentProgress.skillsAcquired.map((skill) => (
-                    <Badge key={skill} className="bg-blue-100 text-blue-800">
-                      {skill}
-                    </Badge>
-                  ))}
-                  {studentProgress.skillsAcquired.length === 0 && (
-                    <p className="text-sm text-gray-500">
-                      Complete modules to acquire new skills
-                    </p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Badges */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Trophy className="w-5 h-5" />
-                  Achievements
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {studentProgress.badges.map((badge) => (
-                    <div key={badge.id} className="flex items-center gap-3 p-2 bg-yellow-50 rounded-lg">
-                      <span className="text-2xl">{badge.icon}</span>
-                      <div>
-                        <p className="font-medium text-gray-900">{badge.title}</p>
-                        <p className="text-sm text-gray-600">{badge.description}</p>
+                  {/* Learning Modules */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Learning Modules</CardTitle>
+                      <CardDescription>Continue your learning journey</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {selectedGoal.modules.map((module) => {
+                          const isCompleted = progress.completedModules.includes(module.id);
+                          const isInProgress = progress.inProgressModules.includes(module.id);
+                          
+                          return (
+                            <div key={module.id} className="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                isCompleted ? 'bg-green-500 text-white' : 
+                                isInProgress ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'
+                              }`}>
+                                {isCompleted ? '✓' : isInProgress ? '●' : '○'}
+                              </div>
+                              
+                              <div className="flex-1">
+                                <h4 className="font-semibold">{module.title}</h4>
+                                <p className="text-sm text-gray-600">{module.description}</p>
+                                <div className="flex items-center gap-2 mt-2">
+                                  <Badge variant="outline" className="text-xs">
+                                    <Clock className="w-3 h-3 mr-1" />
+                                    {module.estimatedTime}
+                                  </Badge>
+                                  {module.skills.map((skill) => (
+                                    <Badge key={skill} variant="secondary" className="text-xs">
+                                      {skill}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                              
+                              <div className="flex gap-2">
+                                {!isCompleted && (
+                                  <Button 
+                                    size="sm"
+                                    variant={isInProgress ? "default" : "outline"}
+                                    onClick={() => handleStartModule(module.id)}
+                                    asChild
+                                  >
+                                    <a href={`/module/${module.id}`}>
+                                      <PlayCircle className="w-4 h-4 mr-1" />
+                                      {isInProgress ? 'Continue' : 'Start'}
+                                    </a>
+                                  </Button>
+                                )}
+                                {isCompleted && (
+                                  <Button size="sm" variant="ghost" asChild>
+                                    <a href={`/module/${module.id}`}>
+                                      Review
+                                    </a>
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                    </div>
-                  ))}
-                  {studentProgress.badges.length === 0 && (
-                    <p className="text-sm text-gray-500">
-                      Earn badges by completing modules and milestones
-                    </p>
-                  )}
+                    </CardContent>
+                  </Card>
                 </div>
-              </CardContent>
-            </Card>
 
-            {/* Recommended Gigs */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Briefcase className="w-5 h-5" />
-                  Unlocked Opportunities
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {recommendedGigs.map((gig) => (
-                    <div key={gig.id} className="border rounded-lg p-3 hover:bg-gray-50">
-                      <h4 className="font-medium text-gray-900 mb-1">{gig.title}</h4>
-                      <p className="text-sm text-gray-600 mb-2">{gig.company}</p>
-                      <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="text-xs">
-                          {gig.match}% match
-                        </Badge>
-                        <Button size="sm" variant="outline">
-                          Apply
-                        </Button>
+                {/* Sidebar */}
+                <div className="space-y-6">
+                  <GamificationPanel progress={progress} />
+                  
+                  {/* Skills Acquired */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Star className="w-5 h-5 text-yellow-500" />
+                        Skills Acquired
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {progress.skillsAcquired.map((skill) => (
+                          <Badge key={skill} className="bg-blue-100 text-blue-700">
+                            {skill}
+                          </Badge>
+                        ))}
                       </div>
-                    </div>
-                  ))}
-                  {recommendedGigs.length === 0 && (
-                    <p className="text-sm text-gray-500">
-                      Complete more modules to unlock gig opportunities
-                    </p>
-                  )}
+                    </CardContent>
+                  </Card>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+              </div>
+            ) : (
+              // No goal selected
+              <Card className="text-center py-12">
+                <CardContent>
+                  <Target className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                  <h3 className="text-xl font-semibold mb-2">Choose Your Learning Path</h3>
+                  <p className="text-gray-600 mb-6">Select a career goal to start your personalized learning journey</p>
+                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600">
+                    Explore Career Goals
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="roadmap" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+                <Brain className="w-6 h-6 text-purple-600" />
+                AI-Powered Learning Roadmap
+              </h2>
+              <p className="text-gray-600">Get a personalized learning path based on your career goals</p>
+            </div>
+            <AIRoadmapGenerator />
+          </TabsContent>
+
+          <TabsContent value="explore" className="space-y-6">
+            {/* Career Goals Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {careerGoals.map((goal) => (
+                <Card key={goal.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
+                        {goal.title.charAt(0)}
+                      </div>
+                      {goal.title}
+                    </CardTitle>
+                    <CardDescription>{goal.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Clock className="w-4 h-4" />
+                        {goal.estimatedDuration}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <BookOpen className="w-4 h-4" />
+                        {goal.modules.length} modules
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Users className="w-4 h-4" />
+                        {goal.category}
+                      </div>
+                      <Button 
+                        className="w-full mt-4" 
+                        onClick={() => handleSetGoal(goal.id)}
+                        disabled={progress?.careerGoalId === goal.id}
+                      >
+                        {progress?.careerGoalId === goal.id ? (
+                          <>
+                            <Zap className="w-4 h-4 mr-2" />
+                            Current Goal
+                          </>
+                        ) : (
+                          'Start Learning'
+                        )}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="achievements" className="space-y-6">
+            {progress && progress.badges.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {progress.badges.map((badge) => (
+                  <Card key={badge.id} className="text-center">
+                    <CardContent className="p-6">
+                      <div className="text-4xl mb-4">{badge.icon}</div>
+                      <h3 className="font-semibold text-lg mb-2">{badge.title}</h3>
+                      <p className="text-sm text-gray-600 mb-3">{badge.description}</p>
+                      <Badge variant="secondary" className="text-xs">
+                        Unlocked {new Date(badge.unlockedAt).toLocaleDateString()}
+                      </Badge>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card className="text-center py-12">
+                <CardContent>
+                  <Award className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                  <h3 className="text-xl font-semibold mb-2">No Achievements Yet</h3>
+                  <p className="text-gray-600">Start learning to unlock your first badge!</p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { ContactCandidateModal } from '@/components/ContactCandidateModal';
+import { MessageCandidateModal } from '@/components/MessageCandidateModal';
 import { Search, Brain, Zap, Star, MapPin, Calendar, Mail, FileText, Target, Clock, TrendingUp } from 'lucide-react';
 import { aiSearchService, type AISearchResponse, type ScoredCandidate } from '@/lib/services/aiSearchService';
 import { useToast } from '@/hooks/use-toast';
@@ -18,14 +18,14 @@ const AITalentSearch = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<AISearchResponse | null>(null);
   const [selectedCandidate, setSelectedCandidate] = useState<ScoredCandidate | null>(null);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [resumeText, setResumeText] = useState('');
   const [isParsingResume, setIsParsingResume] = useState(false);
   const { toast } = useToast();
 
   const exampleQueries = [
     "Find senior Gen-AI engineers with LangChain + RAG experience in Europe open to contract work",
-    "Looking for Python developers with machine learning experience in San Francisco",
+    "Looking for Python developers with machine learning experience in Bangalore",
     "Need React developers with TypeScript experience available immediately",
     "Find AI researchers with NLP background for remote positions"
   ];
@@ -53,9 +53,9 @@ const AITalentSearch = () => {
     }
   };
 
-  const handleContactCandidate = (candidate: ScoredCandidate) => {
+  const handleMessageCandidate = (candidate: ScoredCandidate) => {
     setSelectedCandidate(candidate);
-    setIsContactModalOpen(true);
+    setIsMessageModalOpen(true);
   };
 
   const handleResumeParser = async () => {
@@ -331,11 +331,11 @@ const AITalentSearch = () => {
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              onClick={() => handleContactCandidate(candidate)}
+                              onClick={() => handleMessageCandidate(candidate)}
                               className="transform hover:scale-105 transition-all"
                             >
                               <Mail className="w-4 h-4 mr-1" />
-                              Contact
+                              Message
                             </Button>
                           </div>
                         </div>
@@ -410,12 +410,12 @@ const AITalentSearch = () => {
         </Tabs>
       </div>
 
-      {/* Contact Modal */}
+      {/* Message Modal */}
       {selectedCandidate && (
-        <ContactCandidateModal
-          isOpen={isContactModalOpen}
+        <MessageCandidateModal
+          isOpen={isMessageModalOpen}
           onClose={() => {
-            setIsContactModalOpen(false);
+            setIsMessageModalOpen(false);
             setSelectedCandidate(null);
           }}
           candidateEmail={`${selectedCandidate.username}@example.com`}
