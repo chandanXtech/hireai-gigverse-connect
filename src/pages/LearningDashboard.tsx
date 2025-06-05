@@ -114,34 +114,40 @@ const LearningDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
       <Navigation />
       
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      {/* Fixed container with proper spacing */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-20">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Learning Dashboard</h1>
           <p className="text-gray-600">Track your progress and continue your AI learning journey</p>
         </div>
 
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-white shadow-sm">
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-5 bg-white shadow-sm h-auto p-1">
+            <TabsTrigger value="dashboard" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
               <TrendingUp className="w-4 h-4" />
-              Dashboard
+              <span className="hidden sm:inline">Dashboard</span>
+              <span className="sm:hidden">Home</span>
             </TabsTrigger>
-            <TabsTrigger value="roadmap" className="flex items-center gap-2">
+            <TabsTrigger value="roadmap" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
               <Brain className="w-4 h-4" />
-              AI Roadmap
+              <span className="hidden sm:inline">AI Roadmap</span>
+              <span className="sm:hidden">AI</span>
             </TabsTrigger>
-            <TabsTrigger value="catalog" className="flex items-center gap-2">
+            <TabsTrigger value="catalog" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
               <Library className="w-4 h-4" />
-              Learning Catalog
+              <span className="hidden sm:inline">Learning Catalog</span>
+              <span className="sm:hidden">Catalog</span>
             </TabsTrigger>
-            <TabsTrigger value="explore" className="flex items-center gap-2">
+            <TabsTrigger value="explore" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
               <BookOpen className="w-4 h-4" />
-              Career Paths
+              <span className="hidden sm:inline">Career Paths</span>
+              <span className="sm:hidden">Paths</span>
             </TabsTrigger>
-            <TabsTrigger value="achievements" className="flex items-center gap-2">
+            <TabsTrigger value="achievements" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
               <Award className="w-4 h-4" />
-              Achievements
+              <span className="hidden sm:inline">Achievements</span>
+              <span className="sm:hidden">Awards</span>
             </TabsTrigger>
           </TabsList>
 
@@ -152,14 +158,14 @@ const LearningDashboard = () => {
                 {/* Main Progress */}
                 <div className="lg:col-span-2 space-y-6">
                   <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="flex items-center gap-2 text-lg">
                         <Target className="w-5 h-5 text-blue-600" />
                         Your Learning Path: {selectedGoal.title}
                       </CardTitle>
-                      <CardDescription>{selectedGoal.description}</CardDescription>
+                      <CardDescription className="text-sm">{selectedGoal.description}</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="pt-0">
                       <div className="space-y-4">
                         <div>
                           <div className="flex justify-between text-sm mb-2">
@@ -169,17 +175,17 @@ const LearningDashboard = () => {
                           <Progress value={progress.totalProgress} className="h-3" />
                         </div>
                         
-                        <div className="grid grid-cols-3 gap-4 text-center">
-                          <div className="bg-white/50 p-3 rounded-lg">
-                            <div className="text-2xl font-bold text-green-600">{progress.completedModules.length}</div>
+                        <div className="grid grid-cols-3 gap-3">
+                          <div className="bg-white/50 p-3 rounded-lg text-center">
+                            <div className="text-xl font-bold text-green-600">{progress.completedModules.length}</div>
                             <div className="text-xs text-gray-600">Completed</div>
                           </div>
-                          <div className="bg-white/50 p-3 rounded-lg">
-                            <div className="text-2xl font-bold text-blue-600">{progress.inProgressModules.length}</div>
+                          <div className="bg-white/50 p-3 rounded-lg text-center">
+                            <div className="text-xl font-bold text-blue-600">{progress.inProgressModules.length}</div>
                             <div className="text-xs text-gray-600">In Progress</div>
                           </div>
-                          <div className="bg-white/50 p-3 rounded-lg">
-                            <div className="text-2xl font-bold text-purple-600">{progress.skillsAcquired.length}</div>
+                          <div className="bg-white/50 p-3 rounded-lg text-center">
+                            <div className="text-xl font-bold text-purple-600">{progress.skillsAcquired.length}</div>
                             <div className="text-xs text-gray-600">Skills Learned</div>
                           </div>
                         </div>
@@ -189,34 +195,34 @@ const LearningDashboard = () => {
 
                   {/* Learning Modules */}
                   <Card>
-                    <CardHeader>
-                      <CardTitle>Learning Modules</CardTitle>
-                      <CardDescription>Continue your learning journey</CardDescription>
+                    <CardHeader className="pb-4">
+                      <CardTitle className="text-lg">Learning Modules</CardTitle>
+                      <CardDescription className="text-sm">Continue your learning journey</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
+                    <CardContent className="pt-0">
+                      <div className="space-y-3">
                         {selectedGoal.modules.map((module) => {
                           const isCompleted = progress.completedModules.includes(module.id);
                           const isInProgress = progress.inProgressModules.includes(module.id);
                           
                           return (
-                            <div key={module.id} className="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            <div key={module.id} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                                 isCompleted ? 'bg-green-500 text-white' : 
                                 isInProgress ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'
                               }`}>
                                 {isCompleted ? '✓' : isInProgress ? '●' : '○'}
                               </div>
                               
-                              <div className="flex-1">
-                                <h4 className="font-semibold">{module.title}</h4>
-                                <p className="text-sm text-gray-600">{module.description}</p>
-                                <div className="flex items-center gap-2 mt-2">
+                              <div className="flex-1 min-w-0">
+                                <h4 className="font-semibold text-sm truncate">{module.title}</h4>
+                                <p className="text-xs text-gray-600 line-clamp-2">{module.description}</p>
+                                <div className="flex items-center gap-2 mt-1 flex-wrap">
                                   <Badge variant="outline" className="text-xs">
                                     <Clock className="w-3 h-3 mr-1" />
                                     {module.estimatedTime}
                                   </Badge>
-                                  {module.skills.map((skill) => (
+                                  {module.skills.slice(0, 2).map((skill) => (
                                     <Badge key={skill} variant="secondary" className="text-xs">
                                       {skill}
                                     </Badge>
@@ -264,16 +270,16 @@ const LearningDashboard = () => {
                   
                   {/* Skills Acquired */}
                   <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="flex items-center gap-2 text-lg">
                         <Star className="w-5 h-5 text-yellow-500" />
                         Skills Acquired
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="pt-0">
                       <div className="flex flex-wrap gap-2">
                         {progress.skillsAcquired.map((skill) => (
-                          <Badge key={skill} className="bg-blue-100 text-blue-700">
+                          <Badge key={skill} className="bg-blue-100 text-blue-700 text-xs">
                             {skill}
                           </Badge>
                         ))}
@@ -314,19 +320,19 @@ const LearningDashboard = () => {
 
           <TabsContent value="explore" className="space-y-6">
             {/* Career Goals Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {careerGoals.map((goal) => (
                 <Card key={goal.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="flex items-center gap-2 text-lg">
                       <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
                         {goal.title.charAt(0)}
                       </div>
                       {goal.title}
                     </CardTitle>
-                    <CardDescription>{goal.description}</CardDescription>
+                    <CardDescription className="text-sm">{goal.description}</CardDescription>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="pt-0">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-sm text-gray-600">
                         <Clock className="w-4 h-4" />
@@ -341,7 +347,7 @@ const LearningDashboard = () => {
                         {goal.category}
                       </div>
                       <Button 
-                        className="w-full mt-4" 
+                        className="w-full mt-3" 
                         onClick={() => handleSetGoal(goal.id)}
                         disabled={progress?.careerGoalId === goal.id}
                       >
@@ -363,7 +369,7 @@ const LearningDashboard = () => {
 
           <TabsContent value="achievements" className="space-y-6">
             {progress && progress.badges.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {progress.badges.map((badge) => (
                   <Card key={badge.id} className="text-center">
                     <CardContent className="p-6">

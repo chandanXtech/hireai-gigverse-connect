@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -51,7 +51,7 @@ export const AIRoadmapGenerator: React.FC = () => {
     "I want to learn Digital Marketing"
   ], []);
 
-  const handleGenerateRoadmap = async () => {
+  const handleGenerateRoadmap = useCallback(async () => {
     if (!goal.trim()) {
       toast({
         title: "Please specify your goal",
@@ -85,11 +85,11 @@ export const AIRoadmapGenerator: React.FC = () => {
     } finally {
       setIsGenerating(false);
     }
-  };
+  }, [goal, toast]);
 
-  const handleResourceComplete = (phaseIndex: number, resourceTitle: string, resourceDuration: string) => {
+  const handleResourceComplete = useCallback((phaseIndex: number, resourceTitle: string, resourceDuration: string) => {
     const phaseId = `phase_${phaseIndex + 1}`;
-    const timeSpent = parseInt(resourceDuration) || 0;
+    const timeSpent = parseInt(resourceDuration.split(' ')[0]) || 0;
     
     roadmapProgressService.markResourceComplete(studentId, roadmapId, phaseId, resourceTitle, timeSpent);
     
@@ -100,9 +100,9 @@ export const AIRoadmapGenerator: React.FC = () => {
       title: "✅ Resource Completed!",
       description: `You've completed "${resourceTitle}". Keep up the great work!`,
     });
-  };
+  }, [roadmapId, toast]);
 
-  const getResourceIcon = (type: string) => {
+  const getResourceIcon = useCallback((type: string) => {
     switch (type) {
       case 'video':
         return <Play className="w-4 h-4" />;
@@ -115,9 +115,9 @@ export const AIRoadmapGenerator: React.FC = () => {
       default:
         return <ExternalLink className="w-4 h-4" />;
     }
-  };
+  }, []);
 
-  const getResourceColor = (type: string) => {
+  const getResourceColor = useCallback((type: string) => {
     switch (type) {
       case 'video':
         return 'bg-red-100 text-red-700 border-red-200';
@@ -130,13 +130,19 @@ export const AIRoadmapGenerator: React.FC = () => {
       default:
         return 'bg-gray-100 text-gray-700 border-gray-200';
     }
-  };
+  }, []);
+
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleGenerateRoadmap();
+    }
+  }, [handleGenerateRoadmap]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-6xl mx-auto">
       {/* Generator Interface */}
       <Card className="shadow-lg border-0 bg-gradient-to-br from-purple-50 to-blue-50">
-        <CardHeader>
+        <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2">
             <Brain className="w-6 h-6 text-purple-600" />
             AI-Powered Learning Roadmap
@@ -146,13 +152,13 @@ export const AIRoadmapGenerator: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <div className="flex-1">
               <Input
                 placeholder="e.g., I want to become a Data Scientist"
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleGenerateRoadmap()}
+                onKeyPress={handleKeyPress}
                 className="text-lg py-6"
               />
             </div>
@@ -160,7 +166,7 @@ export const AIRoadmapGenerator: React.FC = () => {
               size="lg" 
               onClick={handleGenerateRoadmap} 
               disabled={isGenerating}
-              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 px-6"
             >
               {isGenerating ? (
                 <>
@@ -170,7 +176,7 @@ export const AIRoadmapGenerator: React.FC = () => {
               ) : (
                 <>
                   <Target className="w-5 h-5 mr-2" />
-                  Generate Roadmap
+                  Generate
                 </>
               )}
             </Button>
@@ -178,14 +184,14 @@ export const AIRoadmapGenerator: React.FC = () => {
 
           <div className="space-y-2">
             <p className="text-sm font-medium text-gray-700">Try these examples:</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {exampleGoals.map((example, index) => (
                 <Button
                   key={index}
                   variant="outline"
                   size="sm"
                   onClick={() => setGoal(example)}
-                  className="text-xs hover:bg-purple-50"
+                  className="text-xs hover:bg-purple-50 justify-start"
                 >
                   {example}
                 </Button>
@@ -215,8 +221,8 @@ export const AIRoadmapGenerator: React.FC = () => {
                 </Badge>
               </div>
               
-              <Progress value={progress.overallProgress} className="w-full" />
-              <p className="text-sm text-green-600 mt-2">
+              <Progress value={progress.overallProgress} className="w-full mb-2" />
+              <p className="text-sm text-green-600">
                 {progress.overallProgress}% complete • {Math.floor(progress.totalTimeSpent / 60)}h {progress.totalTimeSpent % 60}m spent
               </p>
             </CardContent>
@@ -228,9 +234,9 @@ export const AIRoadmapGenerator: React.FC = () => {
               const phaseProgress = progress.phases[index];
               return (
                 <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow">
-                  <CardHeader>
+                  <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="flex items-center gap-2">
+                      <CardTitle className="flex items-center gap-2 text-lg">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                           phaseProgress?.completed ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'
                         }`}>
@@ -239,7 +245,7 @@ export const AIRoadmapGenerator: React.FC = () => {
                         {phase.phase}
                       </CardTitle>
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline">{phase.duration}</Badge>
+                        <Badge variant="outline" className="text-xs">{phase.duration}</Badge>
                         <Badge className={phaseProgress?.completed ? 'bg-green-500' : 'bg-blue-500'}>
                           {phaseProgress?.percentage || 0}%
                         </Badge>
@@ -254,7 +260,7 @@ export const AIRoadmapGenerator: React.FC = () => {
                       <h4 className="font-medium text-gray-900 mb-2">Skills you'll learn:</h4>
                       <div className="flex flex-wrap gap-2">
                         {phase.skills.map((skill, skillIndex) => (
-                          <Badge key={skillIndex} variant="secondary" className="bg-blue-100 text-blue-700">
+                          <Badge key={skillIndex} variant="secondary" className="bg-blue-100 text-blue-700 text-xs">
                             {skill}
                           </Badge>
                         ))}
@@ -273,37 +279,37 @@ export const AIRoadmapGenerator: React.FC = () => {
                                 isCompleted ? 'bg-green-50 border-green-200' : 'border-gray-200 hover:bg-gray-50'
                               }`}
                             >
-                              <div className={`p-2 rounded-full ${
+                              <div className={`p-2 rounded-full flex-shrink-0 ${
                                 isCompleted ? 'bg-green-500 text-white' : getResourceColor(resource.type)
                               }`}>
                                 {isCompleted ? <CheckCircle className="w-4 h-4" /> : getResourceIcon(resource.type)}
                               </div>
-                              <div className="flex-1">
-                                <h5 className={`font-medium ${isCompleted ? 'text-green-700' : 'text-gray-900'}`}>
+                              <div className="flex-1 min-w-0">
+                                <h5 className={`font-medium text-sm ${isCompleted ? 'text-green-700' : 'text-gray-900'} truncate`}>
                                   {resource.title}
                                 </h5>
-                                <p className="text-sm text-gray-600">{resource.description}</p>
+                                <p className="text-sm text-gray-600 line-clamp-2">{resource.description}</p>
                                 <p className="text-xs text-gray-500 mt-1">Duration: {resource.duration}</p>
                               </div>
-                              <div className="flex gap-2">
+                              <div className="flex gap-2 flex-shrink-0">
                                 <Button 
                                   size="sm" 
                                   variant="outline"
                                   asChild
-                                  className="hover:bg-blue-50"
+                                  className="hover:bg-blue-50 text-xs px-3"
                                 >
                                   <a href={resource.url} target="_blank" rel="noopener noreferrer">
-                                    <Play className="w-4 h-4 mr-1" />
+                                    <Play className="w-3 h-3 mr-1" />
                                     Watch
                                   </a>
                                 </Button>
                                 {!isCompleted && (
                                   <Button 
                                     size="sm" 
-                                    onClick={() => handleResourceComplete(index, resource.title, resource.duration.split(' ')[0])}
-                                    className="bg-green-500 hover:bg-green-600"
+                                    onClick={() => handleResourceComplete(index, resource.title, resource.duration)}
+                                    className="bg-green-500 hover:bg-green-600 text-xs px-3"
                                   >
-                                    <CheckCircle className="w-4 h-4 mr-1" />
+                                    <CheckCircle className="w-3 h-3 mr-1" />
                                     Complete
                                   </Button>
                                 )}

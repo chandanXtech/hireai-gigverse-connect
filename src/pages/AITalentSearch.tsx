@@ -1,4 +1,3 @@
-
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,7 +11,8 @@ import { useState, useEffect } from 'react';
 import { aiSearchService } from '@/lib/services/aiSearchService';
 import { useSearchParams } from 'react-router-dom';
 
-interface CandidateMatch {
+// Local interface that matches the aiSearchService types
+interface LocalCandidateMatch {
   id: number;
   username: string;
   name: string;
@@ -50,8 +50,8 @@ interface CandidateMatch {
 const AITalentSearch = () => {
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
-  const [candidates, setCandidates] = useState<CandidateMatch[]>([]);
-  const [selectedCandidate, setSelectedCandidate] = useState<CandidateMatch | null>(null);
+  const [candidates, setCandidates] = useState<LocalCandidateMatch[]>([]);
+  const [selectedCandidate, setSelectedCandidate] = useState<LocalCandidateMatch | null>(null);
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchTime, setSearchTime] = useState(0);
@@ -76,9 +76,9 @@ const AITalentSearch = () => {
     const startTime = Date.now();
 
     // Simulate search delay for realism
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 500));
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 500 + 300));
 
-    const results = aiSearchService.searchCandidates(searchQuery);
+    const results = aiSearchService.searchCandidates(searchQuery) as LocalCandidateMatch[];
     setCandidates(results);
     
     const endTime = Date.now();
@@ -86,7 +86,7 @@ const AITalentSearch = () => {
     setIsSearching(false);
   };
 
-  const handleMessageCandidate = (candidate: CandidateMatch) => {
+  const handleMessageCandidate = (candidate: LocalCandidateMatch) => {
     setSelectedCandidate(candidate);
     setIsMessageModalOpen(true);
   };
