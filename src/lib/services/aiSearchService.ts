@@ -57,429 +57,509 @@ export const aiSearchService = {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    const goalLower = goal.toLowerCase();
-    
-    // Data Scientist roadmap
-    if (goalLower.includes('data scientist') || goalLower.includes('data science')) {
-      return {
-        description: "Complete pathway to becoming a professional Data Scientist with hands-on projects and industry-relevant skills",
-        totalDuration: "8-12 months",
-        roadmap: [
-          {
-            phase: "Foundation - Python & Statistics",
-            duration: "2-3 months",
-            skills: ["Python Programming", "Statistics", "Data Analysis", "Pandas", "NumPy"],
-            resources: [
-              {
-                title: "Python for Data Science - Complete Course",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=LHBE6Q9XlzI",
-                description: "12-hour comprehensive Python course covering all data science fundamentals"
-              },
-              {
-                title: "Statistics Fundamentals",
-                type: "video", 
-                url: "https://www.youtube.com/watch?v=xxpc-HPKN28",
-                description: "Essential statistics concepts for data science"
-              },
-              {
-                title: "Pandas Complete Tutorial",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=vmEHCJofslg",
-                description: "Master data manipulation with Pandas"
-              }
-            ]
-          },
-          {
-            phase: "Machine Learning Fundamentals",
-            duration: "2-3 months", 
-            skills: ["Machine Learning", "Scikit-learn", "Supervised Learning", "Unsupervised Learning"],
-            resources: [
-              {
-                title: "Machine Learning Course - Andrew Ng",
-                type: "course",
-                url: "https://www.youtube.com/watch?v=PPLop4L2eGk",
-                description: "Stanford's famous ML course by Andrew Ng"
-              },
-              {
-                title: "Scikit-learn Crash Course",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=pqNCD_5r0IU",
-                description: "Hands-on machine learning with Python"
-              },
-              {
-                title: "100 Days of ML Code",
-                type: "practice",
-                url: "https://github.com/Avik-Jain/100-Days-Of-ML-Code",
-                description: "Daily ML coding challenges and projects"
-              }
-            ]
-          },
-          {
-            phase: "Deep Learning & Advanced ML",
-            duration: "2-3 months",
-            skills: ["Deep Learning", "Neural Networks", "TensorFlow", "PyTorch", "Computer Vision", "NLP"],
-            resources: [
-              {
-                title: "Deep Learning Specialization",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=CS4cs9xVecg",
-                description: "Complete deep learning course by Andrew Ng"
-              },
-              {
-                title: "PyTorch for Deep Learning",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=V_xro1bcAuA",
-                description: "Learn PyTorch from scratch"
-              },
-              {
-                title: "Natural Language Processing",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=fNxaJsNG3-s",
-                description: "NLP fundamentals and applications"
-              }
-            ]
-          },
-          {
-            phase: "Data Engineering & MLOps",
-            duration: "1-2 months",
-            skills: ["SQL", "Data Pipelines", "MLOps", "Docker", "Cloud Platforms", "Model Deployment"],
-            resources: [
-              {
-                title: "SQL for Data Science",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=HXV3zeQKqGY",
-                description: "Complete SQL course for data analysis"
-              },
-              {
-                title: "MLOps Course",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=NgWujOrCZFo",
-                description: "Machine Learning Operations and deployment"
-              },
-              {
-                title: "Docker for Data Science",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=0qG_0CPQhpg",
-                description: "Containerization for ML projects"
-              }
-            ]
-          },
-          {
-            phase: "Portfolio Projects & Career Prep",
-            duration: "1-2 months",
-            skills: ["Portfolio Development", "GitHub", "Project Management", "Communication", "Interview Prep"],
-            resources: [
-              {
-                title: "Data Science Portfolio Projects",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=MpF9HENQjDo",
-                description: "Build impressive portfolio projects"
-              },
-              {
-                title: "Data Science Interview Questions",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=fE1TF0mekN0",
-                description: "Common interview questions and answers"
-              },
-              {
-                title: "Kaggle Competitions Guide",
-                type: "practice",
-                url: "https://www.kaggle.com/learn",
-                description: "Participate in real data science competitions"
-              }
-            ]
-          }
-        ]
-      };
-    }
-    
-    // Machine Learning Engineer roadmap
-    if (goalLower.includes('machine learning') || goalLower.includes('ml engineer')) {
-      return {
-        description: "Comprehensive pathway to becoming a Machine Learning Engineer with focus on production systems",
-        totalDuration: "6-9 months",
-        roadmap: [
-          {
-            phase: "Programming & Math Foundations",
-            duration: "2 months",
-            skills: ["Python", "Linear Algebra", "Calculus", "Statistics", "Git"],
-            resources: [
-              {
-                title: "Python Programming Full Course",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=rfscVS0vtbw",
-                description: "Complete Python course for beginners"
-              },
-              {
-                title: "Linear Algebra for ML",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=fNk_zzaMoSs",
-                description: "Essential math concepts for machine learning"
-              }
-            ]
-          },
-          {
-            phase: "Core Machine Learning",
-            duration: "2-3 months",
-            skills: ["Supervised Learning", "Unsupervised Learning", "Model Evaluation", "Feature Engineering"],
-            resources: [
-              {
-                title: "Machine Learning A-Z",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=Gv9_4yMHFhI",
-                description: "Comprehensive ML algorithms course"
-              },
-              {
-                title: "Feature Engineering Techniques",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=6WDFfaYtN6s",
-                description: "Advanced feature engineering methods"
-              }
-            ]
-          },
-          {
-            phase: "MLOps & Production",
-            duration: "2-3 months",
-            skills: ["Model Deployment", "Docker", "Kubernetes", "CI/CD", "Monitoring"],
-            resources: [
-              {
-                title: "MLOps Complete Guide",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=NgWujOrCZFo",
-                description: "Production ML systems and operations"
-              },
-              {
-                title: "Docker & Kubernetes for ML",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=0qG_0CPQhpg",
-                description: "Containerization and orchestration"
-              }
-            ]
-          }
-        ]
-      };
-    }
-    
-    // Frontend Developer roadmap
-    if (goalLower.includes('frontend') || goalLower.includes('react') || goalLower.includes('web develop')) {
-      return {
-        description: "Modern frontend development pathway with React, TypeScript, and latest tools",
-        totalDuration: "4-6 months",
-        roadmap: [
-          {
-            phase: "Web Fundamentals",
-            duration: "1-2 months",
-            skills: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "Git"],
-            resources: [
-              {
-                title: "HTML & CSS Full Course",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=mU6anWqZJcc",
-                description: "Complete web development fundamentals"
-              },
-              {
-                title: "JavaScript Crash Course",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=hdI2bqOjy3c",
-                description: "Modern JavaScript ES6+ features"
-              }
-            ]
-          },
-          {
-            phase: "React Development",
-            duration: "2-3 months",
-            skills: ["React", "TypeScript", "State Management", "React Router", "Hooks"],
-            resources: [
-              {
-                title: "React Complete Course",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=bMknfKXIFA8",
-                description: "Full React development course"
-              },
-              {
-                title: "TypeScript for React",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=TiSGujM22OI",
-                description: "TypeScript integration with React"
-              }
-            ]
-          },
-          {
-            phase: "Advanced Tools & Deployment",
-            duration: "1 month",
-            skills: ["Next.js", "Testing", "Performance", "Deployment", "Build Tools"],
-            resources: [
-              {
-                title: "Next.js Complete Guide",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=mTz0GXj8NN0",
-                description: "Full-stack React with Next.js"
-              },
-              {
-                title: "React Testing Library",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=3e1GHCA3GP0",
-                description: "Testing React applications"
-              }
-            ]
-          }
-        ]
-      };
-    }
-    
-    // AI/Deep Learning roadmap
-    if (goalLower.includes('ai') || goalLower.includes('artificial intelligence') || goalLower.includes('deep learning')) {
-      return {
-        description: "Comprehensive AI and Deep Learning pathway for modern AI applications",
-        totalDuration: "8-12 months",
-        roadmap: [
-          {
-            phase: "Programming & Math Foundation",
-            duration: "2 months",
-            skills: ["Python", "Linear Algebra", "Calculus", "Statistics", "NumPy"],
-            resources: [
-              {
-                title: "Python for AI - Complete Course",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=t8pPdKYpowI",
-                description: "Python programming specifically for AI"
-              },
-              {
-                title: "Mathematics for AI",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=fNk_zzaMoSs",
-                description: "Essential mathematical foundations"
-              }
-            ]
-          },
-          {
-            phase: "Deep Learning Fundamentals",
-            duration: "3-4 months",
-            skills: ["Neural Networks", "TensorFlow", "PyTorch", "Computer Vision", "NLP"],
-            resources: [
-              {
-                title: "Deep Learning Specialization",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=CS4cs9xVecg",
-                description: "Andrew Ng's deep learning course"
-              },
-              {
-                title: "PyTorch Deep Learning",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=V_xro1bcAuA",
-                description: "Hands-on deep learning with PyTorch"
-              }
-            ]
-          },
-          {
-            phase: "Advanced AI & LLMs",
-            duration: "2-3 months",
-            skills: ["Transformers", "LLMs", "Generative AI", "LangChain", "RAG"],
-            resources: [
-              {
-                title: "Large Language Models Course",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=kCc8FmEb1nY",
-                description: "Understanding and building LLMs"
-              },
-              {
-                title: "LangChain Complete Guide",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=_v_fgW2SkkQ",
-                description: "Building AI applications with LangChain"
-              }
-            ]
-          },
-          {
-            phase: "AI Applications & Deployment",
-            duration: "1-2 months",
-            skills: ["Model Deployment", "API Development", "Cloud AI Services", "Production AI"],
-            resources: [
-              {
-                title: "Deploying AI Models",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=mrExsjcvF4o",
-                description: "Production deployment of AI models"
-              },
-              {
-                title: "Building AI Applications",
-                type: "video",
-                url: "https://www.youtube.com/watch?v=tcqEUSNCn8I",
-                description: "End-to-end AI application development"
-              }
-            ]
-          }
-        ]
-      };
-    }
-    
-    // Default roadmap for general goals
-    return {
-      description: "Customized learning pathway based on your specific goals and interests",
-      totalDuration: "6-8 months",
-      roadmap: [
-        {
-          phase: "Foundation & Planning",
-          duration: "1 month",
-          skills: ["Goal Setting", "Learning Strategy", "Time Management", "Resource Planning"],
-          resources: [
-            {
-              title: "How to Learn Anything Fast",
-              type: "video",
-              url: "https://www.youtube.com/watch?v=O96fE1E-rf8",
-              description: "Effective learning strategies and techniques"
-            },
-            {
-              title: "Building Learning Habits",
-              type: "video",
-              url: "https://www.youtube.com/watch?v=V3UhXOUpI8U",
-              description: "Creating sustainable learning routines"
-            }
-          ]
-        },
-        {
-          phase: "Core Skills Development",
-          duration: "3-4 months",
-          skills: ["Programming", "Problem Solving", "Critical Thinking", "Project Management"],
-          resources: [
-            {
-              title: "Programming Fundamentals",
-              type: "video",
-              url: "https://www.youtube.com/watch?v=zOjov-2OZ0E",
-              description: "Core programming concepts and practices"
-            },
-            {
-              title: "Problem Solving Techniques",
-              type: "video",
-              url: "https://www.youtube.com/watch?v=MS2aHDfRNYE",
-              description: "Analytical thinking and problem-solving"
-            }
-          ]
-        },
-        {
-          phase: "Practical Application",
-          duration: "2-3 months",
-          skills: ["Project Building", "Portfolio Development", "Real-world Experience"],
-          resources: [
-            {
-              title: "Building Your First Project",
-              type: "video",
-              url: "https://www.youtube.com/watch?v=41ek1j0Xr1Y",
-              description: "Step-by-step project development guide"
-            },
-            {
-              title: "Portfolio Showcase",
-              type: "video",
-              url: "https://www.youtube.com/watch?v=n50_7SktIpY",
-              description: "Creating an impressive portfolio"
-            }
-          ]
-        }
-      ]
-    };
+    return generateDynamicRoadmap(goal);
   }
 };
+
+function generateDynamicRoadmap(goal: string): LearningRoadmap {
+  const goalLower = goal.toLowerCase();
+  
+  // Predefined roadmaps for common goals
+  if (goalLower.includes('data scientist') || goalLower.includes('data science')) {
+    return getDataScienceRoadmap();
+  }
+  
+  if (goalLower.includes('machine learning') || goalLower.includes('ml engineer')) {
+    return getMachineLearningRoadmap();
+  }
+  
+  if (goalLower.includes('frontend') || goalLower.includes('react') || goalLower.includes('web develop')) {
+    return getFrontendRoadmap();
+  }
+  
+  if (goalLower.includes('ai') || goalLower.includes('artificial intelligence') || goalLower.includes('deep learning')) {
+    return getAIRoadmap();
+  }
+
+  // Trading roadmap
+  if (goalLower.includes('trading') || goalLower.includes('trader') || goalLower.includes('stock')) {
+    return getTradingRoadmap();
+  }
+
+  // Betting/Gambling roadmap
+  if (goalLower.includes('betting') || goalLower.includes('gambling') || goalLower.includes('poker')) {
+    return getBettingRoadmap();
+  }
+
+  // Digital Marketing roadmap
+  if (goalLower.includes('digital marketing') || goalLower.includes('marketing') || goalLower.includes('seo')) {
+    return getDigitalMarketingRoadmap();
+  }
+
+  // Blockchain roadmap
+  if (goalLower.includes('blockchain') || goalLower.includes('crypto') || goalLower.includes('web3')) {
+    return getBlockchainRoadmap();
+  }
+
+  // Photography roadmap
+  if (goalLower.includes('photography') || goalLower.includes('photographer')) {
+    return getPhotographyRoadmap();
+  }
+
+  // Music production roadmap
+  if (goalLower.includes('music production') || goalLower.includes('music producer') || goalLower.includes('beat making')) {
+    return getMusicProductionRoadmap();
+  }
+
+  // Fitness/Personal Training roadmap
+  if (goalLower.includes('fitness') || goalLower.includes('personal trainer') || goalLower.includes('gym')) {
+    return getFitnessRoadmap();
+  }
+
+  // Cooking roadmap
+  if (goalLower.includes('cooking') || goalLower.includes('chef') || goalLower.includes('culinary')) {
+    return getCookingRoadmap();
+  }
+
+  // Default dynamic roadmap for any other goal
+  return getGenericRoadmap(goal);
+}
+
+function getDataScienceRoadmap(): LearningRoadmap {
+  return {
+    description: "Complete pathway to becoming a professional Data Scientist with hands-on projects and industry-relevant skills",
+    totalDuration: "8-12 months",
+    roadmap: [
+      {
+        phase: "Foundation - Python & Statistics",
+        duration: "2-3 months",
+        skills: ["Python Programming", "Statistics", "Data Analysis", "Pandas", "NumPy"],
+        resources: [
+          {
+            title: "Python for Data Science - Complete Course",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=LHBE6Q9XlzI",
+            description: "12-hour comprehensive Python course covering all data science fundamentals"
+          },
+          {
+            title: "Statistics Fundamentals",
+            type: "video", 
+            url: "https://www.youtube.com/watch?v=xxpc-HPKN28",
+            description: "Essential statistics concepts for data science"
+          }
+        ]
+      },
+      {
+        phase: "Machine Learning Fundamentals",
+        duration: "2-3 months", 
+        skills: ["Machine Learning", "Scikit-learn", "Supervised Learning", "Unsupervised Learning"],
+        resources: [
+          {
+            title: "Machine Learning Course - Andrew Ng",
+            type: "course",
+            url: "https://www.youtube.com/watch?v=PPLop4L2eGk",
+            description: "Stanford's famous ML course by Andrew Ng"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getMachineLearningRoadmap(): LearningRoadmap {
+  return {
+    description: "Comprehensive pathway to becoming a Machine Learning Engineer with focus on production systems",
+    totalDuration: "6-9 months",
+    roadmap: [
+      {
+        phase: "Programming & Math Foundations",
+        duration: "2 months",
+        skills: ["Python", "Linear Algebra", "Calculus", "Statistics", "Git"],
+        resources: [
+          {
+            title: "Python Programming Full Course",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=rfscVS0vtbw",
+            description: "Complete Python course for beginners"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getFrontendRoadmap(): LearningRoadmap {
+  return {
+    description: "Modern frontend development pathway with React, TypeScript, and latest tools",
+    totalDuration: "4-6 months",
+    roadmap: [
+      {
+        phase: "Web Fundamentals",
+        duration: "1-2 months",
+        skills: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "Git"],
+        resources: [
+          {
+            title: "HTML & CSS Full Course",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=mU6anWqZJcc",
+            description: "Complete web development fundamentals"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getAIRoadmap(): LearningRoadmap {
+  return {
+    description: "Comprehensive AI and Deep Learning pathway for modern AI applications",
+    totalDuration: "8-12 months",
+    roadmap: [
+      {
+        phase: "Programming & Math Foundation",
+        duration: "2 months",
+        skills: ["Python", "Linear Algebra", "Calculus", "Statistics", "NumPy"],
+        resources: [
+          {
+            title: "Python for AI - Complete Course",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=t8pPdKYpowI",
+            description: "Python programming specifically for AI"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getTradingRoadmap(): LearningRoadmap {
+  return {
+    description: "Complete trading education from basics to advanced strategies with risk management",
+    totalDuration: "6-9 months",
+    roadmap: [
+      {
+        phase: "Trading Fundamentals",
+        duration: "2 months",
+        skills: ["Market Basics", "Chart Reading", "Risk Management", "Trading Psychology"],
+        resources: [
+          {
+            title: "Trading 101 - Complete Beginner Course",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=p7Hj4pvfCy0",
+            description: "Comprehensive introduction to stock market trading"
+          },
+          {
+            title: "Technical Analysis Masterclass",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=08c8uDM-SsA",
+            description: "Learn to read charts and identify trading opportunities"
+          }
+        ]
+      },
+      {
+        phase: "Advanced Strategies",
+        duration: "2-3 months",
+        skills: ["Options Trading", "Swing Trading", "Day Trading", "Portfolio Management"],
+        resources: [
+          {
+            title: "Options Trading Explained",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=7PM4rNDr4oI",
+            description: "Complete guide to options trading strategies"
+          },
+          {
+            title: "Day Trading Strategies",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=2CV_KuT1zZE",
+            description: "Proven day trading techniques and setups"
+          }
+        ]
+      },
+      {
+        phase: "Risk Management & Psychology",
+        duration: "2-4 months",
+        skills: ["Position Sizing", "Stop Losses", "Trading Discipline", "Emotional Control"],
+        resources: [
+          {
+            title: "Trading Psychology Mastery",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=ShSFj6SrKGE",
+            description: "Master the mental game of trading"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getBettingRoadmap(): LearningRoadmap {
+  return {
+    description: "Responsible gambling education focusing on probability, bankroll management, and risk awareness",
+    totalDuration: "3-6 months",
+    roadmap: [
+      {
+        phase: "Probability & Math Fundamentals",
+        duration: "1-2 months",
+        skills: ["Probability Theory", "Statistics", "Expected Value", "Variance"],
+        resources: [
+          {
+            title: "Probability for Beginners",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=uzkc-qNVoOk",
+            description: "Understanding probability and odds in gambling"
+          },
+          {
+            title: "Statistics in Gambling",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=A8VGQ46T4ks",
+            description: "How statistics work in betting and casinos"
+          }
+        ]
+      },
+      {
+        phase: "Bankroll Management",
+        duration: "1-2 months",
+        skills: ["Kelly Criterion", "Unit Betting", "Risk of Ruin", "Discipline"],
+        resources: [
+          {
+            title: "Bankroll Management Guide",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=A2Q2Q2Q2Q2Q",
+            description: "Essential bankroll management for responsible gambling"
+          }
+        ]
+      },
+      {
+        phase: "Responsible Gaming & Awareness",
+        duration: "1-2 months",
+        skills: ["Problem Gambling Recognition", "Self-Control", "Addiction Prevention"],
+        resources: [
+          {
+            title: "Responsible Gambling Education",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=gambling-awareness",
+            description: "Understanding the risks and maintaining control"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getDigitalMarketingRoadmap(): LearningRoadmap {
+  return {
+    description: "Complete digital marketing mastery from social media to SEO and paid advertising",
+    totalDuration: "4-6 months",
+    roadmap: [
+      {
+        phase: "Digital Marketing Foundations",
+        duration: "1-2 months",
+        skills: ["Marketing Strategy", "Customer Personas", "Content Marketing", "Analytics"],
+        resources: [
+          {
+            title: "Digital Marketing Full Course",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=bixR-KIJKYM",
+            description: "Complete introduction to digital marketing"
+          }
+        ]
+      },
+      {
+        phase: "SEO & Content Marketing",
+        duration: "1-2 months",
+        skills: ["SEO", "Keyword Research", "Content Creation", "Google Analytics"],
+        resources: [
+          {
+            title: "SEO Tutorial for Beginners",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=DvwS7cV9GmQ",
+            description: "Complete SEO course from basics to advanced"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getBlockchainRoadmap(): LearningRoadmap {
+  return {
+    description: "Comprehensive blockchain development pathway from basics to DeFi and NFTs",
+    totalDuration: "6-8 months",
+    roadmap: [
+      {
+        phase: "Blockchain Fundamentals",
+        duration: "2 months",
+        skills: ["Blockchain Basics", "Cryptocurrency", "Wallets", "Decentralization"],
+        resources: [
+          {
+            title: "Blockchain Explained",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=SSo_EIwHSd4",
+            description: "Complete blockchain fundamentals course"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getPhotographyRoadmap(): LearningRoadmap {
+  return {
+    description: "Professional photography skills from camera basics to advanced techniques",
+    totalDuration: "4-6 months",
+    roadmap: [
+      {
+        phase: "Camera Fundamentals",
+        duration: "1-2 months",
+        skills: ["Camera Settings", "Exposure", "Composition", "Lighting"],
+        resources: [
+          {
+            title: "Photography Basics for Beginners",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=LxO-6rlihSg",
+            description: "Complete photography course for beginners"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getMusicProductionRoadmap(): LearningRoadmap {
+  return {
+    description: "Music production mastery from DAW basics to professional mixing and mastering",
+    totalDuration: "6-9 months",
+    roadmap: [
+      {
+        phase: "DAW & Production Basics",
+        duration: "2-3 months",
+        skills: ["DAW Navigation", "MIDI", "Audio Recording", "Basic Mixing"],
+        resources: [
+          {
+            title: "Music Production Complete Course",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=MEzb_hmwCpw",
+            description: "Complete music production course for beginners"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getFitnessRoadmap(): LearningRoadmap {
+  return {
+    description: "Complete fitness and personal training education pathway",
+    totalDuration: "4-6 months",
+    roadmap: [
+      {
+        phase: "Fitness Fundamentals",
+        duration: "1-2 months",
+        skills: ["Exercise Physiology", "Anatomy", "Nutrition Basics", "Training Principles"],
+        resources: [
+          {
+            title: "Fitness Trainer Certification Course",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=fitness-course",
+            description: "Complete personal trainer education"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getCookingRoadmap(): LearningRoadmap {
+  return {
+    description: "Culinary arts mastery from basic techniques to advanced cuisine",
+    totalDuration: "6-12 months",
+    roadmap: [
+      {
+        phase: "Cooking Fundamentals",
+        duration: "2-3 months",
+        skills: ["Knife Skills", "Basic Techniques", "Food Safety", "Recipe Reading"],
+        resources: [
+          {
+            title: "Cooking Basics - Complete Course",
+            type: "video",
+            url: "https://www.youtube.com/watch?v=cooking-basics",
+            description: "Essential cooking techniques and skills"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function getGenericRoadmap(goal: string): LearningRoadmap {
+  // Extract key words from the goal for a more personalized approach
+  const keywords = goal.toLowerCase().split(' ').filter(word => word.length > 2);
+  const mainTopic = keywords[0] || 'skill';
+  
+  return {
+    description: `Customized learning pathway to master ${goal}`,
+    totalDuration: "4-8 months",
+    roadmap: [
+      {
+        phase: "Foundation & Basics",
+        duration: "1-2 months",
+        skills: ["Fundamentals", "Basic Concepts", "Terminology", "Getting Started"],
+        resources: [
+          {
+            title: `${goal} - Complete Beginner Guide`,
+            type: "video",
+            url: `https://www.youtube.com/results?search_query=${encodeURIComponent(goal + ' tutorial')}`,
+            description: `Comprehensive introduction to ${goal}`
+          },
+          {
+            title: `Understanding ${mainTopic} Basics`,
+            type: "video",
+            url: `https://www.youtube.com/results?search_query=${encodeURIComponent(mainTopic + ' basics')}`,
+            description: `Essential concepts and fundamentals`
+          }
+        ]
+      },
+      {
+        phase: "Intermediate Skills",
+        duration: "2-3 months",
+        skills: ["Practical Application", "Hands-on Practice", "Problem Solving", "Skill Building"],
+        resources: [
+          {
+            title: `Intermediate ${goal} Course`,
+            type: "course",
+            url: `https://www.youtube.com/results?search_query=${encodeURIComponent(goal + ' intermediate')}`,
+            description: `Building on the basics with practical exercises`
+          },
+          {
+            title: `${goal} Practice Projects`,
+            type: "practice",
+            url: `https://www.youtube.com/results?search_query=${encodeURIComponent(goal + ' projects')}`,
+            description: `Hands-on projects to reinforce learning`
+          }
+        ]
+      },
+      {
+        phase: "Advanced Mastery",
+        duration: "1-3 months",
+        skills: ["Advanced Techniques", "Professional Level", "Specialization", "Mastery"],
+        resources: [
+          {
+            title: `Advanced ${goal} Techniques`,
+            type: "video",
+            url: `https://www.youtube.com/results?search_query=${encodeURIComponent(goal + ' advanced')}`,
+            description: `Professional-level skills and techniques`
+          },
+          {
+            title: `Mastering ${goal}`,
+            type: "book",
+            url: `https://www.youtube.com/results?search_query=${encodeURIComponent(goal + ' mastery')}`,
+            description: `Achieving expertise and professional competency`
+          }
+        ]
+      }
+    ]
+  };
+}
 
 function analyzeQuery(query: string): SearchAnalysis {
   const lowercaseQuery = query.toLowerCase();
@@ -684,7 +764,7 @@ function calculateMatch(candidate: Candidate, analysis: SearchAnalysis, original
   const baseMatch = (skillsMatch * 0.4) + (experienceMatch * 0.25) + (locationMatch * 0.25) + (availabilityMatch * 0.1);
   
   // Add candidate-specific variation based on ID for consistency
-  const candidateHash = candidate.id.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+  const candidateHash = candidate.id.toString().split('').reduce((a, b) => a + b.charCodeAt(0), 0);
   const variation = (candidateHash % 20) - 10; // -10 to +10 variation
   
   const finalMatch = Math.max(20, Math.min(100, Math.round(baseMatch + variation)));
