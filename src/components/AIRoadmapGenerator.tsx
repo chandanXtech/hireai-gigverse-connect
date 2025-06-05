@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,6 +15,7 @@ interface RoadmapResource {
   type: 'video' | 'course' | 'book' | 'practice';
   url: string;
   description: string;
+  duration: string;
 }
 
 interface RoadmapPhase {
@@ -27,6 +29,7 @@ interface LearningRoadmap {
   roadmap: RoadmapPhase[];
   totalDuration: string;
   description: string;
+  totalMinutes: number;
 }
 
 export const AIRoadmapGenerator: React.FC = () => {
@@ -37,14 +40,16 @@ export const AIRoadmapGenerator: React.FC = () => {
   const [progress, setProgress] = useState<any>(null);
   const { toast } = useToast();
 
-  const studentId = 'student-1'; // Mock student ID
+  const studentId = 'student-1';
 
-  const exampleGoals = [
+  const exampleGoals = useMemo(() => [
     "I want to become a Data Scientist",
     "I want to learn Machine Learning",
     "I want to become a Frontend Developer",
-    "I want to learn AI and Deep Learning"
-  ];
+    "I want to learn Trading",
+    "I want to learn Cooking",
+    "I want to learn Digital Marketing"
+  ], []);
 
   const handleGenerateRoadmap = async () => {
     if (!goal.trim()) {
@@ -61,17 +66,15 @@ export const AIRoadmapGenerator: React.FC = () => {
       const generatedRoadmap = await aiSearchService.generateLearningRoadmap(goal);
       setRoadmap(generatedRoadmap);
       
-      // Save roadmap and get ID
       const newRoadmapId = roadmapProgressService.saveRoadmap(studentId, goal, generatedRoadmap);
       setRoadmapId(newRoadmapId);
       
-      // Get initial progress
       const initialProgress = roadmapProgressService.getRoadmapProgress(studentId, newRoadmapId);
       setProgress(initialProgress);
       
       toast({
         title: "🎯 Roadmap Generated!",
-        description: `Your personalized learning path is ready with ${generatedRoadmap.totalMinutes} minutes of content`,
+        description: `Your personalized learning path is ready with ${Math.floor(generatedRoadmap.totalMinutes / 60)} hours of content`,
       });
     } catch (error) {
       toast({
@@ -90,7 +93,6 @@ export const AIRoadmapGenerator: React.FC = () => {
     
     roadmapProgressService.markResourceComplete(studentId, roadmapId, phaseId, resourceTitle, timeSpent);
     
-    // Update progress state
     const updatedProgress = roadmapProgressService.getRoadmapProgress(studentId, roadmapId);
     setProgress(updatedProgress);
     
@@ -174,7 +176,6 @@ export const AIRoadmapGenerator: React.FC = () => {
             </Button>
           </div>
 
-          {/* Example Goals */}
           <div className="space-y-2">
             <p className="text-sm font-medium text-gray-700">Try these examples:</p>
             <div className="flex flex-wrap gap-2">
@@ -249,7 +250,6 @@ export const AIRoadmapGenerator: React.FC = () => {
                     )}
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {/* Skills to Learn */}
                     <div>
                       <h4 className="font-medium text-gray-900 mb-2">Skills you'll learn:</h4>
                       <div className="flex flex-wrap gap-2">
@@ -261,7 +261,6 @@ export const AIRoadmapGenerator: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Learning Resources */}
                     <div>
                       <h4 className="font-medium text-gray-900 mb-3">Resources ({phase.resources.length} videos):</h4>
                       <div className="space-y-3">
@@ -301,7 +300,7 @@ export const AIRoadmapGenerator: React.FC = () => {
                                 {!isCompleted && (
                                   <Button 
                                     size="sm" 
-                                    onClick={() => handleResourceComplete(index, resource.title, resource.duration)}
+                                    onClick={() => handleResourceComplete(index, resource.title, resource.duration.split(' ')[0])}
                                     className="bg-green-500 hover:bg-green-600"
                                   >
                                     <CheckCircle className="w-4 h-4 mr-1" />

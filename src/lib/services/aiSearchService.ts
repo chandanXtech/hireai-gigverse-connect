@@ -9,7 +9,7 @@ interface RoadmapResource {
   type: 'video' | 'course' | 'book' | 'practice';
   url: string;
   description: string;
-  duration: string; // Added duration property
+  duration: string;
 }
 
 interface RoadmapPhase {
@@ -70,6 +70,24 @@ const youtubeVideos = {
     { title: 'Portrait Photography Tutorial', url: 'https://www.youtube.com/watch?v=kmi9hse46H0', duration: '300', description: 'Learn professional portrait techniques' },
     { title: 'Lightroom Editing Masterclass', url: 'https://www.youtube.com/watch?v=ON8Q8dHq7Ig', duration: '360', description: 'Complete photo editing in Adobe Lightroom' },
     { title: 'Street Photography Guide', url: 'https://www.youtube.com/watch?v=I41CX_9lh64', duration: '240', description: 'Capture stunning street photography' }
+  ],
+  'blockchain': [
+    { title: 'Blockchain Fundamentals', url: 'https://www.youtube.com/watch?v=SSo_EIwHSd4', duration: '480', description: 'Complete blockchain technology course' },
+    { title: 'Cryptocurrency Trading', url: 'https://www.youtube.com/watch?v=1YyAzVmP9xQ', duration: '360', description: 'Learn crypto trading strategies' },
+    { title: 'Smart Contracts Tutorial', url: 'https://www.youtube.com/watch?v=M576WGiDBdQ', duration: '300', description: 'Build smart contracts on Ethereum' },
+    { title: 'DeFi Explained', url: 'https://www.youtube.com/watch?v=k9HYC0EJU6E', duration: '240', description: 'Understanding decentralized finance' }
+  ],
+  'digital marketing': [
+    { title: 'Digital Marketing Full Course', url: 'https://www.youtube.com/watch?v=bixR-KIJKYM', duration: '600', description: 'Complete digital marketing strategy' },
+    { title: 'Social Media Marketing', url: 'https://www.youtube.com/watch?v=9-cqkPeqpME', duration: '420', description: 'Master social media campaigns' },
+    { title: 'Google Ads Tutorial', url: 'https://www.youtube.com/watch?v=jCe-Yab7hOI', duration: '360', description: 'Learn Google Ads and PPC' },
+    { title: 'SEO Fundamentals', url: 'https://www.youtube.com/watch?v=xsVTqzratPs', duration: '300', description: 'Search engine optimization basics' }
+  ],
+  'music production': [
+    { title: 'Music Production Basics', url: 'https://www.youtube.com/watch?v=7K2wFrhqzRE', duration: '540', description: 'Complete music production course' },
+    { title: 'Beat Making Tutorial', url: 'https://www.youtube.com/watch?v=BZG-N1VGWHE', duration: '300', description: 'Learn to create beats and rhythms' },
+    { title: 'Mixing and Mastering', url: 'https://www.youtube.com/watch?v=ICYLdYB_hHs', duration: '420', description: 'Professional audio mixing techniques' },
+    { title: 'Logic Pro X Tutorial', url: 'https://www.youtube.com/watch?v=JWf1RF8lrKs', duration: '480', description: 'Master Logic Pro X for music production' }
   ]
 };
 
@@ -77,7 +95,6 @@ const generateDynamicRoadmap = (goal: string): LearningRoadmap => {
   const normalizedGoal = goal.toLowerCase();
   let selectedVideos: any[] = [];
   let roadmapPhases: RoadmapPhase[] = [];
-  let description = '';
 
   // Find matching videos based on keywords
   for (const [topic, videos] of Object.entries(youtubeVideos)) {
@@ -128,7 +145,7 @@ const generateDynamicRoadmap = (goal: string): LearningRoadmap => {
 
   const totalMinutes = roadmapPhases.reduce((total, phase) => total + phase.totalMinutes, 0);
   const totalHours = Math.ceil(totalMinutes / 60);
-  const totalDays = Math.ceil(totalHours / 8); // 8 hours per day
+  const totalDays = Math.ceil(totalHours / 8);
 
   return {
     roadmap: roadmapPhases,
@@ -526,7 +543,7 @@ export const aiSearchService = {
       // Award points for experience
       const experienceYears = parseInt(candidate.experience);
       if (!isNaN(experienceYears)) {
-        const experienceMatch = Math.min(experienceYears, 10); // Cap at 10 years for scoring
+        const experienceMatch = Math.min(experienceYears, 10);
         score += experienceMatch * 2;
         reasoning += `Experience of ${candidate.experience}. `;
       }
@@ -547,13 +564,13 @@ export const aiSearchService = {
       };
 
       return {
-        ...candidate,
+        candidate,
         score,
         reasoning,
         matchPercentage: Math.floor(Math.random() * 100),
         aiAnalysis
       };
-    }).sort((a, b) => b.score - a.score); // Sort by score descending
+    }).sort((a, b) => b.score - a.score);
 
     // Filter out candidates with a score less than 20 (adjust as needed)
     const filteredMatches = matches.filter(match => match.score >= 20);
@@ -563,7 +580,7 @@ export const aiSearchService = {
 
   generateLearningRoadmap: async (goal: string): Promise<LearningRoadmap> => {
     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     
     return generateDynamicRoadmap(goal);
   }
