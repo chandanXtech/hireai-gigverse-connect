@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GamificationPanel } from '@/components/GamificationPanel';
 import { AIRoadmapGenerator } from '@/components/AIRoadmapGenerator';
+import { AIAssistantChat } from '@/components/AIAssistantChat';
 import { BookOpen, Target, TrendingUp, Clock, Award, Brain, Zap, Users, Star, PlayCircle } from 'lucide-react';
 import { learningService, type CareerGoal, type StudentProgress } from '@/lib/services/learningService';
 import { useToast } from '@/hooks/use-toast';
@@ -379,6 +380,9 @@ const LearningDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* AI Assistant Chat */}
+      <AIAssistantChat />
     </div>
   );
 };
