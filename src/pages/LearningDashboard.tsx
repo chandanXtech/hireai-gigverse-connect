@@ -9,7 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GamificationPanel } from '@/components/GamificationPanel';
 import { AIRoadmapGenerator } from '@/components/AIRoadmapGenerator';
 import { AIAssistantChat } from '@/components/AIAssistantChat';
-import { BookOpen, Target, TrendingUp, Clock, Award, Brain, Zap, Users, Star, PlayCircle } from 'lucide-react';
+import { LearningCatalog } from '@/components/LearningCatalog';
+import { BookOpen, Target, TrendingUp, Clock, Award, Brain, Zap, Users, Star, PlayCircle, Library } from 'lucide-react';
 import { learningService, type CareerGoal, type StudentProgress } from '@/lib/services/learningService';
 import { useToast } from '@/hooks/use-toast';
 
@@ -121,7 +122,7 @@ const LearningDashboard = () => {
         </div>
 
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white shadow-sm">
+          <TabsList className="grid w-full grid-cols-5 bg-white shadow-sm">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               Dashboard
@@ -130,9 +131,13 @@ const LearningDashboard = () => {
               <Brain className="w-4 h-4" />
               AI Roadmap
             </TabsTrigger>
+            <TabsTrigger value="catalog" className="flex items-center gap-2">
+              <Library className="w-4 h-4" />
+              Learning Catalog
+            </TabsTrigger>
             <TabsTrigger value="explore" className="flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
-              Explore
+              Career Paths
             </TabsTrigger>
             <TabsTrigger value="achievements" className="flex items-center gap-2">
               <Award className="w-4 h-4" />
@@ -301,6 +306,10 @@ const LearningDashboard = () => {
               <p className="text-gray-600">Get a personalized learning path based on your career goals</p>
             </div>
             <AIRoadmapGenerator />
+          </TabsContent>
+
+          <TabsContent value="catalog" className="space-y-6">
+            <LearningCatalog />
           </TabsContent>
 
           <TabsContent value="explore" className="space-y-6">
