@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,71 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
 import { Brain, Search, MapPin, Calendar, Star, TrendingUp, Users, Award, Zap, Target, Filter, Sparkles, MessageCircle, Phone, Mail, Briefcase, GraduationCap, Clock, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { aiSearchService, type CandidateMatch, type SearchFilters } from '@/lib/services/aiSearchService';
 
-// Create a compatible interface for local candidate matches
-interface LocalCandidateMatch {
-  id: string;
-  username: string;
-  name: string;
-  university: string;
-  degree: string;
-  year: string;
-  skills: string[];
-  experience: string;
-  location: string;
-  profilePicture?: string;
-  bio: string;
-  projects: {
-    name: string;
-    description: string;
-    technologies: string[];
-    githubUrl?: string;
-    liveUrl?: string;
-  }[];
-  achievements: string[];
-  preferredRoles: string[];
-  availability: string;
-  expectedSalary: string;
-  languages: string[];
-  certifications: string[];
-  workExperience: {
-    company: string;
-    role: string;
-    duration: string;
-    description: string;
-  }[];
-  education: {
-    institution: string;
-    degree: string;
-    year: string;
-    grade?: string;
-  }[];
-  socialLinks: {
-    linkedin?: string;
-    github?: string;
-    portfolio?: string;
-    twitter?: string;
-  };
-  lastActive: string;
-  responseRate: number;
-  rating: number;
-  completedProjects: number;
-  hourlyRate?: string;
-  matchScore?: number;
-  aiInsights?: string[];
-  skillCompatibility?: number;
-  experienceMatch?: number;
-  locationMatch?: number;
-  salaryMatch?: number;
-}
-
 const AITalentSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<LocalCandidateMatch[]>([]);
+  const [searchResults, setSearchResults] = useState<CandidateMatch[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<SearchFilters>({
     location: '',
@@ -89,44 +30,6 @@ const AITalentSearch = () => {
   const [savedSearches, setSavedSearches] = useState<string[]>([]);
   const { toast } = useToast();
 
-  // Convert CandidateMatch to LocalCandidateMatch
-  const convertCandidateMatch = (candidate: CandidateMatch): LocalCandidateMatch => {
-    return {
-      id: candidate.id || '',
-      username: candidate.username || '',
-      name: candidate.name || '',
-      university: candidate.university || '',
-      degree: candidate.degree || '',
-      year: candidate.year || '',
-      skills: candidate.skills || [],
-      experience: candidate.experience || '',
-      location: candidate.location || '',
-      profilePicture: candidate.profilePicture,
-      bio: candidate.bio || '',
-      projects: candidate.projects || [],
-      achievements: candidate.achievements || [],
-      preferredRoles: candidate.preferredRoles || [],
-      availability: candidate.availability || '',
-      expectedSalary: candidate.expectedSalary || '',
-      languages: candidate.languages || [],
-      certifications: candidate.certifications || [],
-      workExperience: candidate.workExperience || [],
-      education: candidate.education || [],
-      socialLinks: candidate.socialLinks || {},
-      lastActive: candidate.lastActive || '',
-      responseRate: candidate.responseRate || 0,
-      rating: candidate.rating || 0,
-      completedProjects: candidate.completedProjects || 0,
-      hourlyRate: candidate.hourlyRate,
-      matchScore: candidate.matchScore,
-      aiInsights: candidate.aiInsights,
-      skillCompatibility: candidate.skillCompatibility,
-      experienceMatch: candidate.experienceMatch,
-      locationMatch: candidate.locationMatch,
-      salaryMatch: candidate.salaryMatch,
-    };
-  };
-
   const handleAISearch = async () => {
     if (!searchQuery.trim()) {
       toast({
@@ -139,12 +42,10 @@ const AITalentSearch = () => {
 
     setIsLoading(true);
     try {
-      const results = await aiSearchService.searchCandidates(searchQuery, selectedFilters);
-      // Convert results to local format
-      const convertedResults = results.map(convertCandidateMatch);
-      setSearchResults(convertedResults);
+      const results = aiSearchService.searchCandidates(searchQuery, selectedFilters);
+      setSearchResults(results);
       
-      const insights = await aiSearchService.generateInsights(searchQuery, convertedResults);
+      const insights = await aiSearchService.generateInsights(searchQuery, results);
       setAiInsights(insights);
       
       // Add to search history
@@ -154,7 +55,7 @@ const AITalentSearch = () => {
 
       toast({
         title: "🧠 AI Search Complete!",
-        description: `Found ${convertedResults.length} matching candidates`,
+        description: `Found ${results.length} matching candidates`,
       });
     } catch (error) {
       toast({
