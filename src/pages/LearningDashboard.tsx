@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +10,7 @@ import { GamificationPanel } from '@/components/GamificationPanel';
 import { AIRoadmapGenerator } from '@/components/AIRoadmapGenerator';
 import { AIAssistantChat } from '@/components/AIAssistantChat';
 import { LearningCatalog } from '@/components/LearningCatalog';
-import { BookOpen, Target, TrendingUp, Clock, Award, Brain, Zap, Users, Star, PlayCircle, Library, Trophy, Coins, MessageCircle, BarChart3, Shield, Smartphone, Gamepad2, Headphones } from 'lucide-react';
+import { BookOpen, Target, TrendingUp, Clock, Award, Brain, Zap, Users, Star, PlayCircle, Library, Trophy, Coins, MessageCircle, BarChart3, Shield, Smartphone, Gamepad2, Headphones, Camera, Mic, Globe, CheckCircle2, UserCheck, Calendar, Video, FileText, Lightbulb } from 'lucide-react';
 import { learningService, type CareerGoal, type StudentProgress } from '@/lib/services/learningService';
 import { useToast } from '@/hooks/use-toast';
 
@@ -22,13 +23,17 @@ const LearningDashboard = () => {
   const [virtualCoins, setVirtualCoins] = useState(250);
   const [microcredentials, setMicrocredentials] = useState<string[]>([]);
   const [engagementLevel, setEngagementLevel] = useState(85);
+  const [studyTime, setStudyTime] = useState(30);
+  const [mentorshipSessions, setMentorshipSessions] = useState(3);
+  const [skillGaps, setSkillGaps] = useState(['API Design', 'Testing', 'DevOps']);
+  const [offlineContent, setOfflineContent] = useState(5);
   const [achievements, setAchievements] = useState([
     {
       id: '1',
       title: 'First Steps',
       description: 'Started your learning journey',
       icon: '🎯',
-      unlockedAt: new Date('2024-01-15'),
+      unlockedAt: '2024-01-15',
       category: 'milestone'
     },
     {
@@ -36,7 +41,7 @@ const LearningDashboard = () => {
       title: 'Quick Learner',
       description: 'Completed first module in under 2 hours',
       icon: '⚡',
-      unlockedAt: new Date('2024-01-16'),
+      unlockedAt: '2024-01-16',
       category: 'speed'
     },
     {
@@ -44,7 +49,7 @@ const LearningDashboard = () => {
       title: 'Week Warrior',
       description: 'Maintained 7-day learning streak',
       icon: '🔥',
-      unlockedAt: new Date('2024-01-22'),
+      unlockedAt: '2024-01-22',
       category: 'consistency'
     },
     {
@@ -52,7 +57,7 @@ const LearningDashboard = () => {
       title: 'Python Master',
       description: 'Completed Python fundamentals course',
       icon: '🐍',
-      unlockedAt: new Date('2024-02-01'),
+      unlockedAt: '2024-02-01',
       category: 'skill'
     },
     {
@@ -60,7 +65,7 @@ const LearningDashboard = () => {
       title: 'Team Player',
       description: 'Helped 5 fellow learners in discussion forums',
       icon: '🤝',
-      unlockedAt: new Date('2024-02-10'),
+      unlockedAt: '2024-02-10',
       category: 'social'
     },
     {
@@ -68,7 +73,7 @@ const LearningDashboard = () => {
       title: 'Code Creator',
       description: 'Built and deployed first web application',
       icon: '💻',
-      unlockedAt: new Date('2024-02-15'),
+      unlockedAt: '2024-02-15',
       category: 'project'
     },
     {
@@ -76,7 +81,7 @@ const LearningDashboard = () => {
       title: 'Knowledge Seeker',
       description: 'Enrolled in 5 different courses',
       icon: '📚',
-      unlockedAt: new Date('2024-02-20'),
+      unlockedAt: '2024-02-20',
       category: 'exploration'
     },
     {
@@ -84,7 +89,7 @@ const LearningDashboard = () => {
       title: 'Perfect Score',
       description: 'Achieved 100% on final assessment',
       icon: '🏆',
-      unlockedAt: new Date('2024-03-01'),
+      unlockedAt: '2024-03-01',
       category: 'achievement'
     },
     {
@@ -92,7 +97,7 @@ const LearningDashboard = () => {
       title: 'AI Enthusiast',
       description: 'Completed Machine Learning basics',
       icon: '🤖',
-      unlockedAt: new Date('2024-03-10'),
+      unlockedAt: '2024-03-10',
       category: 'skill'
     },
     {
@@ -100,8 +105,48 @@ const LearningDashboard = () => {
       title: 'Mentor',
       description: 'Provided peer reviews for 10 projects',
       icon: '🎓',
-      unlockedAt: new Date('2024-03-15'),
+      unlockedAt: '2024-03-15',
       category: 'social'
+    },
+    {
+      id: '11',
+      title: 'Skill Gap Analyzer',
+      description: 'Used AI to identify learning gaps',
+      icon: '🎯',
+      unlockedAt: '2024-03-20',
+      category: 'smart'
+    },
+    {
+      id: '12',
+      title: 'Study Group Leader',
+      description: 'Hosted 3 live study sessions',
+      icon: '👥',
+      unlockedAt: '2024-03-25',
+      category: 'community'
+    },
+    {
+      id: '13',
+      title: 'Offline Learner',
+      description: 'Downloaded and completed offline modules',
+      icon: '📱',
+      unlockedAt: '2024-04-01',
+      category: 'accessibility'
+    },
+    {
+      id: '14',
+      title: 'Resume Builder',
+      description: 'Created professional resume with AI',
+      icon: '📄',
+      unlockedAt: '2024-04-05',
+      category: 'career'
+    },
+    {
+      id: '15',
+      title: 'Multilingual Learner',
+      description: 'Accessed content in multiple languages',
+      icon: '🌍',
+      unlockedAt: '2024-04-10',
+      category: 'accessibility'
     }
   ]);
   const { toast } = useToast();
@@ -126,18 +171,23 @@ const LearningDashboard = () => {
 
       setCareerGoals(goals);
       
-      // Enhanced progress with achievements
-      const enhancedProgress = {
-        ...studentProgress,
-        badges: achievements
-      };
-      setProgress(enhancedProgress);
-      setActiveStreak(studentProgress?.streak || 7);
-      setMicrocredentials(['Web Development Basics', 'Python Fundamentals', 'Data Analysis', 'React Development']);
+      // Enhanced progress with achievements - fix the date conversion
+      if (studentProgress) {
+        const enhancedProgress = {
+          ...studentProgress,
+          badges: achievements.map(achievement => ({
+            ...achievement,
+            unlockedAt: achievement.unlockedAt // Already a string
+          }))
+        };
+        setProgress(enhancedProgress);
+        setActiveStreak(studentProgress?.streak || 7);
+        setMicrocredentials(['Web Development Basics', 'Python Fundamentals', 'Data Analysis', 'React Development']);
 
-      if (studentProgress?.careerGoalId) {
-        const roadmap = await learningService.getRoadmap(studentProgress.careerGoalId);
-        setSelectedGoal(roadmap);
+        if (studentProgress?.careerGoalId) {
+          const roadmap = await learningService.getRoadmap(studentProgress.careerGoalId);
+          setSelectedGoal(roadmap);
+        }
       }
     } catch (error) {
       toast({
@@ -209,6 +259,42 @@ const LearningDashboard = () => {
     }
   };
 
+  const analyzeSkillGaps = () => {
+    toast({
+      title: "🎯 Skill Gap Analysis",
+      description: `Found ${skillGaps.length} skill gaps. Check recommendations!`,
+    });
+  };
+
+  const generateDailyPlan = () => {
+    toast({
+      title: "📅 Daily Plan Generated",
+      description: `Your ${studyTime}-minute learning plan is ready!`,
+    });
+  };
+
+  const downloadOfflineContent = () => {
+    setOfflineContent(prev => prev + 1);
+    toast({
+      title: "📱 Content Downloaded",
+      description: "Module downloaded for offline learning!",
+    });
+  };
+
+  const startMentorshipSession = () => {
+    toast({
+      title: "👨‍🏫 Mentorship Session",
+      description: "Connecting you with a mentor...",
+    });
+  };
+
+  const generateResume = () => {
+    toast({
+      title: "📄 AI Resume Builder",
+      description: "Your professional resume is being generated!",
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
@@ -258,31 +344,36 @@ const LearningDashboard = () => {
         </div>
 
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7 bg-white shadow-sm h-auto p-1">
+          <TabsList className="grid w-full grid-cols-8 bg-white shadow-sm h-auto p-1">
             <TabsTrigger value="dashboard" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
               <TrendingUp className="w-4 h-4" />
               <span className="hidden sm:inline">Dashboard</span>
               <span className="sm:hidden">Home</span>
             </TabsTrigger>
-            <TabsTrigger value="roadmap" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
+            <TabsTrigger value="smart-learning" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
               <Brain className="w-4 h-4" />
-              <span className="hidden sm:inline">AI Roadmap</span>
+              <span className="hidden sm:inline">Smart Learning</span>
+              <span className="sm:hidden">Smart</span>
+            </TabsTrigger>
+            <TabsTrigger value="community" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline">Community</span>
+              <span className="sm:hidden">Social</span>
+            </TabsTrigger>
+            <TabsTrigger value="career" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
+              <Target className="w-4 h-4" />
+              <span className="hidden sm:inline">Career</span>
+              <span className="sm:hidden">Jobs</span>
+            </TabsTrigger>
+            <TabsTrigger value="ai-tools" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
+              <Lightbulb className="w-4 h-4" />
+              <span className="hidden sm:inline">AI Tools</span>
               <span className="sm:hidden">AI</span>
             </TabsTrigger>
             <TabsTrigger value="catalog" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
               <Library className="w-4 h-4" />
               <span className="hidden sm:inline">Catalog</span>
               <span className="sm:hidden">Learn</span>
-            </TabsTrigger>
-            <TabsTrigger value="gamification" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
-              <Gamepad2 className="w-4 h-4" />
-              <span className="hidden sm:inline">Rewards</span>
-              <span className="sm:hidden">Games</span>
-            </TabsTrigger>
-            <TabsTrigger value="social" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
-              <MessageCircle className="w-4 h-4" />
-              <span className="hidden sm:inline">Community</span>
-              <span className="sm:hidden">Social</span>
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-2 text-xs sm:text-sm px-2 py-2">
               <BarChart3 className="w-4 h-4" />
@@ -498,130 +589,176 @@ const LearningDashboard = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="roadmap" className="space-y-6">
+          <TabsContent value="smart-learning" className="space-y-6">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 <Brain className="w-6 h-6 text-purple-600" />
-                AI-Powered Learning Roadmap
+                Smart Learning & Personalization
               </h2>
-              <p className="text-gray-600">Get a personalized learning path based on your career goals</p>
+              <p className="text-gray-600">AI-powered tools to enhance your learning experience</p>
             </div>
-            <AIRoadmapGenerator />
-          </TabsContent>
-
-          <TabsContent value="catalog" className="space-y-6">
-            <LearningCatalog />
-          </TabsContent>
-
-          <TabsContent value="gamification" className="space-y-6">
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Virtual Economy */}
+              {/* Skill Gap Analyzer */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Coins className="w-5 h-5 text-yellow-500" />
-                    Virtual Store
+                    <Target className="w-5 h-5 text-red-500" />
+                    Skill Gap Analyzer
                   </CardTitle>
-                  <CardDescription>Redeem your learning coins for rewards</CardDescription>
+                  <CardDescription>Identify missing skills for your career goals</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 border rounded-lg">
-                      <div>
-                        <p className="font-medium text-sm">Profile Theme</p>
-                        <p className="text-xs text-gray-600">Customize your dashboard</p>
-                      </div>
-                      <Button size="sm" onClick={() => redeemReward(50, 'Profile Theme')}>
-                        50 🪙
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-between p-3 border rounded-lg">
-                      <div>
-                        <p className="font-medium text-sm">Certificate Frame</p>
-                        <p className="text-xs text-gray-600">Premium certificate design</p>
-                      </div>
-                      <Button size="sm" onClick={() => redeemReward(100, 'Certificate Frame')}>
-                        100 🪙
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-between p-3 border rounded-lg">
-                      <div>
-                        <p className="font-medium text-sm">Study Buddy Access</p>
-                        <p className="text-xs text-gray-600">AI learning companion</p>
-                      </div>
-                      <Button size="sm" onClick={() => redeemReward(200, 'Study Buddy Access')}>
-                        200 🪙
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Leaderboard */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Trophy className="w-5 h-5 text-yellow-500" />
-                    Weekly Leaderboard
-                  </CardTitle>
-                  <CardDescription>Top learners this week</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {[
-                      { name: 'Alex Chen', points: 2850, rank: 1 },
-                      { name: 'Sarah Kim', points: 2720, rank: 2 },
-                      { name: 'You', points: 2650, rank: 3 },
-                      { name: 'Mike Johnson', points: 2580, rank: 4 },
-                      { name: 'Emma Davis', points: 2510, rank: 5 }
-                    ].map((user) => (
-                      <div key={user.rank} className={`flex items-center gap-3 p-2 rounded-lg ${user.name === 'You' ? 'bg-blue-50 border border-blue-200' : ''}`}>
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                          user.rank === 1 ? 'bg-yellow-500 text-white' :
-                          user.rank === 2 ? 'bg-gray-400 text-white' :
-                          user.rank === 3 ? 'bg-orange-500 text-white' : 'bg-gray-200'
-                        }`}>
-                          {user.rank}
-                        </div>
-                        <span className="flex-1 text-sm font-medium">{user.name}</span>
-                        <span className="text-sm text-gray-600">{user.points} pts</span>
+                    {skillGaps.map((gap, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <span className="text-sm font-medium">{gap}</span>
+                        <Badge variant="outline" className="text-xs">Missing</Badge>
                       </div>
                     ))}
+                    <Button onClick={analyzeSkillGaps} className="w-full mt-4">
+                      <Brain className="w-4 h-4 mr-2" />
+                      Analyze Skills
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Daily Learning Plan */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-blue-500" />
+                    AI Daily Learning Plan
+                  </CardTitle>
+                  <CardDescription>Get personalized daily study schedules</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">Daily study time:</span>
+                      <Badge className="bg-blue-500">{studyTime} minutes</Badge>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Today's Plan:</p>
+                      <div className="p-3 bg-blue-50 rounded-lg text-sm">
+                        ⏰ 10:00 AM - Python Loops (10 min)<br />
+                        ⏰ 2:00 PM - Quiz Review (10 min)<br />
+                        ⏰ 6:00 PM - Practice Project (10 min)
+                      </div>
+                    </div>
+                    <Button onClick={generateDailyPlan} className="w-full">
+                      <Lightbulb className="w-4 h-4 mr-2" />
+                      Generate New Plan
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Adaptive Learning Engine */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-green-500" />
+                    Adaptive Learning Engine
+                  </CardTitle>
+                  <CardDescription>Content difficulty adjusts to your performance</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-sm">
+                      <span>Current Difficulty</span>
+                      <Badge className="bg-green-500">Intermediate</Badge>
+                    </div>
+                    <Progress value={75} className="h-3" />
+                    <div className="text-xs text-gray-600">
+                      Engine has adjusted content based on your 85% quiz performance
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Offline Mode */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Smartphone className="w-5 h-5 text-purple-500" />
+                    Offline Learning
+                  </CardTitle>
+                  <CardDescription>Download content for offline access</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Downloaded Modules</span>
+                      <Badge className="bg-purple-500">{offlineContent}</Badge>
+                    </div>
+                    <Button onClick={downloadOfflineContent} className="w-full">
+                      <Smartphone className="w-4 h-4 mr-2" />
+                      Download More Content
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             </div>
           </TabsContent>
 
-          <TabsContent value="social" className="space-y-6">
+          <TabsContent value="community" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+                <Users className="w-6 h-6 text-blue-600" />
+                Community & Mentorship
+              </h2>
+              <p className="text-gray-600">Connect, collaborate, and learn from peers and mentors</p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Discussion Forums */}
+              {/* Live Study Rooms */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <MessageCircle className="w-5 h-5 text-blue-500" />
-                    Study Groups
+                    <Video className="w-5 h-5 text-blue-500" />
+                    Live Study Rooms
                   </CardTitle>
-                  <CardDescription>Connect with fellow learners</CardDescription>
+                  <CardDescription>Join virtual study sessions with peers</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="p-3 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">ML</div>
-                        <span className="font-medium text-sm">Machine Learning Study Group</span>
-                        <Badge className="bg-green-500 text-xs">Active</Badge>
+                    <div className="p-3 border rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <span className="font-medium text-sm">Python Study Group</span>
+                        <Badge className="bg-green-500 text-xs">Live</Badge>
                       </div>
-                      <p className="text-xs text-gray-600">45 members • 12 discussions today</p>
+                      <p className="text-xs text-gray-600">8 participants • Loops & Functions</p>
                     </div>
-                    <div className="p-3 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs">WD</div>
-                        <span className="font-medium text-sm">Web Development Bootcamp</span>
-                        <Badge variant="outline" className="text-xs">Join</Badge>
-                      </div>
-                      <p className="text-xs text-gray-600">123 members • Help each other code</p>
+                    <Button className="w-full">
+                      <Video className="w-4 h-4 mr-2" />
+                      Join Study Room
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Mentorship */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <UserCheck className="w-5 h-5 text-purple-500" />
+                    Mentorship Marketplace
+                  </CardTitle>
+                  <CardDescription>Connect with industry professionals</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Sessions Completed</span>
+                      <Badge className="bg-purple-500">{mentorshipSessions}</Badge>
                     </div>
+                    <Button onClick={startMentorshipSession} className="w-full">
+                      <UserCheck className="w-4 h-4 mr-2" />
+                      Book Mentor Session
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -630,8 +767,8 @@ const LearningDashboard = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Users className="w-5 h-5 text-green-500" />
-                    Peer Reviews
+                    <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    Peer Review System
                   </CardTitle>
                   <CardDescription>Get feedback on your projects</CardDescription>
                 </CardHeader>
@@ -639,28 +776,255 @@ const LearningDashboard = () => {
                   <div className="space-y-3">
                     <div className="p-3 border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-sm">Portfolio Website Review</span>
+                        <span className="font-medium text-sm">Portfolio Review</span>
                         <Badge className="bg-orange-500 text-xs">Pending</Badge>
                       </div>
-                      <p className="text-xs text-gray-600 mb-2">Submitted 2 hours ago</p>
-                      <Button size="sm" variant="outline" className="text-xs">
-                        View Feedback
-                      </Button>
+                      <p className="text-xs text-gray-600">3 reviews requested</p>
                     </div>
-                    <div className="p-3 border rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-sm">Python Data Analysis</span>
-                        <Badge className="bg-green-500 text-xs">Completed</Badge>
-                      </div>
-                      <p className="text-xs text-gray-600 mb-2">4.5/5 stars • Great work!</p>
-                      <Button size="sm" variant="outline" className="text-xs">
-                        View Details
-                      </Button>
+                    <Button className="w-full">
+                      <CheckCircle2 className="w-4 h-4 mr-2" />
+                      Submit for Review
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Discussion Forums */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageCircle className="w-5 h-5 text-blue-500" />
+                    Discussion Forums
+                  </CardTitle>
+                  <CardDescription>Ask questions and help others</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-600">24</div>
+                      <p className="text-sm text-gray-600">Active discussions</p>
                     </div>
+                    <Button className="w-full">
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      Join Discussions
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="career" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+                <Target className="w-6 h-6 text-green-600" />
+                Career & Employability
+              </h2>
+              <p className="text-gray-600">Prepare for your dream career with practical tools</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Resume Builder */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-blue-500" />
+                    AI Resume Builder
+                  </CardTitle>
+                  <CardDescription>Create professional resumes with AI feedback</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="p-3 bg-blue-50 rounded-lg">
+                      <p className="text-sm font-medium">Resume Score: 85/100</p>
+                      <p className="text-xs text-gray-600">Add GitHub links to improve</p>
+                    </div>
+                    <Button onClick={generateResume} className="w-full">
+                      <FileText className="w-4 h-4 mr-2" />
+                      Build Resume
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Internship Simulator */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Gamepad2 className="w-5 h-5 text-purple-500" />
+                    Internship Simulator
+                  </CardTitle>
+                  <CardDescription>Practice real-world work scenarios</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="p-3 border rounded-lg">
+                      <p className="font-medium text-sm">Bug Fix Challenge</p>
+                      <p className="text-xs text-gray-600">Debug React component</p>
+                      <Badge className="bg-red-500 text-xs mt-1">Urgent</Badge>
+                    </div>
+                    <Button className="w-full">
+                      <Gamepad2 className="w-4 h-4 mr-2" />
+                      Start Simulation
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Talent Showcase */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Star className="w-5 h-5 text-yellow-500" />
+                    Talent Showcase
+                  </CardTitle>
+                  <CardDescription>Display your projects to recruiters</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-yellow-600">156</div>
+                      <p className="text-sm text-gray-600">Profile views this month</p>
+                    </div>
+                    <Button className="w-full">
+                      <Star className="w-4 h-4 mr-2" />
+                      Submit Project
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Skill Certificates */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="w-5 h-5 text-green-500" />
+                    Verified Certificates
+                  </CardTitle>
+                  <CardDescription>QR-verified skill certificates</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">Certificates Earned</span>
+                      <Badge className="bg-green-500">{microcredentials.length}</Badge>
+                    </div>
+                    <Button className="w-full">
+                      <Shield className="w-4 h-4 mr-2" />
+                      View Certificates
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="ai-tools" className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+                <Lightbulb className="w-6 h-6 text-orange-600" />
+                Advanced AI Tools
+              </h2>
+              <p className="text-gray-600">Cutting-edge AI features to supercharge your learning</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* AI Video Summarizer */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Video className="w-5 h-5 text-red-500" />
+                    AI Video Summarizer
+                  </CardTitle>
+                  <CardDescription>Auto-generate notes from videos</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="p-3 bg-red-50 rounded-lg">
+                      <p className="text-sm font-medium">Last Summary:</p>
+                      <p className="text-xs text-gray-600">"Python loops: for, while, break, continue..."</p>
+                    </div>
+                    <Button className="w-full">
+                      <Video className="w-4 h-4 mr-2" />
+                      Summarize Video
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Voice-to-Text Notes */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Mic className="w-5 h-5 text-blue-500" />
+                    Voice-to-Text Notes
+                  </CardTitle>
+                  <CardDescription>Speak your thoughts, get text notes</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="p-3 bg-blue-50 rounded-lg">
+                      <p className="text-xs text-gray-600">🎤 Recording ready</p>
+                    </div>
+                    <Button className="w-full">
+                      <Mic className="w-4 h-4 mr-2" />
+                      Start Recording
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* AI Career Forecasting */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-green-500" />
+                    Career Forecasting
+                  </CardTitle>
+                  <CardDescription>AI predicts your career trajectory</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="p-3 bg-green-50 rounded-lg">
+                      <p className="text-sm font-medium">Prediction:</p>
+                      <p className="text-xs text-gray-600">"Ready for junior developer roles in 2 months"</p>
+                    </div>
+                    <Button className="w-full">
+                      <TrendingUp className="w-4 h-4 mr-2" />
+                      Get Forecast
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Multi-language Support */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Globe className="w-5 h-5 text-purple-500" />
+                    Multi-language Learning
+                  </CardTitle>
+                  <CardDescription>Content in your preferred language</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <Badge variant="outline">English</Badge>
+                      <Badge variant="outline">Hindi</Badge>
+                      <Badge variant="outline">Kannada</Badge>
+                    </div>
+                    <Button className="w-full">
+                      <Globe className="w-4 h-4 mr-2" />
+                      Switch Language
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="catalog" className="space-y-6">
+            <LearningCatalog />
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
@@ -757,7 +1121,7 @@ const LearningDashboard = () => {
             </div>
 
             {/* Achievement Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
               <Card className="text-center">
                 <CardContent className="p-4">
                   <div className="text-2xl font-bold text-blue-600">{achievements.length}</div>
@@ -782,6 +1146,12 @@ const LearningDashboard = () => {
                   <div className="text-sm text-gray-600">Milestones</div>
                 </CardContent>
               </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl font-bold text-red-600">{achievements.filter(a => a.category === 'smart').length}</div>
+                  <div className="text-sm text-gray-600">Smart Features</div>
+                </CardContent>
+              </Card>
             </div>
 
             {achievements.length > 0 ? (
@@ -800,6 +1170,10 @@ const LearningDashboard = () => {
                             badge.category === 'social' ? 'bg-purple-100 text-purple-700' :
                             badge.category === 'milestone' ? 'bg-orange-100 text-orange-700' :
                             badge.category === 'consistency' ? 'bg-red-100 text-red-700' :
+                            badge.category === 'smart' ? 'bg-indigo-100 text-indigo-700' :
+                            badge.category === 'community' ? 'bg-pink-100 text-pink-700' :
+                            badge.category === 'accessibility' ? 'bg-cyan-100 text-cyan-700' :
+                            badge.category === 'career' ? 'bg-emerald-100 text-emerald-700' :
                             'bg-blue-100 text-blue-700'
                           }`}
                         >
@@ -807,7 +1181,7 @@ const LearningDashboard = () => {
                         </Badge>
                       </div>
                       <Badge variant="outline" className="text-xs">
-                        Unlocked {badge.unlockedAt.toLocaleDateString()}
+                        Unlocked {new Date(badge.unlockedAt).toLocaleDateString()}
                       </Badge>
                     </CardContent>
                   </Card>
