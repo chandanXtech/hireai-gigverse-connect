@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Search, BookOpen, Clock, Users, Star, TrendingUp, Award, Code, Palette, Dumbbell, ChefHat, Briefcase, Heart, Camera, Music, Gamepad2, TreePine } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface LearningPath {
   id: string;
@@ -276,6 +277,8 @@ export const LearningCatalog: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedLevel, setSelectedLevel] = useState('All');
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const filteredPaths = learningPaths.filter(path => {
     const matchesSearch = path.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -289,6 +292,31 @@ export const LearningCatalog: React.FC = () => {
 
   const trendingPaths = learningPaths.filter(path => path.trending);
   const popularPaths = learningPaths.sort((a, b) => b.enrolledUsers - a.enrolledUsers).slice(0, 6);
+
+  const handleStartLearning = (pathId: string, pathTitle: string) => {
+    // Simulate enrollment
+    toast({
+      title: "🚀 Course Started!",
+      description: `You've successfully enrolled in ${pathTitle}. Let's begin your learning journey!`,
+    });
+    
+    // Navigate to a course detail page or learning module
+    navigate(`/learning/course/${pathId}`);
+  };
+
+  const handlePreview = (pathId: string, pathTitle: string) => {
+    toast({
+      title: "👀 Preview Available",
+      description: `Opening preview for ${pathTitle}`,
+    });
+  };
+
+  const handleProjectsView = (pathId: string) => {
+    toast({
+      title: "📁 Projects",
+      description: "Opening project gallery for this course",
+    });
+  };
 
   return (
     <div className="space-y-8">
@@ -447,10 +475,18 @@ export const LearningCatalog: React.FC = () => {
                   )}
 
                   <div className="flex gap-2 pt-2">
-                    <Button className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600">
+                    <Button 
+                      className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all"
+                      onClick={() => handleStartLearning(path.id, path.title)}
+                    >
                       Start Learning
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handlePreview(path.id, path.title)}
+                      className="hover:scale-105 transition-all"
+                    >
                       Preview
                     </Button>
                   </div>
@@ -469,7 +505,6 @@ export const LearningCatalog: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {trendingPaths.map(path => (
               <Card key={path.id} className="hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] border-0 shadow-lg">
-                {/* Same card content as above */}
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
@@ -513,7 +548,10 @@ export const LearningCatalog: React.FC = () => {
                     </div>
                   </div>
 
-                  <Button className="w-full bg-gradient-to-r from-orange-500 to-red-600">
+                  <Button 
+                    className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 transform hover:scale-105 transition-all"
+                    onClick={() => handleStartLearning(path.id, path.title)}
+                  >
                     Join the Trend
                   </Button>
                 </CardContent>
@@ -563,7 +601,10 @@ export const LearningCatalog: React.FC = () => {
                     </div>
                   </div>
 
-                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-600">
+                  <Button 
+                    className="w-full bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 transform hover:scale-105 transition-all"
+                    onClick={() => handleStartLearning(path.id, path.title)}
+                  >
                     Join {path.enrolledUsers.toLocaleString()}+ Students
                   </Button>
                 </CardContent>

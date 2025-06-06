@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,10 +18,92 @@ const LearningDashboard = () => {
   const [progress, setProgress] = useState<StudentProgress | null>(null);
   const [selectedGoal, setSelectedGoal] = useState<CareerGoal | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeStreak, setActiveStreak] = useState(0);
+  const [activeStreak, setActiveStreak] = useState(7);
   const [virtualCoins, setVirtualCoins] = useState(250);
   const [microcredentials, setMicrocredentials] = useState<string[]>([]);
   const [engagementLevel, setEngagementLevel] = useState(85);
+  const [achievements, setAchievements] = useState([
+    {
+      id: '1',
+      title: 'First Steps',
+      description: 'Started your learning journey',
+      icon: '🎯',
+      unlockedAt: new Date('2024-01-15'),
+      category: 'milestone'
+    },
+    {
+      id: '2',
+      title: 'Quick Learner',
+      description: 'Completed first module in under 2 hours',
+      icon: '⚡',
+      unlockedAt: new Date('2024-01-16'),
+      category: 'speed'
+    },
+    {
+      id: '3',
+      title: 'Week Warrior',
+      description: 'Maintained 7-day learning streak',
+      icon: '🔥',
+      unlockedAt: new Date('2024-01-22'),
+      category: 'consistency'
+    },
+    {
+      id: '4',
+      title: 'Python Master',
+      description: 'Completed Python fundamentals course',
+      icon: '🐍',
+      unlockedAt: new Date('2024-02-01'),
+      category: 'skill'
+    },
+    {
+      id: '5',
+      title: 'Team Player',
+      description: 'Helped 5 fellow learners in discussion forums',
+      icon: '🤝',
+      unlockedAt: new Date('2024-02-10'),
+      category: 'social'
+    },
+    {
+      id: '6',
+      title: 'Code Creator',
+      description: 'Built and deployed first web application',
+      icon: '💻',
+      unlockedAt: new Date('2024-02-15'),
+      category: 'project'
+    },
+    {
+      id: '7',
+      title: 'Knowledge Seeker',
+      description: 'Enrolled in 5 different courses',
+      icon: '📚',
+      unlockedAt: new Date('2024-02-20'),
+      category: 'exploration'
+    },
+    {
+      id: '8',
+      title: 'Perfect Score',
+      description: 'Achieved 100% on final assessment',
+      icon: '🏆',
+      unlockedAt: new Date('2024-03-01'),
+      category: 'achievement'
+    },
+    {
+      id: '9',
+      title: 'AI Enthusiast',
+      description: 'Completed Machine Learning basics',
+      icon: '🤖',
+      unlockedAt: new Date('2024-03-10'),
+      category: 'skill'
+    },
+    {
+      id: '10',
+      title: 'Mentor',
+      description: 'Provided peer reviews for 10 projects',
+      icon: '🎓',
+      unlockedAt: new Date('2024-03-15'),
+      category: 'social'
+    }
+  ]);
   const { toast } = useToast();
 
   const studentId = 'student-1';
@@ -44,9 +125,15 @@ const LearningDashboard = () => {
       ]);
 
       setCareerGoals(goals);
-      setProgress(studentProgress);
-      setActiveStreak(studentProgress?.streak || 0);
-      setMicrocredentials(['Web Development Basics', 'Python Fundamentals', 'Data Analysis']);
+      
+      // Enhanced progress with achievements
+      const enhancedProgress = {
+        ...studentProgress,
+        badges: achievements
+      };
+      setProgress(enhancedProgress);
+      setActiveStreak(studentProgress?.streak || 7);
+      setMicrocredentials(['Web Development Basics', 'Python Fundamentals', 'Data Analysis', 'React Development']);
 
       if (studentProgress?.careerGoalId) {
         const roadmap = await learningService.getRoadmap(studentProgress.careerGoalId);
@@ -661,16 +748,66 @@ const LearningDashboard = () => {
           </TabsContent>
 
           <TabsContent value="achievements" className="space-y-6">
-            {progress && progress.badges.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {progress.badges.map((badge) => (
-                  <Card key={badge.id} className="text-center hover:shadow-lg transition-shadow">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+                <Trophy className="w-6 h-6 text-yellow-500" />
+                Your Achievements
+              </h2>
+              <p className="text-gray-600">Celebrate your learning milestones and accomplishments</p>
+            </div>
+
+            {/* Achievement Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl font-bold text-blue-600">{achievements.length}</div>
+                  <div className="text-sm text-gray-600">Total Badges</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl font-bold text-green-600">{achievements.filter(a => a.category === 'skill').length}</div>
+                  <div className="text-sm text-gray-600">Skill Badges</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl font-bold text-purple-600">{achievements.filter(a => a.category === 'social').length}</div>
+                  <div className="text-sm text-gray-600">Social Badges</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl font-bold text-orange-600">{achievements.filter(a => a.category === 'milestone').length}</div>
+                  <div className="text-sm text-gray-600">Milestones</div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {achievements.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {achievements.map((badge) => (
+                  <Card key={badge.id} className="text-center hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] border-0 shadow-md">
                     <CardContent className="p-6">
                       <div className="text-4xl mb-4">{badge.icon}</div>
                       <h3 className="font-semibold text-lg mb-2">{badge.title}</h3>
                       <p className="text-sm text-gray-600 mb-3">{badge.description}</p>
-                      <Badge variant="secondary" className="text-xs">
-                        Unlocked {new Date(badge.unlockedAt).toLocaleDateString()}
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <Badge 
+                          variant="secondary" 
+                          className={`text-xs ${
+                            badge.category === 'skill' ? 'bg-green-100 text-green-700' :
+                            badge.category === 'social' ? 'bg-purple-100 text-purple-700' :
+                            badge.category === 'milestone' ? 'bg-orange-100 text-orange-700' :
+                            badge.category === 'consistency' ? 'bg-red-100 text-red-700' :
+                            'bg-blue-100 text-blue-700'
+                          }`}
+                        >
+                          {badge.category}
+                        </Badge>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        Unlocked {badge.unlockedAt.toLocaleDateString()}
                       </Badge>
                     </CardContent>
                   </Card>
@@ -681,10 +818,46 @@ const LearningDashboard = () => {
                 <CardContent>
                   <Award className="w-16 h-16 mx-auto mb-4 text-gray-400" />
                   <h3 className="text-xl font-semibold mb-2">No Achievements Yet</h3>
-                  <p className="text-gray-600">Start learning to unlock your first badge!</p>
+                  <p className="text-gray-600 mb-4">Start learning to unlock your first badge!</p>
+                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600">
+                    Explore Courses
+                  </Button>
                 </CardContent>
               </Card>
             )}
+
+            {/* Next Achievements */}
+            <Card className="mt-8">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="w-5 h-5 text-blue-500" />
+                  Next Achievements to Unlock
+                </CardTitle>
+                <CardDescription>Keep learning to earn these badges</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 border rounded-lg opacity-75">
+                    <div className="text-2xl mb-2">🎨</div>
+                    <h4 className="font-semibold text-sm">Design Enthusiast</h4>
+                    <p className="text-xs text-gray-600">Complete a UI/UX course</p>
+                    <Progress value={30} className="mt-2 h-2" />
+                  </div>
+                  <div className="p-4 border rounded-lg opacity-75">
+                    <div className="text-2xl mb-2">⭐</div>
+                    <h4 className="font-semibold text-sm">Rising Star</h4>
+                    <p className="text-xs text-gray-600">Get 50 likes on projects</p>
+                    <Progress value={60} className="mt-2 h-2" />
+                  </div>
+                  <div className="p-4 border rounded-lg opacity-75">
+                    <div className="text-2xl mb-2">🚀</div>
+                    <h4 className="font-semibold text-sm">Speed Demon</h4>
+                    <p className="text-xs text-gray-600">Complete 3 courses in one month</p>
+                    <Progress value={66} className="mt-2 h-2" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
