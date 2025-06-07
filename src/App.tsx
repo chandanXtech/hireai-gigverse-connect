@@ -20,6 +20,11 @@ import RecruiterAnalytics from '@/pages/RecruiterAnalytics';
 import LearningDashboard from '@/pages/LearningDashboard';
 import CourseDetail from '@/pages/CourseDetail';
 import ModuleDetail from '@/pages/ModuleDetail';
+import MicrolearningPage from '@/pages/MicrolearningPage';
+import AdvancedAnalyticsPage from '@/pages/AdvancedAnalyticsPage';
+import ImmersiveLearningPage from '@/pages/ImmersiveLearningPage';
+import PortfolioBuilderPage from '@/pages/PortfolioBuilderPage';
+import WellnessPage from '@/pages/WellnessPage';
 import NotFound from '@/pages/NotFound';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 
@@ -136,6 +141,14 @@ function App() {
               } 
             />
             <Route 
+              path="/advanced-analytics" 
+              element={
+                <ProtectedRoute>
+                  <AdvancedAnalyticsPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
               path="/recruiter-analytics" 
               element={
                 <ProtectedRoute>
@@ -148,6 +161,38 @@ function App() {
               element={
                 <ProtectedRoute>
                   <LearningDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/microlearning" 
+              element={
+                <ProtectedRoute>
+                  <MicrolearningPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/immersive-learning" 
+              element={
+                <ProtectedRoute>
+                  <ImmersiveLearningPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/portfolio-builder" 
+              element={
+                <ProtectedRoute>
+                  <PortfolioBuilderPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/wellness" 
+              element={
+                <ProtectedRoute>
+                  <WellnessPage />
                 </ProtectedRoute>
               } 
             />

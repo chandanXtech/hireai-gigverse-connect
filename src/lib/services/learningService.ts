@@ -1,3 +1,4 @@
+import { adaptiveLearningService, type PersonalizedRecommendation } from './adaptiveLearningService';
 
 export interface CareerGoal {
   id: string;
@@ -64,6 +65,9 @@ export interface StudentProgress {
   lastStreakDate?: string;
   tokensEarned?: number;
   profileViews?: number;
+  personalizedRecommendations?: PersonalizedRecommendation[];
+  adaptivePath?: Module[];
+  learningInsights?: string[];
 }
 
 export interface Badge {
@@ -228,19 +232,25 @@ const mockCareerGoals: CareerGoal[] = [
 let mockProgress: StudentProgress[] = [];
 
 export const learningService = {
-  // Get all available career goals
+  // Enhanced with AI-powered personalization
   getCareerGoals: (): Promise<CareerGoal[]> => {
     return new Promise((resolve) => {
       setTimeout(() => resolve([...mockCareerGoals]), 200);
     });
   },
 
-  // Set student's career goal
-  setCareerGoal: (studentId: string, careerGoalId: string): Promise<void> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
+  // AI-enhanced career goal setting
+  setCareerGoal: async (studentId: string, careerGoalId: string): Promise<void> => {
+    return new Promise(async (resolve) => {
+      setTimeout(async () => {
         const existingIndex = mockProgress.findIndex(p => p.studentId === studentId);
         const careerGoal = mockCareerGoals.find(cg => cg.id === careerGoalId);
+        
+        // Create adaptive learning profile
+        const learningProfile = await adaptiveLearningService.createLearningProfile(studentId);
+        
+        // Generate personalized path
+        const personalizedPath = await adaptiveLearningService.generatePersonalizedPath(studentId, careerGoalId);
         
         const newProgress: StudentProgress = {
           studentId,
@@ -256,7 +266,10 @@ export const learningService = {
           quizScores: {},
           watchTime: 0,
           streak: 0,
-          lastStreakDate: undefined
+          lastStreakDate: undefined,
+          personalizedRecommendations: personalizedPath.recommendations,
+          adaptivePath: personalizedPath.modules,
+          learningInsights: personalizedPath.adaptations
         };
 
         if (existingIndex >= 0) {
@@ -269,18 +282,28 @@ export const learningService = {
     });
   },
 
-  // Get student's progress
-  getStudentProgress: (studentId: string): Promise<StudentProgress | null> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
+  // Enhanced progress tracking with AI analytics
+  getStudentProgress: async (studentId: string): Promise<StudentProgress | null> => {
+    return new Promise(async (resolve) => {
+      setTimeout(async () => {
         let progress = mockProgress.find(p => p.studentId === studentId);
         
-        // Initialize default values if progress exists but missing properties
         if (progress) {
+          // Generate fresh AI insights and recommendations
+          const analytics = await adaptiveLearningService.generateLearningAnalytics(studentId);
+          const recommendations = await adaptiveLearningService.generatePersonalizedPath(studentId, progress.careerGoalId);
+          
           progress = {
             ...progress,
             tokensEarned: progress.tokensEarned || 150,
-            profileViews: progress.profileViews || 45
+            profileViews: progress.profileViews || 45,
+            personalizedRecommendations: recommendations.recommendations,
+            learningInsights: [
+              `Learning velocity: ${analytics.learningVelocity.toFixed(1)} modules/week`,
+              `Engagement score: ${analytics.engagementScore}%`,
+              `Strongest skills: ${analytics.strongestSkills.join(', ')}`,
+              ...analytics.predictedOutcomes
+            ]
           };
         }
         
@@ -289,7 +312,6 @@ export const learningService = {
     });
   },
 
-  // Get roadmap for a career goal
   getRoadmap: (careerGoalId: string): Promise<CareerGoal | null> => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -299,10 +321,10 @@ export const learningService = {
     });
   },
 
-  // Enhanced module progress with video tracking
-  updateModuleProgress: (studentId: string, moduleId: string, status: 'completed' | 'in-progress'): Promise<void> => {
+  // Enhanced with adaptive difficulty adjustment
+  updateModuleProgress: async (studentId: string, moduleId: string, status: 'completed' | 'in-progress', performance?: number): Promise<void> => {
     return new Promise((resolve) => {
-      setTimeout(() => {
+      setTimeout(async () => {
         const progressIndex = mockProgress.findIndex(p => p.studentId === studentId);
         if (progressIndex >= 0) {
           const progress = mockProgress[progressIndex];
@@ -310,6 +332,17 @@ export const learningService = {
           if (status === 'completed') {
             progress.completedModules = [...new Set([...progress.completedModules, moduleId])];
             progress.inProgressModules = progress.inProgressModules.filter(id => id !== moduleId);
+            
+            // AI-powered difficulty adjustment
+            if (performance !== undefined) {
+              const adjustment = adaptiveLearningService.adjustDifficulty(studentId, moduleId, performance);
+              if (adjustment.recommendations.length > 0) {
+                progress.learningInsights = [
+                  ...progress.learningInsights || [],
+                  `Module ${moduleId}: ${adjustment.recommendations[0]}`
+                ];
+              }
+            }
             
             // Add skills from completed module
             const careerGoal = mockCareerGoals.find(cg => cg.id === progress.careerGoalId);
