@@ -1,8 +1,7 @@
-
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Search, Users, TrendingUp, Briefcase, Star, ArrowRight, Brain, Mail, Target, BookOpen, Trophy } from 'lucide-react';
+import { Search, Users, TrendingUp, Briefcase, Star, ArrowRight, Brain, Mail, Target, BookOpen, Trophy, MessageSquare, Bell } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 
@@ -47,6 +46,14 @@ const Dashboard = () => {
           featured: true
         },
         {
+          title: 'Smart Matching',
+          description: 'Advanced AI-powered candidate matching',
+          icon: Target,
+          action: () => navigate('/smart-matching'),
+          color: 'from-blue-500 to-purple-600',
+          featured: true
+        },
+        {
           title: 'Browse Talent Pool',
           description: 'Traditional candidate search',
           icon: Search,
@@ -80,6 +87,21 @@ const Dashboard = () => {
           action: () => navigate('/learning'),
           color: 'from-purple-500 to-pink-600',
           featured: true
+        },
+        {
+          title: 'Community Hub',
+          description: 'Connect with peers and mentors',
+          icon: MessageSquare,
+          action: () => navigate('/community'),
+          color: 'from-indigo-500 to-blue-600',
+          featured: true
+        },
+        {
+          title: 'Job Alerts',
+          description: 'Get notified about matching opportunities',
+          icon: Bell,
+          action: () => navigate('/job-alerts'),
+          color: 'from-yellow-500 to-orange-600'
         },
         ...baseActions,
         {
@@ -136,45 +158,63 @@ const Dashboard = () => {
             <CardContent className="p-6">
               <div className="flex flex-col sm:flex-row items-center justify-between">
                 <div className="mb-4 sm:mb-0">
-                  <h2 className="text-xl sm:text-2xl font-bold mb-2">🚀 AI-Powered Hiring Copilot</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">🚀 AI-Powered Hiring Suite</h2>
                   <p className="text-purple-100 text-sm sm:text-base">
-                    Type: "Find senior Gen-AI engineers with LangChain + RAG experience in Europe" 
+                    Smart matching, natural language search, and advanced analytics 
                     <br className="hidden sm:block" />
-                    Get instant, ranked candidates in seconds!
+                    Find the perfect candidates in seconds, not weeks!
                   </p>
                 </div>
-                <Button 
-                  onClick={() => navigate('/ai-search')} 
-                  variant="secondary" 
-                  className="bg-white text-purple-600 hover:bg-gray-100 font-semibold"
-                >
-                  Try AI Search <Brain className="ml-2 w-4 h-4" />
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => navigate('/ai-search')} 
+                    variant="secondary" 
+                    className="bg-white text-purple-600 hover:bg-gray-100 font-semibold"
+                  >
+                    AI Search <Brain className="ml-2 w-4 h-4" />
+                  </Button>
+                  <Button 
+                    onClick={() => navigate('/smart-matching')} 
+                    variant="outline" 
+                    className="border-white text-white hover:bg-white hover:text-purple-600"
+                  >
+                    Smart Match <Target className="ml-2 w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
         )}
 
-        {/* Learning Banner for Students */}
+        {/* Enhanced Learning Banner for Students */}
         {user?.role === 'student' && (
           <Card className="mb-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0">
             <CardContent className="p-6">
               <div className="flex flex-col sm:flex-row items-center justify-between">
                 <div className="mb-4 sm:mb-0">
-                  <h2 className="text-xl sm:text-2xl font-bold mb-2">📚 Personalized Learning Journey</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">🎓 Your Learning & Career Hub</h2>
                   <p className="text-blue-100 text-sm sm:text-base">
-                    Set your career goals and follow curated learning paths 
+                    Personalized learning paths, community support, and smart job matching 
                     <br className="hidden sm:block" />
-                    Unlock gigs as you build skills and complete modules!
+                    Build skills, connect with peers, and land your dream job!
                   </p>
                 </div>
-                <Button 
-                  onClick={() => navigate('/learning')} 
-                  variant="secondary" 
-                  className="bg-white text-blue-600 hover:bg-gray-100 font-semibold"
-                >
-                  Start Learning <BookOpen className="ml-2 w-4 h-4" />
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => navigate('/learning')} 
+                    variant="secondary" 
+                    className="bg-white text-blue-600 hover:bg-gray-100 font-semibold"
+                  >
+                    Start Learning <BookOpen className="ml-2 w-4 h-4" />
+                  </Button>
+                  <Button 
+                    onClick={() => navigate('/community')} 
+                    variant="outline" 
+                    className="border-white text-white hover:bg-white hover:text-blue-600"
+                  >
+                    Join Community <MessageSquare className="ml-2 w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -240,30 +280,43 @@ const Dashboard = () => {
             <div className="space-y-4">
               {[
                 user?.role === 'student' ? 
-                  { action: 'Learning Module Completed', detail: 'Python Fundamentals - Earned 3 new skills', time: '2 hours ago', type: 'learning' } :
-                  { action: 'AI Search Match Found', detail: 'Sarah Chen - Senior ML Engineer with LangChain expertise', time: '2 hours ago', type: 'ai-match' },
+                  { action: 'Learning Module Completed', detail: 'React Fundamentals - Earned 3 new skills', time: '2 hours ago', type: 'learning' } :
+                  { action: 'Smart Match Found', detail: 'Sarah Chen - 95% compatibility for Senior React role', time: '2 hours ago', type: 'ai-match' },
+                user?.role === 'student' ?
+                  { action: 'Community Post Liked', detail: 'Your question about async/await got 12 likes', time: '3 hours ago', type: 'community' } :
+                  { action: 'AI Search Performed', detail: 'Found 15 candidates for "Full Stack Developer" search', time: '3 hours ago', type: 'ai-search' },
                 { action: 'New Application Received', detail: 'Frontend Developer - TechCorp Gig', time: '4 hours ago', type: 'application' },
                 user?.role === 'student' ?
-                  { action: 'Badge Unlocked', detail: 'First Steps - Completed your first learning module', time: '1 day ago', type: 'achievement' } :
+                  { action: 'Job Alert Received', detail: '3 new React developer positions match your skills', time: '5 hours ago', type: 'alert' } :
                   { action: 'Candidate Auto-Screened', detail: 'John Doe - Data Scientist passed AI screening', time: '1 day ago', type: 'screening' },
-                { action: 'Outreach Email Sent', detail: 'Personalized email to 5 candidates', time: '2 days ago', type: 'outreach' }
+                user?.role === 'student' ?
+                  { action: 'Badge Unlocked', detail: 'First Steps - Completed your first learning module', time: '1 day ago', type: 'achievement' } :
+                  { action: 'Analytics Report Generated', detail: 'Weekly hiring funnel performance summary', time: '1 day ago', type: 'analytics' }
               ].map((activity, index) => (
                 <div key={index} className="flex items-center space-x-4 p-3 sm:p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
                   <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
                     activity.type === 'ai-match' ? 'bg-purple-100 text-purple-600' :
+                    activity.type === 'ai-search' ? 'bg-blue-100 text-blue-600' :
                     activity.type === 'application' ? 'bg-green-100 text-green-600' :
                     activity.type === 'screening' ? 'bg-blue-100 text-blue-600' :
                     activity.type === 'outreach' ? 'bg-orange-100 text-orange-600' :
                     activity.type === 'learning' ? 'bg-indigo-100 text-indigo-600' :
                     activity.type === 'achievement' ? 'bg-yellow-100 text-yellow-600' :
+                    activity.type === 'community' ? 'bg-pink-100 text-pink-600' :
+                    activity.type === 'alert' ? 'bg-orange-100 text-orange-600' :
+                    activity.type === 'analytics' ? 'bg-teal-100 text-teal-600' :
                     'bg-gray-100 text-gray-600'
                   }`}>
-                    {activity.type === 'ai-match' && <Brain className="w-4 h-4 sm:w-5 sm:h-5" />}
+                    {activity.type === 'ai-match' && <Target className="w-4 h-4 sm:w-5 sm:h-5" />}
+                    {activity.type === 'ai-search' && <Brain className="w-4 h-4 sm:w-5 sm:h-5" />}
                     {activity.type === 'application' && <Briefcase className="w-4 h-4 sm:w-5 sm:h-5" />}
                     {activity.type === 'screening' && <Users className="w-4 h-4 sm:w-5 sm:h-5" />}
                     {activity.type === 'outreach' && <Mail className="w-4 h-4 sm:w-5 sm:h-5" />}
                     {activity.type === 'learning' && <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />}
                     {activity.type === 'achievement' && <Trophy className="w-4 h-4 sm:w-5 sm:h-5" />}
+                    {activity.type === 'community' && <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />}
+                    {activity.type === 'alert' && <Bell className="w-4 h-4 sm:w-5 sm:h-5" />}
+                    {activity.type === 'analytics' && <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-gray-900 text-sm sm:text-base truncate">{activity.action}</p>

@@ -7,6 +7,9 @@ import Login from '@/pages/Login';
 import Dashboard from '@/pages/Dashboard';
 import TalentSearch from '@/pages/TalentSearch';
 import AITalentSearch from '@/pages/AITalentSearch';
+import SmartMatching from '@/pages/SmartMatching';
+import CommunityHub from '@/pages/CommunityHub';
+import JobAlertsPage from '@/pages/JobAlertsPage';
 import CandidateProfile from '@/pages/CandidateProfile';
 import GigMarketplace from '@/pages/GigMarketplace';
 import GigDetail from '@/pages/GigDetail';
@@ -49,6 +52,38 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AITalentSearch />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/ai-search" 
+              element={
+                <ProtectedRoute>
+                  <AITalentSearch />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/smart-matching" 
+              element={
+                <ProtectedRoute>
+                  <SmartMatching />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/community" 
+              element={
+                <ProtectedRoute>
+                  <CommunityHub />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/job-alerts" 
+              element={
+                <ProtectedRoute>
+                  <JobAlertsPage />
                 </ProtectedRoute>
               } 
             />

@@ -11,7 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Menu, Brain, BookOpen } from "lucide-react";
+import { Menu, Brain, BookOpen, Users, Bell, Target } from "lucide-react";
 
 export const Navigation = () => {
   const { user, logout } = useAuth();
@@ -49,12 +49,26 @@ export const Navigation = () => {
                 </Button>
 
                 {user?.role === 'student' && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link to="/learning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
-                      <BookOpen className="w-4 h-4" />
-                      Learning
-                    </Link>
-                  </Button>
+                  <>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/learning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <BookOpen className="w-4 h-4" />
+                        Learning
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/community" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <Users className="w-4 h-4" />
+                        Community
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/job-alerts" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <Bell className="w-4 h-4" />
+                        Job Alerts
+                      </Link>
+                    </Button>
+                  </>
                 )}
 
                 {(user?.role === 'recruiter' || user?.role === 'founder' || user?.role === 'admin') && (
@@ -63,6 +77,12 @@ export const Navigation = () => {
                       <Link to="/ai-search" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
                         <Brain className="w-4 h-4" />
                         AI Search
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/smart-matching" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <Target className="w-4 h-4" />
+                        Smart Matching
                       </Link>
                     </Button>
                     <Button variant="ghost" size="sm" asChild>
@@ -109,12 +129,26 @@ export const Navigation = () => {
             </Button>
 
             {user.role === 'student' && (
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/learning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
-                  <BookOpen className="w-4 h-4" />
-                  Learning
-                </Link>
-              </Button>
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/learning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <BookOpen className="w-4 h-4" />
+                    Learning
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/community" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <Users className="w-4 h-4" />
+                    Community
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/job-alerts" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <Bell className="w-4 h-4" />
+                    Alerts
+                  </Link>
+                </Button>
+              </>
             )}
             
             {(user.role === 'recruiter' || user.role === 'founder' || user.role === 'admin') && (
@@ -123,6 +157,12 @@ export const Navigation = () => {
                   <Link to="/ai-search" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
                     <Brain className="w-4 h-4" />
                     AI Search
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/smart-matching" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <Target className="w-4 h-4" />
+                    Smart Match
                   </Link>
                 </Button>
                 <Button variant="ghost" size="sm" asChild>
