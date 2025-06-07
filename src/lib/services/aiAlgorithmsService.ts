@@ -1,4 +1,3 @@
-
 import { candidateService, type Candidate } from './candidateService';
 import { gigService, type Gig } from './gigService';
 
@@ -206,8 +205,8 @@ class TreeNode {
 
 // Neural Network for complex pattern recognition
 export class NeuralNetwork {
-  private weights: number[][];
-  private biases: number[];
+  private weights: number[][][];
+  private biases: number[][];
   private learningRate: number = 0.01;
 
   constructor(inputSize: number, hiddenSize: number, outputSize: number) {
@@ -219,10 +218,12 @@ export class NeuralNetwork {
     let activation = input;
     
     // Forward pass through hidden layer
-    activation = this.sigmoid(this.matrixMultiply([activation], this.weights[0])[0]);
+    const hiddenResult = this.matrixVectorMultiply(this.weights[0], activation);
+    activation = this.sigmoid(this.vectorAdd(hiddenResult, this.biases[0]));
     
     // Forward pass through output layer
-    activation = this.sigmoid(this.matrixMultiply([activation], this.weights[1])[0]);
+    const outputResult = this.matrixVectorMultiply(this.weights[1], activation);
+    activation = this.sigmoid(this.vectorAdd(outputResult, this.biases[1]));
     
     return activation;
   }
@@ -235,42 +236,36 @@ export class NeuralNetwork {
     }
   }
 
-  private sigmoid(x: number | number[]): number | number[] {
-    if (Array.isArray(x)) {
-      return x.map(val => 1 / (1 + Math.exp(-val)));
-    }
-    return 1 / (1 + Math.exp(-x));
+  private sigmoid(x: number[]): number[] {
+    return x.map(val => 1 / (1 + Math.exp(-val)));
   }
 
-  private initializeWeights(inputSize: number, hiddenSize: number, outputSize: number): number[][] {
-    const hiddenWeights = Array.from({ length: inputSize }, () =>
-      Array.from({ length: hiddenSize }, () => Math.random() * 2 - 1)
+  private initializeWeights(inputSize: number, hiddenSize: number, outputSize: number): number[][][] {
+    const hiddenWeights = Array.from({ length: hiddenSize }, () =>
+      Array.from({ length: inputSize }, () => Math.random() * 2 - 1)
     );
     
-    const outputWeights = Array.from({ length: hiddenSize }, () =>
-      Array.from({ length: outputSize }, () => Math.random() * 2 - 1)
+    const outputWeights = Array.from({ length: outputSize }, () =>
+      Array.from({ length: hiddenSize }, () => Math.random() * 2 - 1)
     );
     
     return [hiddenWeights, outputWeights];
   }
 
-  private initializeBiases(hiddenSize: number, outputSize: number): number[] {
-    return Array.from({ length: hiddenSize + outputSize }, () => Math.random() * 2 - 1);
+  private initializeBiases(hiddenSize: number, outputSize: number): number[][] {
+    const hiddenBiases = Array.from({ length: hiddenSize }, () => Math.random() * 2 - 1);
+    const outputBiases = Array.from({ length: outputSize }, () => Math.random() * 2 - 1);
+    return [hiddenBiases, outputBiases];
   }
 
-  private matrixMultiply(a: number[][], b: number[][]): number[][] {
-    const result: number[][] = [];
-    for (let i = 0; i < a.length; i++) {
-      result[i] = [];
-      for (let j = 0; j < b[0].length; j++) {
-        let sum = 0;
-        for (let k = 0; k < b.length; k++) {
-          sum += a[i][k] * b[k][j];
-        }
-        result[i][j] = sum;
-      }
-    }
-    return result;
+  private matrixVectorMultiply(matrix: number[][], vector: number[]): number[] {
+    return matrix.map(row => 
+      row.reduce((sum, val, i) => sum + val * vector[i], 0)
+    );
+  }
+
+  private vectorAdd(a: number[], b: number[]): number[] {
+    return a.map((val, i) => val + b[i]);
   }
 
   private backpropagate(input: number[], target: number[]): void {
@@ -529,7 +524,7 @@ export class AdvancedAIService {
       candidate.achievements.length, candidate.certifications.length, candidate.badges.length
     ]);
     
-    const ensembleScore = (linearScore + (Array.isArray(neuralPrediction) ? neuralPrediction[0] : neuralPrediction)) / 2;
+    const ensembleScore = (linearScore + neuralPrediction[0]) / 2;
 
     const breakdown = {
       skillAlignment: skillMatch * 100,

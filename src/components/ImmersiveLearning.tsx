@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,6 +32,18 @@ interface VREnvironment {
   features: string[];
 }
 
+// Type definitions for WebXR
+interface XRSystem {
+  isSessionSupported(mode: string): Promise<boolean>;
+  requestSession(mode: string): Promise<any>;
+}
+
+declare global {
+  interface Navigator {
+    xr?: XRSystem;
+  }
+}
+
 export const ImmersiveLearning = () => {
   const [experiences, setExperiences] = useState<ImmersiveExperience[]>([]);
   const [vrEnvironments, setVREnvironments] = useState<VREnvironment[]>([]);
@@ -48,11 +59,19 @@ export const ImmersiveLearning = () => {
     loadVREnvironments();
   }, []);
 
-  const checkVRARSupport = () => {
+  const checkVRARSupport = async () => {
     // Check for WebXR support
-    if ('xr' in navigator) {
-      navigator.xr?.isSessionSupported('immersive-vr').then(setIsVRSupported);
-      navigator.xr?.isSessionSupported('immersive-ar').then(setIsARSupported);
+    if ('xr' in navigator && navigator.xr) {
+      try {
+        const vrSupported = await navigator.xr.isSessionSupported('immersive-vr');
+        const arSupported = await navigator.xr.isSessionSupported('immersive-ar');
+        setIsVRSupported(vrSupported);
+        setIsARSupported(arSupported);
+      } catch (error) {
+        console.log('WebXR not supported:', error);
+        setIsVRSupported(false);
+        setIsARSupported(false);
+      }
     }
   };
 
@@ -226,6 +245,8 @@ export const ImmersiveLearning = () => {
       }
     } catch (error) {
       console.error('Failed to start VR session:', error);
+      // Fallback to 3D session
+      initialize3DSession();
     }
   };
 
@@ -239,6 +260,8 @@ export const ImmersiveLearning = () => {
       }
     } catch (error) {
       console.error('Failed to start AR session:', error);
+      // Fallback to 3D session
+      initialize3DSession();
     }
   };
 

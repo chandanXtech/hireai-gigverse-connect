@@ -11,7 +11,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Menu, Brain, BookOpen, Users, Bell, Target } from "lucide-react";
+import { 
+  Menu, Brain, BookOpen, Users, Bell, Target, 
+  BarChart3, Eye, Briefcase, Heart, Gamepad2 
+} from "lucide-react";
 
 export const Navigation = () => {
   const { user, logout } = useAuth();
@@ -57,6 +60,30 @@ export const Navigation = () => {
                       </Link>
                     </Button>
                     <Button variant="ghost" size="sm" asChild>
+                      <Link to="/microlearning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <Gamepad2 className="w-4 h-4" />
+                        Microlearning
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/immersive-learning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <Eye className="w-4 h-4" />
+                        VR/AR Learning
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/portfolio-builder" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <Briefcase className="w-4 h-4" />
+                        Portfolio
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/wellness" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <Heart className="w-4 h-4" />
+                        Wellness
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
                       <Link to="/community" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
                         <Users className="w-4 h-4" />
                         Community
@@ -93,6 +120,12 @@ export const Navigation = () => {
                     <Button variant="ghost" size="sm" asChild>
                       <Link to="/post-gig" className="text-gray-700 hover:text-blue-600">
                         Post Gig
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to="/advanced-analytics" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                        <BarChart3 className="w-4 h-4" />
+                        Advanced Analytics
                       </Link>
                     </Button>
                     <Button variant="ghost" size="sm" asChild>
@@ -137,6 +170,30 @@ export const Navigation = () => {
                   </Link>
                 </Button>
                 <Button variant="ghost" size="sm" asChild>
+                  <Link to="/microlearning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <Gamepad2 className="w-4 h-4" />
+                    Micro
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/immersive-learning" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <Eye className="w-4 h-4" />
+                    VR/AR
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/portfolio-builder" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <Briefcase className="w-4 h-4" />
+                    Portfolio
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/wellness" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <Heart className="w-4 h-4" />
+                    Wellness
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
                   <Link to="/community" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
                     <Users className="w-4 h-4" />
                     Community
@@ -173,6 +230,12 @@ export const Navigation = () => {
                 <Button variant="ghost" size="sm" asChild>
                   <Link to="/post-gig" className="text-gray-700 hover:text-blue-600">
                     Post Gig
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/advanced-analytics" className="text-gray-700 hover:text-blue-600 flex items-center gap-1">
+                    <BarChart3 className="w-4 h-4" />
+                    Advanced
                   </Link>
                 </Button>
                 <Button variant="ghost" size="sm" asChild>
